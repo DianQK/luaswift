@@ -21,28 +21,6 @@ extension Data {
     
 }
 
-extension BinaryChunk.Header {
-    
-    static let LUA_SIGNATURE    = "\u{1b}Lua"
-    static let LUAC_VERSION     = 0x53
-    static let LUAC_FORMAT      = 0
-    static let LUAC_DATA        = "\u{19}\r\n\u{1A}\n"
-    static let CINT_SIZE        = 4
-    static let CSIZET_SIZE      = 8
-    static let INSTRUCTION_SIZE = 4
-    static let LUA_INTEGER_SIZE = 8
-    static let LUA_NUMBER_SIZE  = 8
-    static let LUAC_INT         = 0x5678
-    static let LUAC_NUM         = 370.5
-    
-}
-
-// 1B 4C 75 61
-// 53
-// 00
-// 19 93 0D 0A 1A 0A
-// 04 08 04 08
-
 class Reader {
     
     var data: Data
@@ -96,43 +74,141 @@ class Reader {
         if size == 0xFF {
             size = Int(self.readUInt64())
         }
-        return String(data: self.readBytes(count: size), encoding: String.Encoding.utf8)!
+        return String(data: self.readBytes(count: size - 1), encoding: String.Encoding.utf8)!
     }
     
-    func checkHeader() throws {
-        guard let signature = String(data: self.readBytes(count: 4), encoding: String.Encoding.ascii), signature == BinaryChunk.Header.LUA_SIGNATURE else {
+    func checkHeader() throws -> BinaryChunk.Header {
+        let header = BinaryChunk.Header()
+        guard let signature = String(data: self.readBytes(count: 4), encoding: String.Encoding.ascii), signature == header.signature else {
             throw BinaryChunk.Header.CheckError.desc("not a precompiled chunk!")
         }
-        guard self.readByte() == BinaryChunk.Header.LUAC_VERSION else {
+        guard self.readByte() == header.version else {
             throw BinaryChunk.Header.CheckError.desc("version mismatch!")
         }
-        guard self.readByte() == BinaryChunk.Header.LUAC_FORMAT else {
+        guard self.readByte() == header.format else {
             throw BinaryChunk.Header.CheckError.desc("format mismatch!")
         }
-        guard let data = String(data: self.readBytes(count: 6), encoding: String.Encoding.ascii), data == BinaryChunk.Header.LUAC_DATA else {
+        guard let data = String(data: self.readBytes(count: 6), encoding: String.Encoding.ascii), data == header.luacData else {
             throw BinaryChunk.Header.CheckError.desc("corrupted!")
         }
-        guard self.readByte() == BinaryChunk.Header.CINT_SIZE else {
+        guard self.readByte() == header.cintSize else {
             throw BinaryChunk.Header.CheckError.desc("int size mismatch!")
         }
-        guard self.readByte() == BinaryChunk.Header.CSIZET_SIZE else {
+        guard self.readByte() == header.sizetSize else {
             throw BinaryChunk.Header.CheckError.desc("size_t size mismatch!")
         }
-        guard self.readByte() == BinaryChunk.Header.INSTRUCTION_SIZE else {
+        guard self.readByte() == header.instructionSize else {
             throw BinaryChunk.Header.CheckError.desc("instruction size mismatch!")
         }
-        guard self.readByte() == BinaryChunk.Header.LUA_INTEGER_SIZE else {
+        guard self.readByte() == header.luaIntegerSize else {
             throw BinaryChunk.Header.CheckError.desc("lua_Integer size mismatch!")
         }
-        guard self.readByte() == BinaryChunk.Header.LUA_NUMBER_SIZE else {
+        guard self.readByte() == header.luaNumberSize else {
             throw BinaryChunk.Header.CheckError.desc("lua_Number size mismatch!")
         }
-        guard self.readLuaInteger() == BinaryChunk.Header.LUAC_INT else {
+        guard self.readLuaInteger() == header.luacInt else {
             throw BinaryChunk.Header.CheckError.desc("endianness mismatch!")
         }
-        guard self.readLuaNumber() == BinaryChunk.Header.LUAC_NUM else {
+        guard self.readLuaNumber() == header.luacNum else {
             throw BinaryChunk.Header.CheckError.desc("float format mismatch!")
         }
+        return header
+    }
+    
+    func readContents<Content>(readBlock: (Reader) -> Content) -> [Content] {
+        let count = self.readUInt32()
+        var contents: [Content] = []
+        for _ in (0..<count) {
+            contents.append(readBlock(self))
+        }
+        return contents
+    }
+    
+    func readCode() -> [UInt32] {
+        self.readContents { $0.readUInt32() }
+    }
+    
+    func readConstant() -> [BinaryChunk.Prototype.Constant] {
+        self.readContents { (reader) -> BinaryChunk.Prototype.Constant in
+            guard let constantTag = BinaryChunk.Prototype.Constant.Tag(rawValue: self.readByte()) else {
+                // TODO: 改为 throw error
+                fatalError("corrupted!")
+            }
+            let constant: BinaryChunk.Prototype.Constant
+            switch constantTag {
+            case .nil:
+                constant = .nil
+            case .boolean:
+                constant = .boolean(self.readByte() != 0)
+            case .integer:
+                constant = .integer(self.readLuaInteger())
+            case .number:
+                constant = .number(self.readLuaNumber())
+            case .shortStr:
+                constant = .shortStr(self.readString())
+            case .longStr:
+                constant = .longStr(self.readString())
+            }
+            return constant
+        }
+    }
+    
+    func readUpvalues() -> [BinaryChunk.Prototype.Upvalue] {
+        self.readContents { BinaryChunk.Prototype.Upvalue(instack: $0.readByte(), idx: $0.readByte()) }
+    }
+    
+    func readProtos(parentSource: String) -> [BinaryChunk.Prototype] {
+        self.readContents { $0.readProto(parentSource: parentSource) }
+    }
+    
+    func readLineInfo() -> [UInt32] {
+        self.readContents { $0.readUInt32() }
+    }
+    
+    func readLocVars() -> [BinaryChunk.Prototype.LocVar] {
+        self.readContents { BinaryChunk.Prototype.LocVar(varName: $0.readString(), startPC: $0.readUInt32(), endPC: $0.readUInt32()) }
+    }
+    
+    func readUpvalueNames() -> [String] {
+        self.readContents { $0.readString() }
+    }
+    
+    func readProto(parentSource: String) -> BinaryChunk.Prototype {
+        var source = self.readString()
+        if (source.isEmpty) {
+            source = parentSource
+        }
+        let lineDefined = self.readUInt32()
+        let lastLineDefined = self.readUInt32()
+        let numParams = self.readByte()
+        let isVararg = self.readByte()
+        let maxStackSize = self.readByte()
+        let code = self.readCode()
+        let constants = self.readConstant()
+        let upvalues = self.readUpvalues()
+        let protos = self.readProtos(parentSource: source)
+        let lineInfo = self.readLineInfo()
+        let locVars = self.readLocVars()
+        let upvalueNames = self.readUpvalueNames()
+        return BinaryChunk.Prototype(source: source,
+                                     lineDefined: lineDefined,
+                                     lastLineDefined: lastLineDefined,
+                                     numParams: numParams,
+                                     isVararg: isVararg,
+                                     maxStackSize: maxStackSize,
+                                     code: code,
+                                     constants: constants,
+                                     upvalues: upvalues,
+                                     protos: protos,
+                                     lineInfo: lineInfo,
+                                     locVars: locVars,
+                                     upvalueNames: upvalueNames)
+    }
+    
+    func undump() throws -> BinaryChunk {
+        return BinaryChunk(header: try self.checkHeader(),
+                           sizeUpvalues: self.readByte(),
+                           mainFunc: self.readProto(parentSource: ""))
     }
     
 }

@@ -8,14 +8,9 @@
 
 import Foundation
 
-let hwLuacUrl = URL(fileURLWithPath: "/Users/qing/Documents/GitHub/luago-book/code/lua/ch02/hw.luac")
-
-print(hwLuacUrl)
-
+let hwLuacUrl = URL(fileURLWithPath: "/Users/qing/Documents/GitHub/luago-book/code/lua/ch02/luac.out")
 let luacBin = try Data(contentsOf: hwLuacUrl)
-
 let reader = Reader(data: luacBin)
+let binaryChunk = try reader.undump()
 
-try reader.checkHeader()
-
-print("DONE")
+binaryChunk.mainFunc.list()
