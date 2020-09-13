@@ -8,5 +8,14 @@
 
 import Foundation
 
-print("Hello, World!")
+let hwLuacUrl = URL(fileURLWithPath: "/Users/qing/Documents/GitHub/luago-book/code/lua/ch02/hw.luac")
 
+print(hwLuacUrl)
+
+let luacBin = try Data(contentsOf: hwLuacUrl)
+
+let reader = Reader(data: luacBin)
+
+try reader.checkHeader()
+
+print("DONE")
