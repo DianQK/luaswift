@@ -154,8 +154,8 @@ struct Instruction {
     
     var ABC: (a: Int, b: Int, c: Int) {
         let a = Int(value >> 6 & 0xFF)
-        let b = Int(value >> 14 & 0x1FF)
-        let c = Int(value >> 23 & 0x1FF)
+        let c = Int(value >> 14 & 0x1FF)
+        let b = Int(value >> 23 & 0x1FF)
         return (a, b, c)
     }
     
@@ -188,6 +188,45 @@ struct Instruction {
     
     var CMode: OpArgMask {
         opcodes[self.opcode].argCMode
+    }
+    
+    func printOperands() {
+        switch self.opMode {
+        case .IABC:
+            let (a, b, c) = self.ABC
+
+            print("\(a)", terminator: "")
+            if self.BMode != .N {
+                if b > 0xFF {
+                    print(" \(-1-b&0xFF)", terminator: "")
+                } else {
+                    print(" \(b)", terminator: "")
+                }
+            }
+            if self.CMode != .N {
+                if c > 0xFF {
+                    print(" \(-1-c&0xFF)", terminator: "")
+                } else {
+                    print(" \(c)", terminator: "")
+                }
+            }
+        case .IABx:
+            let (a, bx) = self.ABx
+
+            print("\(a)", terminator: "")
+            if self.BMode == .K {
+                print(" \(-1-bx)", terminator: "")
+            } else if self.BMode == .U {
+                print(" \(bx)", terminator: "")
+            }
+        case .IAsBx:
+            let (a, sbx) = self.AsBx
+            print("\(a) \(sbx)", terminator: "")
+        case .IAx:
+            let ax = self.Ax
+            print("\(-1-ax)", terminator: "")
+        }
+        print("")
     }
     
 }

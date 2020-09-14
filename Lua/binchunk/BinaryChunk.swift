@@ -121,7 +121,10 @@ extension BinaryChunk.Prototype {
     func printCode() {
         for (pc, c) in code.enumerated() {
             let line = lineInfo.isEmpty ? "-" : "\(lineInfo[pc])"
-            print("\t\(pc+1)\t[\(line)]\t0x\(String(format: "0x%08x", c))")
+//            print("\t\(pc+1)\t[\(line)]\t0x\(String(format: "0x%08x", c))")
+            let instruction = Instruction(value: c)
+            print("\t\(pc+1)\t[\(line)]\t\(instruction.opName) \t", terminator: "")
+            instruction.printOperands()
         }
     }
     
