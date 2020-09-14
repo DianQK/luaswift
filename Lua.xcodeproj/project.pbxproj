@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		263E1996250FA554009E86B6 /* opcodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263E1995250FA554009E86B6 /* opcodes.swift */; };
 		26C10BD0250DD88D00A27886 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BCF250DD88D00A27886 /* main.swift */; };
 		26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BD6250E04DC00A27886 /* BinaryChunk.swift */; };
 		26C10BD9250E087400A27886 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BD8250E087400A27886 /* Reader.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		263E1995250FA554009E86B6 /* opcodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = opcodes.swift; sourceTree = "<group>"; };
 		26C10BCC250DD88D00A27886 /* Lua */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Lua; sourceTree = BUILT_PRODUCTS_DIR; };
 		26C10BCF250DD88D00A27886 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		26C10BD6250E04DC00A27886 /* BinaryChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryChunk.swift; sourceTree = "<group>"; };
@@ -51,6 +53,14 @@
 			path = binchunk;
 			sourceTree = "<group>";
 		};
+		263E1994250FA4EE009E86B6 /* vm */ = {
+			isa = PBXGroup;
+			children = (
+				263E1995250FA554009E86B6 /* opcodes.swift */,
+			);
+			path = vm;
+			sourceTree = "<group>";
+		};
 		26C10BC3250DD88D00A27886 = {
 			isa = PBXGroup;
 			children = (
@@ -70,6 +80,7 @@
 		26C10BCE250DD88D00A27886 /* Lua */ = {
 			isa = PBXGroup;
 			children = (
+				263E1994250FA4EE009E86B6 /* vm */,
 				263E1993250FA479009E86B6 /* binchunk */,
 				26C10BCF250DD88D00A27886 /* main.swift */,
 			);
@@ -135,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				26C10BD9250E087400A27886 /* Reader.swift in Sources */,
+				263E1996250FA554009E86B6 /* opcodes.swift in Sources */,
 				26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */,
 				26C10BD0250DD88D00A27886 /* main.swift in Sources */,
 			);
