@@ -42,6 +42,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		263E1993250FA479009E86B6 /* binchunk */ = {
+			isa = PBXGroup;
+			children = (
+				26C10BD6250E04DC00A27886 /* BinaryChunk.swift */,
+				26C10BD8250E087400A27886 /* Reader.swift */,
+			);
+			path = binchunk;
+			sourceTree = "<group>";
+		};
 		26C10BC3250DD88D00A27886 = {
 			isa = PBXGroup;
 			children = (
@@ -61,9 +70,8 @@
 		26C10BCE250DD88D00A27886 /* Lua */ = {
 			isa = PBXGroup;
 			children = (
+				263E1993250FA479009E86B6 /* binchunk */,
 				26C10BCF250DD88D00A27886 /* main.swift */,
-				26C10BD6250E04DC00A27886 /* BinaryChunk.swift */,
-				26C10BD8250E087400A27886 /* Reader.swift */,
 			);
 			path = Lua;
 			sourceTree = "<group>";
