@@ -141,9 +141,29 @@ let opcodes: [Opcode] = [
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IAx /*  */, name: "EXTRAARG"), // extra (larger) argument for previous opcode
 ]
 
+/*
+ * 见书中 P44
+ */
 let MAXARG_Bx = 1 << 18 - 1
 let MAXARG_sBX = MAXARG_Bx >> 1
 
+/*
+ 31       22       13       5    0
+  +-------+^------+-^-----+-^-----
+  |b=9bits |c=9bits |a=8bits|op=6|
+  +-------+^------+-^-----+-^-----
+  |    bx=18bits    |a=8bits|op=6|
+  +-------+^------+-^-----+-^-----
+  |   sbx=18bits    |a=8bits|op=6|
+  +-------+^------+-^-----+-^-----
+  |    ax=26bits            |op=6|
+  +-------+^------+-^-----+-^-----
+ 31      23      15       7      0
+*/
+/*
+ * 0xFF: 11111111 提取 8 bit
+ * 0x1FF: 111111111 提取 9 bit
+ */
 struct Instruction {
     
     let value: UInt32
@@ -154,8 +174,8 @@ struct Instruction {
     
     var ABC: (a: Int, b: Int, c: Int) {
         let a = Int(value >> 6 & 0xFF)
-        let c = Int(value >> 14 & 0x1FF)
-        let b = Int(value >> 23 & 0x1FF)
+        let c = Int(value >> 14 & 0x1FF) // >> 6 + 8
+        let b = Int(value >> 23 & 0x1FF) // >> 6 + 8 + 9
         return (a, b, c)
     }
     
