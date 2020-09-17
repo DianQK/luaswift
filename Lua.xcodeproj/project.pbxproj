@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,10 @@
 		26C10BD0250DD88D00A27886 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BCF250DD88D00A27886 /* main.swift */; };
 		26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BD6250E04DC00A27886 /* BinaryChunk.swift */; };
 		26C10BD9250E087400A27886 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BD8250E087400A27886 /* Reader.swift */; };
+		91867CE925135CAF00F09DB0 /* LuaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CE825135CAF00F09DB0 /* LuaState.swift */; };
+		91867CEC25135CD800F09DB0 /* LuaStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CEB25135CD800F09DB0 /* LuaStack.swift */; };
+		91867CEF25135CE600F09DB0 /* LuaValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CEE25135CE600F09DB0 /* LuaValue.swift */; };
+		91867CF325135D9700F09DB0 /* consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CF225135D9700F09DB0 /* consts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +35,10 @@
 		26C10BCF250DD88D00A27886 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		26C10BD6250E04DC00A27886 /* BinaryChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryChunk.swift; sourceTree = "<group>"; };
 		26C10BD8250E087400A27886 /* Reader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reader.swift; sourceTree = "<group>"; };
+		91867CE825135CAF00F09DB0 /* LuaState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaState.swift; sourceTree = "<group>"; };
+		91867CEB25135CD800F09DB0 /* LuaStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaStack.swift; sourceTree = "<group>"; };
+		91867CEE25135CE600F09DB0 /* LuaValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaValue.swift; sourceTree = "<group>"; };
+		91867CF225135D9700F09DB0 /* consts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = consts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,11 +88,31 @@
 		26C10BCE250DD88D00A27886 /* Lua */ = {
 			isa = PBXGroup;
 			children = (
+				91867CF125135D8200F09DB0 /* api */,
+				91867CE725135C9C00F09DB0 /* state */,
 				263E1994250FA4EE009E86B6 /* vm */,
 				263E1993250FA479009E86B6 /* binchunk */,
 				26C10BCF250DD88D00A27886 /* main.swift */,
 			);
 			path = Lua;
+			sourceTree = "<group>";
+		};
+		91867CE725135C9C00F09DB0 /* state */ = {
+			isa = PBXGroup;
+			children = (
+				91867CE825135CAF00F09DB0 /* LuaState.swift */,
+				91867CEB25135CD800F09DB0 /* LuaStack.swift */,
+				91867CEE25135CE600F09DB0 /* LuaValue.swift */,
+			);
+			path = state;
+			sourceTree = "<group>";
+		};
+		91867CF125135D8200F09DB0 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				91867CF225135D9700F09DB0 /* consts.swift */,
+			);
+			path = api;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,7 +151,7 @@
 				};
 			};
 			buildConfigurationList = 26C10BC7250DD88D00A27886 /* Build configuration list for PBXProject "Lua" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -146,9 +174,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				26C10BD9250E087400A27886 /* Reader.swift in Sources */,
+				91867CF325135D9700F09DB0 /* consts.swift in Sources */,
 				263E1996250FA554009E86B6 /* opcodes.swift in Sources */,
+				91867CE925135CAF00F09DB0 /* LuaState.swift in Sources */,
 				26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */,
+				91867CEF25135CE600F09DB0 /* LuaValue.swift in Sources */,
 				26C10BD0250DD88D00A27886 /* main.swift in Sources */,
+				91867CEC25135CD800F09DB0 /* LuaStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

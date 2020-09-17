@@ -8,9 +8,12 @@
 
 import Foundation
 
-let hwLuacUrl = URL(fileURLWithPath: "/Users/qing/Documents/GitHub/luago-book/code/lua/ch02/luac.out")
-let luacBin = try Data(contentsOf: hwLuacUrl)
-let reader = Reader(data: luacBin)
-let binaryChunk = try reader.undump()
+//let hwLuacUrl = URL(fileURLWithPath: "/Users/qing/Documents/GitHub/luago-book/code/lua/ch02/luac.out")
+//let luacBin = try Data(contentsOf: hwLuacUrl)
+//let reader = Reader(data: luacBin)
+//let binaryChunk = try reader.undump()
+//
+//binaryChunk.mainFunc.list()
 
-binaryChunk.mainFunc.list()
+
+//print(MemoryLayout<LuaNil>.size)
