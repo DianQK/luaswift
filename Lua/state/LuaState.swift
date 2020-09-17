@@ -21,3 +21,25 @@ class LuaState {
     }
 
 }
+
+extension LuaState {
+
+    func printStack() {
+        let top = self.getTop()
+        for i in (1...top) {
+            let t = self.type(idx: i)
+            switch t {
+            case .boolean:
+                print("[\(self.toBoolean(idx: i))]", terminator: "")
+            case .number:
+                print("[\(self.toNumber(idx: i))]", terminator: "")
+            case .string:
+                print("[\(self.toString(idx: i))]", terminator: "")
+            default:
+                print("[\(self.typeName(t))]", terminator: "")
+            }
+        }
+        print("")
+    }
+
+}

@@ -131,7 +131,6 @@ class Reader {
     func readConstant() -> [BinaryChunk.Prototype.Constant] {
         self.readContents { (reader) -> BinaryChunk.Prototype.Constant in
             guard let constantTag = BinaryChunk.Prototype.Constant.Tag(rawValue: self.readByte()) else {
-                // TODO: 改为 throw error
                 fatalError("corrupted!")
             }
             let constant: BinaryChunk.Prototype.Constant

@@ -95,9 +95,8 @@ class LuaStack {
     func reverse(from: Int, to: Int) {
         var from = from
         var to = to
-        var slots = self.slots
         while from < to {
-            (slots[from], slots[to]) = (slots[to], slots[from])
+            (self.slots[from], self.slots[to]) = (self.slots[to], self.slots[from])
             from += 1
             to -= 1
         }

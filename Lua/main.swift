@@ -8,12 +8,13 @@
 
 import Foundation
 
-//let hwLuacUrl = URL(fileURLWithPath: "/Users/qing/Documents/GitHub/luago-book/code/lua/ch02/luac.out")
-//let luacBin = try Data(contentsOf: hwLuacUrl)
-//let reader = Reader(data: luacBin)
-//let binaryChunk = try reader.undump()
-//
-//binaryChunk.mainFunc.list()
-
-
-//print(MemoryLayout<LuaNil>.size)
+let luaState = LuaState.new()
+luaState.pushBoolean(true); luaState.printStack()
+luaState.pushInteger(10); luaState.printStack()
+luaState.pushNil(); luaState.printStack()
+luaState.pushString("hello"); luaState.printStack()
+luaState.pushValue(idx: -4); luaState.printStack()
+luaState.replace(idx: 3); luaState.printStack()
+luaState.setTop(idx: 6); luaState.printStack()
+luaState.remove(idx: -3); luaState.printStack()
+luaState.setTop(idx: -5); luaState.printStack()

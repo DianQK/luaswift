@@ -77,7 +77,7 @@ extension LuaState {
                 _ = self.stack.pop()
             }
         } else if n < 0 {
-            for _ in 0..<n {
+            for _ in (n..<0) {
                 self.stack.push(LuaNil())
             }
         }
