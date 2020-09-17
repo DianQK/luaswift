@@ -31,7 +31,7 @@ class LuaStack {
 
     /// 将值推入栈顶
     /// - Parameter val: 推入的值
-    func push(val: LuaValue) {
+    func push(_ val: LuaValue) {
         guard self.top < self.slots.count else {
             fatalError("stack overflow!")
         }
@@ -90,6 +90,17 @@ class LuaStack {
             fatalError("invalid index!")
         }
         self.slots[absIdx - 1] = val
+    }
+
+    func reverse(from: Int, to: Int) {
+        var from = from
+        var to = to
+        var slots = self.slots
+        while from < to {
+            (slots[from], slots[to]) = (slots[to], slots[from])
+            from += 1
+            to -= 1
+        }
     }
 
 }

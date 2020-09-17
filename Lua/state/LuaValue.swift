@@ -12,6 +12,45 @@ protocol LuaValue {
 
     var luaType: LuaType { get }
 
+    var toStringX: (String, Bool) { get }
+
+}
+
+extension LuaValue {
+
+    var toBoolean: Bool {
+        switch self.luaType {
+        case .nil:
+            return false
+        case .boolean:
+            return self as! Bool
+        default:
+            return true
+        }
+    }
+
+    var toStringX: (String, Bool) {
+        return ("", false)
+    }
+
+}
+
+protocol LuaNumberValue: LuaValue {
+
+    var description: String { get }
+
+}
+
+extension LuaNumberValue {
+
+    var luaType: LuaType {
+        .number
+    }
+
+    var toStringX: (String, Bool) {
+        return (self.description, true)
+    }
+
 }
 
 struct LuaNil: LuaValue {
@@ -30,19 +69,11 @@ extension Bool: LuaValue {
 
 }
 
-extension Int64: LuaValue {
-
-    var luaType: LuaType {
-        .number
-    }
+extension Int64: LuaNumberValue {
 
 }
 
-extension Double: LuaValue {
-
-    var luaType: LuaType {
-        .number
-    }
+extension Double: LuaNumberValue {
 
 }
 
@@ -53,5 +84,8 @@ extension String: LuaValue {
         .string
     }
 
-}
+    var toStringX: (String, Bool) {
+        (self, true)
+    }
 
+}

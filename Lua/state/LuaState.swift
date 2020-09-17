@@ -8,3 +8,16 @@
 
 import Foundation
 
+class LuaState {
+
+    let stack: LuaStack
+
+    init(stack: LuaStack) {
+        self.stack = stack
+    }
+
+    static func new() -> LuaState {
+        LuaState(stack: LuaStack(size: 20))
+    }
+
+}

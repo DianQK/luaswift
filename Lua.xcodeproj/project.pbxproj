@@ -15,6 +15,10 @@
 		91867CEC25135CD800F09DB0 /* LuaStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CEB25135CD800F09DB0 /* LuaStack.swift */; };
 		91867CEF25135CE600F09DB0 /* LuaValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CEE25135CE600F09DB0 /* LuaValue.swift */; };
 		91867CF325135D9700F09DB0 /* consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CF225135D9700F09DB0 /* consts.swift */; };
+		91867CF72513654400F09DB0 /* LuaStateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CF62513654400F09DB0 /* LuaStateType.swift */; };
+		91867CFA2513676D00F09DB0 /* APIStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CF92513676D00F09DB0 /* APIStack.swift */; };
+		91867CFD25137D7800F09DB0 /* APIPush.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CFC25137D7800F09DB0 /* APIPush.swift */; };
+		91867D0025137EDB00F09DB0 /* APIAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CFF25137EDB00F09DB0 /* APIAccess.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +43,10 @@
 		91867CEB25135CD800F09DB0 /* LuaStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaStack.swift; sourceTree = "<group>"; };
 		91867CEE25135CE600F09DB0 /* LuaValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaValue.swift; sourceTree = "<group>"; };
 		91867CF225135D9700F09DB0 /* consts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = consts.swift; sourceTree = "<group>"; };
+		91867CF62513654400F09DB0 /* LuaStateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaStateType.swift; sourceTree = "<group>"; };
+		91867CF92513676D00F09DB0 /* APIStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIStack.swift; sourceTree = "<group>"; };
+		91867CFC25137D7800F09DB0 /* APIPush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIPush.swift; sourceTree = "<group>"; };
+		91867CFF25137EDB00F09DB0 /* APIAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIAccess.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +111,9 @@
 				91867CE825135CAF00F09DB0 /* LuaState.swift */,
 				91867CEB25135CD800F09DB0 /* LuaStack.swift */,
 				91867CEE25135CE600F09DB0 /* LuaValue.swift */,
+				91867CF92513676D00F09DB0 /* APIStack.swift */,
+				91867CFC25137D7800F09DB0 /* APIPush.swift */,
+				91867CFF25137EDB00F09DB0 /* APIAccess.swift */,
 			);
 			path = state;
 			sourceTree = "<group>";
@@ -111,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				91867CF225135D9700F09DB0 /* consts.swift */,
+				91867CF62513654400F09DB0 /* LuaStateType.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -178,9 +190,13 @@
 				263E1996250FA554009E86B6 /* opcodes.swift in Sources */,
 				91867CE925135CAF00F09DB0 /* LuaState.swift in Sources */,
 				26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */,
+				91867CFD25137D7800F09DB0 /* APIPush.swift in Sources */,
 				91867CEF25135CE600F09DB0 /* LuaValue.swift in Sources */,
 				26C10BD0250DD88D00A27886 /* main.swift in Sources */,
 				91867CEC25135CD800F09DB0 /* LuaStack.swift in Sources */,
+				91867CF72513654400F09DB0 /* LuaStateType.swift in Sources */,
+				91867D0025137EDB00F09DB0 /* APIAccess.swift in Sources */,
+				91867CFA2513676D00F09DB0 /* APIStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
