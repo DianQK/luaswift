@@ -16,6 +16,8 @@ protocol LuaValue {
 
     var toFloat: (Double, Bool) { get }
 
+    var toInteger: (Int64, Bool) { get }
+
 }
 
 extension LuaValue {
@@ -36,6 +38,10 @@ extension LuaValue {
     }
 
     var toFloat: (Double, Bool) {
+        return (0, false)
+    }
+
+    var toInteger: (Int64, Bool) {
         return (0, false)
     }
 
@@ -81,12 +87,20 @@ extension Int64: LuaNumberValue {
         return (Double(self), true)
     }
 
+    var toInteger: (Int64, Bool) {
+        return (self, true)
+    }
+
 }
 
 extension Double: LuaNumberValue {
 
     var toFloat: (Double, Bool) {
         return (self, true)
+    }
+
+    var toInteger: (Int64, Bool) {
+        return Math.floatToInteger(self)
     }
 
 }
@@ -105,6 +119,14 @@ extension String: LuaValue {
     var toFloat: (Double, Bool) {
         if let f = Double(self) {
             return (f, true)
+        } else {
+            return (0, false)
+        }
+    }
+
+    var toInteger: (Int64, Bool) {
+        if let i = Int64(self) {
+            return (i, true)
         } else {
             return (0, false)
         }

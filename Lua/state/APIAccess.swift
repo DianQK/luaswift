@@ -75,11 +75,7 @@ extension LuaState {
 
     func toIntegerX(idx: Int) -> (Int64, Bool) {
         let val = self.stack.get(idx: idx)
-        if let i = val as? Int64 {
-            return (i, true)
-        } else {
-            return (0, false)
-        }
+        return val.toInteger
     }
 
     func toString(idx: Int) -> String {
