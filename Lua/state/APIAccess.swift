@@ -65,13 +65,7 @@ extension LuaState {
 
     func toNumberX(idx: Int) -> (Double, Bool) {
         let val = self.stack.get(idx: idx)
-        if let x = val as? Double {
-            return (x, true)
-        } else if let x = val as? Int64 {
-            return (Double(x), true)
-        } else {
-            return (0, true)
-        }
+        return val.toFloat
     }
 
     func toInteger(idx: Int) -> Int64 {
