@@ -16,8 +16,9 @@ extension LuaState {
         let val = self.stack.get(idx: idx)
         if let s = val as? String {
             self.stack.push(Int64(s.count))
+        } else {
+            fatalError("length error!")
         }
-        fatalError("length error!")
     }
     
     // [-n, +1, e]
@@ -33,8 +34,9 @@ extension LuaState {
                     _ = self.stack.pop()
                     _ = self.stack.pop()
                     self.stack.push(s1 + s2)
+                } else {
+                    fatalError("caoncatenation error!")
                 }
-                fatalError("caoncatenation error!")
             }
         }
         // n == 1, do nothing

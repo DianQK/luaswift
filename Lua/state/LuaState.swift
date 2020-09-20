@@ -32,9 +32,13 @@ extension LuaState {
             case .boolean:
                 print("[\(self.toBoolean(idx: i))]", terminator: "")
             case .number:
-                print("[\(self.toNumber(idx: i))]", terminator: "")
+                if self.isInteger(idx: i) {
+                    print("[\(self.toInteger(idx: i))]", terminator: "")
+                } else {
+                    print("[\(self.toNumber(idx: i))]", terminator: "")
+                }
             case .string:
-                print("[\(self.toString(idx: i))]", terminator: "")
+                print("[\"\(self.toString(idx: i))\"]", terminator: "")
             default:
                 print("[\(self.typeName(t))]", terminator: "")
             }
