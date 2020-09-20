@@ -12,11 +12,13 @@ protocol LuaValue {
 
     var luaType: LuaType { get }
 
-    var toStringX: (String, Bool) { get }
+    var toStringX: (value: String, ok: Bool) { get }
 
-    var toFloat: (Double, Bool) { get }
+    var toFloat: (value: Double, ok: Bool) { get }
 
-    var toInteger: (Int64, Bool) { get }
+    var toInteger: (value: Int64, ok: Bool) { get }
+    
+    var isNil: Bool { get }
 
 }
 
@@ -33,17 +35,19 @@ extension LuaValue {
         }
     }
 
-    var toStringX: (String, Bool) {
+    var toStringX: (value: String, ok: Bool) {
         return ("", false)
     }
 
-    var toFloat: (Double, Bool) {
+    var toFloat: (value: Double, ok: Bool) {
         return (0, false)
     }
 
-    var toInteger: (Int64, Bool) {
+    var toInteger: (value: Int64, ok: Bool) {
         return (0, false)
     }
+    
+    var isNil: Bool { false }
 
 }
 
@@ -59,7 +63,7 @@ extension LuaNumberValue {
         .number
     }
 
-    var toStringX: (String, Bool) {
+    var toStringX: (value: String, ok: Bool) {
         return (self.description, true)
     }
 
@@ -70,6 +74,8 @@ struct LuaNil: LuaValue {
     var luaType: LuaType {
         .nil
     }
+    
+    var isNil: Bool { true }
 
 }
 
@@ -83,11 +89,11 @@ extension Bool: LuaValue {
 
 extension Int64: LuaNumberValue {
 
-    var toFloat: (Double, Bool) {
+    var toFloat: (value: Double, ok: Bool) {
         return (Double(self), true)
     }
 
-    var toInteger: (Int64, Bool) {
+    var toInteger: (value: Int64, ok: Bool) {
         return (self, true)
     }
 
@@ -95,11 +101,11 @@ extension Int64: LuaNumberValue {
 
 extension Double: LuaNumberValue {
 
-    var toFloat: (Double, Bool) {
+    var toFloat: (value: Double, ok: Bool) {
         return (self, true)
     }
 
-    var toInteger: (Int64, Bool) {
+    var toInteger: (value: Int64, ok: Bool) {
         return Math.floatToInteger(self)
     }
 
@@ -112,11 +118,11 @@ extension String: LuaValue {
         .string
     }
 
-    var toStringX: (String, Bool) {
+    var toStringX: (value: String, ok: Bool) {
         (self, true)
     }
 
-    var toFloat: (Double, Bool) {
+    var toFloat: (value: Double, ok: Bool) {
         if let f = Double(self) {
             return (f, true)
         } else {
@@ -124,7 +130,7 @@ extension String: LuaValue {
         }
     }
 
-    var toInteger: (Int64, Bool) {
+    var toInteger: (value: Int64, ok: Bool) {
         if let i = Int64(self) {
             return (i, true)
         } else {

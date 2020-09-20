@@ -47,4 +47,10 @@ protocol LuaStateType: class {
     func pushInteger(n: Int64)
     func pushNumber(n: Double)
     func pushString(s: String)
+    /* Comparison and arithmetic functions */
+    func arith(op: ArithOp)
+    func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool
+    /* miscellaneous functions */
+    func len(idx: Int)
+    func concat(n: Int)
 }

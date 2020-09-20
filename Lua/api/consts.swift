@@ -45,3 +45,28 @@ enum LuaType: Int {
         }
     }
 }
+
+/* arithmetic functions */
+enum ArithOp: Int {
+    case add = 0     // +
+    case sub         // -
+    case mul         // *
+    case mod         // %
+    case pow         // ^
+    case div         // /
+    case idiv        // //
+    case band        // &
+    case bor         // |
+    case bxor        // ~
+    case shl         // <<
+    case shr         // >>
+    case unm         // -
+    case bnot        // ~
+}
+
+/* comparison functions */
+enum CompareOp: Int {
+    case eq = 0    // ==
+    case lt        // <
+    case le        // <=
+}
