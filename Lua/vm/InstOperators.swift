@@ -47,4 +47,31 @@ extension Instruction {
     func unm(vm: LuaVMType)  { _unaryArith(vm: vm, op: .unm) }   // -
     func bnot(vm: LuaVMType) { _unaryArith(vm: vm, op: .bnot) }  // ~
 
+    // R(A) := length of R(B)
+    func length(vm: LuaVMType) {
+        var (a, b, _) = self.ABC
+        a += 1
+        b += 1
+
+        vm.len(idx: b)
+        vm.replace(idx: a)
+    }
+
+    // R(A) := R(B).. ... ..R(C)
+    func concat(vm: LuaVMType) {
+        var (a, b, c) = self.ABC
+        a += 1
+        b += 1
+        c += 1
+
+        let n = c - b + 1
+        _ = vm.checkStack(n: n)
+
+        for i in (b...c) {
+            vm.pushValue(idx: i)
+        }
+        vm.concat(n: n)
+        vm.replace(idx: a)
+    }
+
 }
