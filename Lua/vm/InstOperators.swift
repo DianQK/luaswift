@@ -92,4 +92,37 @@ extension Instruction {
     func lt(vm: LuaVMType) { _compare(vm: vm, op: .lt) } // <
     func le(vm: LuaVMType) { _compare(vm: vm, op: .le) } // <=
 
+    // R(A) := not R(B)
+    func not(vm: LuaVMType) {
+        var (a, b, _) = self.ABC
+        a += 1
+        b += 1
+
+        vm.pushBoolean(vm.toBoolean(idx: b))
+        vm.replace(idx: a)
+    }
+
+    // if (R(B) <=> C) then R(A) := R(B) else pc++
+    func testSet(vm: LuaVMType) {
+        var (a, b, c) = self.ABC
+        a += 1
+        b += 1
+
+        if vm.toBoolean(idx: b) == (c != 0) {
+            vm.copy(fromIdx: b, toIdx: a)
+        } else {
+            vm.addPC(n: 1)
+        }
+    }
+
+    // if not (R(A) <=> C) then pc++
+    func test(vm: LuaVMType) {
+        var (a, _, c) = self.ABC
+        a += 1
+
+        if vm.toBoolean(idx: a) != (c != 0) {
+            vm.addPC(n: 1)
+        }
+    }
+
 }
