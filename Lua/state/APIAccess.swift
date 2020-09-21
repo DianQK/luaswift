@@ -95,4 +95,16 @@ extension LuaState {
         }
     }
 
+    func isTable(idx: Int) -> Bool {
+        self.type(idx: idx) == .table
+    }
+
+    func isThread(idx: Int) -> Bool {
+        self.type(idx: idx) == .thread
+    }
+
+    func isFunction(idx: Int) -> Bool {
+        self.type(idx: idx) == .function
+    }
+
 }

@@ -11,7 +11,7 @@ import Foundation
 protocol LuaStateType: class {
 
     func getTop() -> Int
-    func absIndex(idx: Int)
+    func absIndex(idx: Int) -> Int
     func checkStack(n: Int) -> Bool
     func pop(n: Int)
     func copy(fromIdx: Int, toIdx: Int)
@@ -22,7 +22,7 @@ protocol LuaStateType: class {
     func rotate(idx: Int, n: Int)
     func setTop(idx: Int)
     /* access functions (stack -> Go) */
-    func typeName(tp: LuaType) -> String
+    func typeName(_ tp: LuaType) -> String
     func type(idx: Int) -> LuaType
     func isNone(idx: Int) -> Bool
     func isNil(idx: Int) -> Bool
@@ -43,10 +43,10 @@ protocol LuaStateType: class {
     func toStringX(idx: Int) -> (String, Bool)
     /* push functions (Go -> stack) */
     func pushNil()
-    func pushBoolean(b: Bool)
-    func pushInteger(n: Int64)
-    func pushNumber(n: Double)
-    func pushString(s: String)
+    func pushBoolean(_ b: Bool)
+    func pushInteger(_ n: Int64)
+    func pushNumber(_ n: Double)
+    func pushString(_ s: String)
     /* Comparison and arithmetic functions */
     func arith(op: ArithOp)
     func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool

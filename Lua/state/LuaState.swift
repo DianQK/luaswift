@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LuaState {
+class LuaState: LuaStateType {
 
     let stack: LuaStack
 
