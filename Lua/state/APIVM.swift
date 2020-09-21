@@ -15,7 +15,9 @@ extension LuaState: LuaVMType {
     }
 
     func fetch() -> Instruction {
-        self.proto.code[self.pc]
+        let i = self.proto.code[self.pc]
+        self.pc += 1
+        return i
     }
 
     func getConst(idx: Int) {

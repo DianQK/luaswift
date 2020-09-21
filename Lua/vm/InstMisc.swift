@@ -11,20 +11,24 @@ import Foundation
 extension Instruction {
 
     // R(A) := R(B)
-    func move(vm: LuaVMType) {
-        var (a, b, _) = self.ABC
+    static func move(i: Instruction, vm: LuaVMType) {
+        var (a, b, _) = i.ABC
         a += 1
         b += 1
         vm.copy(fromIdx: b, toIdx: a)
     }
 
     // pc+=sBx; if (A) close all upvalues >= R(A - 1)
-    func jmp(vm: LuaVMType) {
-        let (a, sBx) = self.AsBx
+    static func jmp(i: Instruction, vm: LuaVMType) {
+        let (a, sBx) = i.AsBx
         vm.addPC(n: sBx)
         if a != 0 {
             fatalError("todo: jmp!")
         }
+    }
+
+    static func todo(i: Instruction, vm: LuaVMType) {
+        fatalError("todo")
     }
 
 }

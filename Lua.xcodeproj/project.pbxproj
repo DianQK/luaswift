@@ -30,6 +30,7 @@
 		91867D722518BC6D00F09DB0 /* InstLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D712518BC6D00F09DB0 /* InstLoad.swift */; };
 		91867D752518BC7D00F09DB0 /* InstFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D742518BC7D00F09DB0 /* InstFor.swift */; };
 		91867D782518BC8D00F09DB0 /* InstMisc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D772518BC8D00F09DB0 /* InstMisc.swift */; };
+		91867D7B2518C81100F09DB0 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D7A2518C81100F09DB0 /* Instruction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -69,6 +70,7 @@
 		91867D712518BC6D00F09DB0 /* InstLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstLoad.swift; sourceTree = "<group>"; };
 		91867D742518BC7D00F09DB0 /* InstFor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstFor.swift; sourceTree = "<group>"; };
 		91867D772518BC8D00F09DB0 /* InstMisc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstMisc.swift; sourceTree = "<group>"; };
+		91867D7A2518C81100F09DB0 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				91867D712518BC6D00F09DB0 /* InstLoad.swift */,
 				91867D742518BC7D00F09DB0 /* InstFor.swift */,
 				91867D772518BC8D00F09DB0 /* InstMisc.swift */,
+				91867D7A2518C81100F09DB0 /* Instruction.swift */,
 			);
 			path = vm;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				91867CF325135D9700F09DB0 /* consts.swift in Sources */,
 				91867D6C2518BA9100F09DB0 /* APIVM.swift in Sources */,
 				263E1996250FA554009E86B6 /* opcodes.swift in Sources */,
+				91867D7B2518C81100F09DB0 /* Instruction.swift in Sources */,
 				91867D722518BC6D00F09DB0 /* InstLoad.swift in Sources */,
 				91867CE925135CAF00F09DB0 /* LuaState.swift in Sources */,
 				91867D782518BC8D00F09DB0 /* InstMisc.swift in Sources */,

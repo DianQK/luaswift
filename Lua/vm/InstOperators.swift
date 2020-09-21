@@ -11,8 +11,8 @@ import Foundation
 extension Instruction {
 
     // R(A) := RK(B) op RK(C)
-    private func _binaryArith(vm: LuaVMType, op: ArithOp) {
-        var (a, b, c) = self.ABC
+    private static func _binaryArith(i: Instruction, vm: LuaVMType, op: ArithOp) {
+        var (a, b, c) = i.ABC
         a += 1
 
         vm.getRK(rk: b)
@@ -22,8 +22,8 @@ extension Instruction {
     }
 
     // R(A) := op R(B)
-    private func _unaryArith(vm: LuaVMType, op: ArithOp) {
-        var (a, b, _) = self.ABC
+    private static func _unaryArith(i: Instruction, vm: LuaVMType, op: ArithOp) {
+        var (a, b, _) = i.ABC
         a += 1
         b += 1
 
@@ -32,24 +32,24 @@ extension Instruction {
         vm.replace(idx: a)
     }
 
-    func add(vm: LuaVMType)  { _binaryArith(vm: vm, op: .add) }  // +
-    func sub(vm: LuaVMType)  { _binaryArith(vm: vm, op: .sub) }  // -
-    func mul(vm: LuaVMType)  { _binaryArith(vm: vm, op: .mul) }  // *
-    func mod(vm: LuaVMType)  { _binaryArith(vm: vm, op: .mod) }  // %
-    func pow(vm: LuaVMType)  { _binaryArith(vm: vm, op: .pow) }  // ^
-    func div(vm: LuaVMType)  { _binaryArith(vm: vm, op: .div) }  // /
-    func idiv(vm: LuaVMType) { _binaryArith(vm: vm, op: .idiv) } // //
-    func band(vm: LuaVMType) { _binaryArith(vm: vm, op: .band) } // &
-    func bor(vm: LuaVMType)  { _binaryArith(vm: vm, op: .bor) }  // |
-    func bxor(vm: LuaVMType) { _binaryArith(vm: vm, op: .bxor) } // ~
-    func shl(vm: LuaVMType)  { _binaryArith(vm: vm, op: .shl) }  // <<
-    func shr(vm: LuaVMType)  { _binaryArith(vm: vm, op: .shr) }  // >>
-    func unm(vm: LuaVMType)  { _unaryArith(vm: vm, op: .unm) }   // -
-    func bnot(vm: LuaVMType) { _unaryArith(vm: vm, op: .bnot) }  // ~
+    static func add(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i, vm: vm, op: .add) }  // +
+    static func sub(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i,vm: vm, op: .sub) }  // -
+    static func mul(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i,vm: vm, op: .mul) }  // *
+    static func mod(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i,vm: vm, op: .mod) }  // %
+    static func pow(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i,vm: vm, op: .pow) }  // ^
+    static func div(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i,vm: vm, op: .div) }  // /
+    static func idiv(i: Instruction, vm: LuaVMType) { _binaryArith(i: i,vm: vm, op: .idiv) } // //
+    static func band(i: Instruction, vm: LuaVMType) { _binaryArith(i: i,vm: vm, op: .band) } // &
+    static func bor(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i,vm: vm, op: .bor) }  // |
+    static func bxor(i: Instruction, vm: LuaVMType) { _binaryArith(i: i,vm: vm, op: .bxor) } // ~
+    static func shl(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i,vm: vm, op: .shl) }  // <<
+    static func shr(i: Instruction, vm: LuaVMType)  { _binaryArith(i: i,vm: vm, op: .shr) }  // >>
+    static func unm(i: Instruction, vm: LuaVMType)  { _unaryArith(i: i,vm: vm, op: .unm) }   // -
+    static func bnot(i: Instruction, vm: LuaVMType) { _unaryArith(i: i,vm: vm, op: .bnot) }  // ~
 
     // R(A) := length of R(B)
-    func length(vm: LuaVMType) {
-        var (a, b, _) = self.ABC
+    static func length(i: Instruction, vm: LuaVMType) {
+        var (a, b, _) = i.ABC
         a += 1
         b += 1
 
@@ -58,8 +58,8 @@ extension Instruction {
     }
 
     // R(A) := R(B).. ... ..R(C)
-    func concat(vm: LuaVMType) {
-        var (a, b, c) = self.ABC
+    static func concat(i: Instruction, vm: LuaVMType) {
+        var (a, b, c) = i.ABC
         a += 1
         b += 1
         c += 1
@@ -75,8 +75,8 @@ extension Instruction {
     }
 
     // if ((RK(B) op RK(C)) ~= A) then pc++
-    private func _compare(vm: LuaVMType, op: CompareOp) {
-        let (a, b, c) = self.ABC
+    private static func _compare(i: Instruction, vm: LuaVMType, op: CompareOp) {
+        let (a, b, c) = i.ABC
 
         vm.getRK(rk: b)
         vm.getRK(rk: c)
@@ -88,13 +88,13 @@ extension Instruction {
         vm.pop(n: 2)
     }
 
-    func eq(vm: LuaVMType) { _compare(vm: vm, op: .eq) } // ==
-    func lt(vm: LuaVMType) { _compare(vm: vm, op: .lt) } // <
-    func le(vm: LuaVMType) { _compare(vm: vm, op: .le) } // <=
+    static func eq(i: Instruction, vm: LuaVMType) { _compare(i: i, vm: vm, op: .eq) } // ==
+    static func lt(i: Instruction, vm: LuaVMType) { _compare(i: i, vm: vm, op: .lt) } // <
+    static func le(i: Instruction, vm: LuaVMType) { _compare(i: i, vm: vm, op: .le) } // <=
 
     // R(A) := not R(B)
-    func not(vm: LuaVMType) {
-        var (a, b, _) = self.ABC
+    static func not(i: Instruction, vm: LuaVMType) {
+        var (a, b, _) = i.ABC
         a += 1
         b += 1
 
@@ -103,8 +103,8 @@ extension Instruction {
     }
 
     // if (R(B) <=> C) then R(A) := R(B) else pc++
-    func testSet(vm: LuaVMType) {
-        var (a, b, c) = self.ABC
+    static func testSet(i: Instruction, vm: LuaVMType) {
+        var (a, b, c) = i.ABC
         a += 1
         b += 1
 
@@ -116,8 +116,8 @@ extension Instruction {
     }
 
     // if not (R(A) <=> C) then pc++
-    func test(vm: LuaVMType) {
-        var (a, _, c) = self.ABC
+    static func test(i: Instruction, vm: LuaVMType) {
+        var (a, _, c) = i.ABC
         a += 1
 
         if vm.toBoolean(idx: a) != (c != 0) {

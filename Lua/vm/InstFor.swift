@@ -11,8 +11,8 @@ import Foundation
 extension Instruction {
 
     // R(A)-=R(A+2); pc+=sBx
-    func forPrep(vm: LuaVMType) {
-        var (a, sBx) = self.AsBx
+    static func forPrep(i: Instruction, vm: LuaVMType) {
+        var (a, sBx) = i.AsBx
         a += 1
 
         if vm.type(idx: a) == .string {
@@ -39,8 +39,8 @@ extension Instruction {
     // if R(A) <?= R(A+1) then {
     //   pc+=sBx; R(A+3)=R(A)
     // }
-    func forLoop(vm: LuaVMType) {
-        var (a, sBx) = self.AsBx
+    static func forLoop(i: Instruction, vm: LuaVMType) {
+        var (a, sBx) = i.AsBx
         a += 1
 
         // R(A)+=R(A+2);

@@ -88,165 +88,63 @@ struct Opcode {
     // op mode
     let opMode: OpMode
     let name: String
+
+    let action: (_ i: Instruction, _ vm: LuaVMType) -> ()
 }
 
 let opcodes: [Opcode] = [
     /*     T            A            B             C             mode                 name    */
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "MOVE    "), // R(A) := R(B)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .N, opMode: .IABx /* */, name: "LOADK   "), // R(A) := Kst(Bx)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .N, argCMode: .N, opMode: .IABx /* */, name: "LOADKX  "), // R(A) := Kst(extra arg)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "LOADBOOL"), // R(A) := (bool)B; if (C) pc++
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "LOADNIL "), // R(A), R(A+1), ..., R(A+B) := nil
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "GETUPVAL"), // R(A) := UpValue[B]
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .K, opMode: .IABC /* */, name: "GETTABUP"), // R(A) := UpValue[B][RK(C)]
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "GETTABLE"), // R(A) := R(B)[RK(C)]
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABUP"), // UpValue[A][RK(B)] := RK(C)
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "SETUPVAL"), // UpValue[B] := R(A)
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABLE"), // R(A)[RK(B)] := RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "NEWTABLE"), // R(A) := {} (size = B,C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "SELF    "), // R(A+1) := R(B); R(A) := R(B)[RK(C)]
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "ADD     "), // R(A) := RK(B) + RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SUB     "), // R(A) := RK(B) - RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "MUL     "), // R(A) := RK(B) * RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "MOD     "), // R(A) := RK(B) % RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "POW     "), // R(A) := RK(B) ^ RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "DIV     "), // R(A) := RK(B) / RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "IDIV    "), // R(A) := RK(B) // RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "BAND    "), // R(A) := RK(B) & RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "BOR     "), // R(A) := RK(B) | RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "BXOR    "), // R(A) := RK(B) ~ RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SHL     "), // R(A) := RK(B) << RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SHR     "), // R(A) := RK(B) >> RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "UNM     "), // R(A) := -R(B)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "BNOT    "), // R(A) := ~R(B)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "NOT     "), // R(A) := not R(B)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "LEN     "), // R(A) := length of R(B)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .R, opMode: .IABC /* */, name: "CONCAT  "), // R(A) := R(B).. ... ..R(C)
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "JMP     "), // pc+=sBx; if (A) close all upvalues >= R(A - 1)
-    Opcode(testFlag: 1, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "EQ      "), // if ((RK(B) == RK(C)) ~= A) then pc++
-    Opcode(testFlag: 1, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "LT      "), // if ((RK(B) <  RK(C)) ~= A) then pc++
-    Opcode(testFlag: 1, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "LE      "), // if ((RK(B) <= RK(C)) ~= A) then pc++
-    Opcode(testFlag: 1, setAFlag: 0, argBMode: .N, argCMode: .U, opMode: .IABC /* */, name: "TEST    "), // if not (R(A) <=> C) then pc++
-    Opcode(testFlag: 1, setAFlag: 1, argBMode: .R, argCMode: .U, opMode: .IABC /* */, name: "TESTSET "), // if (R(B) <=> C) then R(A) := R(B) else pc++
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "CALL    "), // R(A), ... ,R(A+C-2) := R(A)(R(A+1), ... ,R(A+B-1))
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "TAILCALL"), // return R(A)(R(A+1), ... ,R(A+B-1))
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "RETURN  "), // return R(A), ... ,R(A+B-2)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "FORLOOP "), // R(A)+=R(A+2); if R(A) <?= R(A+1) then { pc+=sBx; R(A+3)=R(A) }
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "FORPREP "), // R(A)-=R(A+2); pc+=sBx
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .N, argCMode: .U, opMode: .IABC /* */, name: "TFORCALL"), // R(A+3), ... ,R(A+2+C) := R(A)(R(A+1), R(A+2));
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "TFORLOOP"), // if R(A+1) ~= nil then { R(A)=R(A+1); pc += sBx }
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "SETLIST "), // R(A)[(C-1)*FPF+i] := R(A+i), 1 <= i <= B
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABx /* */, name: "CLOSURE "), // R(A) := closure(KPROTO[Bx])
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "VARARG  "), // R(A), R(A+1), ..., R(A+B-2) = vararg
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IAx /*  */, name: "EXTRAARG"), // extra (larger) argument for previous opcode
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "MOVE    ", action: Instruction.move), // R(A) := R(B)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .N, opMode: .IABx /* */, name: "LOADK   ", action: Instruction.loadK), // R(A) := Kst(Bx)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .N, argCMode: .N, opMode: .IABx /* */, name: "LOADKX  ", action: Instruction.loadKx), // R(A) := Kst(extra arg)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "LOADBOOL", action: Instruction.loadBool), // R(A) := (bool)B; if (C) pc++
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "LOADNIL ", action: Instruction.loadNil), // R(A), R(A+1), ..., R(A+B) := nil
+
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "GETUPVAL", action: Instruction.todo), // R(A) := UpValue[B]
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .K, opMode: .IABC /* */, name: "GETTABUP", action: Instruction.todo), // R(A) := UpValue[B][RK(C)]
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "GETTABLE", action: Instruction.todo), // R(A) := R(B)[RK(C)]
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABUP", action: Instruction.todo), // UpValue[A][RK(B)] := RK(C)
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "SETUPVAL", action: Instruction.todo), // UpValue[B] := R(A)
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABLE", action: Instruction.todo), // R(A)[RK(B)] := RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "NEWTABLE", action: Instruction.todo), // R(A) := {} (size = B,C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "SELF    ", action: Instruction.todo), // R(A+1) := R(B); R(A) := R(B)[RK(C)]
+
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "ADD     ", action: Instruction.add), // R(A) := RK(B) + RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SUB     ", action: Instruction.sub), // R(A) := RK(B) - RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "MUL     ", action: Instruction.mul), // R(A) := RK(B) * RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "MOD     ", action: Instruction.mod), // R(A) := RK(B) % RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "POW     ", action: Instruction.pow), // R(A) := RK(B) ^ RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "DIV     ", action: Instruction.div), // R(A) := RK(B) / RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "IDIV    ", action: Instruction.idiv), // R(A) := RK(B) // RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "BAND    ", action: Instruction.band), // R(A) := RK(B) & RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "BOR     ", action: Instruction.bor), // R(A) := RK(B) | RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "BXOR    ", action: Instruction.bxor), // R(A) := RK(B) ~ RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SHL     ", action: Instruction.shl), // R(A) := RK(B) << RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SHR     ", action: Instruction.shr), // R(A) := RK(B) >> RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "UNM     ", action: Instruction.unm), // R(A) := -R(B)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "BNOT    ", action: Instruction.bnot), // R(A) := ~R(B)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "NOT     ", action: Instruction.not), // R(A) := not R(B)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IABC /* */, name: "LEN     ", action: Instruction.length), // R(A) := length of R(B)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .R, opMode: .IABC /* */, name: "CONCAT  ", action: Instruction.concat), // R(A) := R(B).. ... ..R(C)
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "JMP     ", action: Instruction.jmp), // pc+=sBx; if (A) close all upvalues >= R(A - 1)
+    Opcode(testFlag: 1, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "EQ      ", action: Instruction.eq), // if ((RK(B) == RK(C)) ~= A) then pc++
+    Opcode(testFlag: 1, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "LT      ", action: Instruction.lt), // if ((RK(B) <  RK(C)) ~= A) then pc++
+    Opcode(testFlag: 1, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "LE      ", action: Instruction.le), // if ((RK(B) <= RK(C)) ~= A) then pc++
+    Opcode(testFlag: 1, setAFlag: 0, argBMode: .N, argCMode: .U, opMode: .IABC /* */, name: "TEST    ", action: Instruction.test), // if not (R(A) <=> C) then pc++
+    Opcode(testFlag: 1, setAFlag: 1, argBMode: .R, argCMode: .U, opMode: .IABC /* */, name: "TESTSET ", action: Instruction.testSet), // if (R(B) <=> C) then R(A) := R(B) else pc++
+
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "CALL    ", action: Instruction.todo), // R(A), ... ,R(A+C-2) := R(A)(R(A+1), ... ,R(A+B-1))
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "TAILCALL", action: Instruction.todo), // return R(A)(R(A+1), ... ,R(A+B-1))
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "RETURN  ", action: Instruction.todo), // return R(A), ... ,R(A+B-2)
+
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "FORLOOP ", action: Instruction.forLoop), // R(A)+=R(A+2); if R(A) <?= R(A+1) then { pc+=sBx; R(A+3)=R(A) }
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "FORPREP ", action: Instruction.forPrep), // R(A)-=R(A+2); pc+=sBx
+
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .N, argCMode: .U, opMode: .IABC /* */, name: "TFORCALL", action: Instruction.todo), // R(A+3), ... ,R(A+2+C) := R(A)(R(A+1), R(A+2));
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "TFORLOOP", action: Instruction.todo), // if R(A+1) ~= nil then { R(A)=R(A+1); pc += sBx }
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "SETLIST ", action: Instruction.todo), // R(A)[(C-1)*FPF+i] := R(A+i), 1 <= i <= B
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABx /* */, name: "CLOSURE ", action: Instruction.todo), // R(A) := closure(KPROTO[Bx])
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "VARARG  ", action: Instruction.todo), // R(A), R(A+1), ..., R(A+B-2) = vararg
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IAx /*  */, name: "EXTRAARG", action: Instruction.todo), // extra (larger) argument for previous opcode
 ]
 
-/*
- * 见书中 P44
- */
-let MAXARG_Bx = 1 << 18 - 1
-let MAXARG_sBX = MAXARG_Bx >> 1
-
-/*
- 31       22       13       5    0
-  +-------+^------+-^-----+-^-----
-  |b=9bits |c=9bits |a=8bits|op=6|
-  +-------+^------+-^-----+-^-----
-  |    bx=18bits    |a=8bits|op=6|
-  +-------+^------+-^-----+-^-----
-  |   sbx=18bits    |a=8bits|op=6|
-  +-------+^------+-^-----+-^-----
-  |    ax=26bits            |op=6|
-  +-------+^------+-^-----+-^-----
- 31      23      15       7      0
-*/
-/*
- * 0xFF: 11111111 提取 8 bit
- * 0x1FF: 111111111 提取 9 bit
- */
-struct Instruction {
-    
-    let value: UInt32
-    
-    var opcode: Int {
-        Int(value & 0x3F)
-    }
-    
-    var ABC: (a: Int, b: Int, c: Int) {
-        let a = Int(value >> 6 & 0xFF)
-        let c = Int(value >> 14 & 0x1FF) // >> 6 + 8
-        let b = Int(value >> 23 & 0x1FF) // >> 6 + 8 + 9
-        return (a, b, c)
-    }
-    
-    var ABx: (a: Int, bx: Int) {
-        let a = Int(value >> 6 & 0xFF)
-        let bx = Int(value >> 14)
-        return (a, bx)
-    }
-    
-    var AsBx: (a: Int, sbx: Int) {
-        let (a, bx) = self.ABx
-        return (a, bx - MAXARG_sBX)
-    }
-    
-    var Ax: Int {
-        Int(value >> 6)
-    }
-    
-    var opName: String {
-        opcodes[self.opcode].name
-    }
-    
-    var opMode: OpMode {
-        opcodes[self.opcode].opMode
-    }
-    
-    var BMode: OpArgMask {
-        opcodes[self.opcode].argBMode
-    }
-    
-    var CMode: OpArgMask {
-        opcodes[self.opcode].argCMode
-    }
-    
-    func printOperands() {
-        switch self.opMode {
-        case .IABC:
-            let (a, b, c) = self.ABC
-
-            print("\(a)", terminator: "")
-            if self.BMode != .N {
-                if b > 0xFF {
-                    print(" \(-1-b&0xFF)", terminator: "")
-                } else {
-                    print(" \(b)", terminator: "")
-                }
-            }
-            if self.CMode != .N {
-                if c > 0xFF {
-                    print(" \(-1-c&0xFF)", terminator: "")
-                } else {
-                    print(" \(c)", terminator: "")
-                }
-            }
-        case .IABx:
-            let (a, bx) = self.ABx
-
-            print("\(a)", terminator: "")
-            if self.BMode == .K {
-                print(" \(-1-bx)", terminator: "")
-            } else if self.BMode == .U {
-                print(" \(bx)", terminator: "")
-            }
-        case .IAsBx:
-            let (a, sbx) = self.AsBx
-            print("\(a) \(sbx)", terminator: "")
-        case .IAx:
-            let ax = self.Ax
-            print("\(-1-ax)", terminator: "")
-        }
-        print("")
-    }
-    
-}

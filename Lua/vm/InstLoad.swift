@@ -11,8 +11,8 @@ import Foundation
 extension Instruction {
 
     // R(A), R(A+1), ..., R(A+B) := nil
-    func loadNil(vm: LuaVMType) {
-        var (a, b, _) = self.ABC
+    static func loadNil(i: Instruction, vm: LuaVMType) {
+        var (a, b, _) = i.ABC
         a += 1
 
         vm.pushNil()
@@ -23,8 +23,8 @@ extension Instruction {
     }
 
     // R(A) := (bool)B; if (C) pc++
-    func loadBool(vm: LuaVMType) {
-        var (a, b, c) = self.ABC
+    static func loadBool(i: Instruction, vm: LuaVMType) {
+        var (a, b, c) = i.ABC
         a += 1
 
         vm.pushBoolean(b != 0)
@@ -36,8 +36,8 @@ extension Instruction {
     }
 
     // R(A) := Kst(Bx)
-    func loadK(vm: LuaVMType) {
-        var (a, bx) = self.ABx
+    static func loadK(i: Instruction, vm: LuaVMType) {
+        var (a, bx) = i.ABx
         a += 1
 
         vm.getConst(idx: bx)
@@ -45,8 +45,8 @@ extension Instruction {
     }
 
     // R(A) := Kst(extra arg)
-    func loadKx(vm: LuaVMType) {
-        var (a, _) = self.ABx
+    static func loadKx(i: Instruction, vm: LuaVMType) {
+        var (a, _) = i.ABx
         a += 1
         let ax = vm.fetch().Ax
 
