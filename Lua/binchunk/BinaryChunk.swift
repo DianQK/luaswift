@@ -48,8 +48,8 @@ struct BinaryChunk {
             enum Tag: UInt8 {
                 case `nil` = 0x00
                 case boolean = 0x01
-                case integer = 0x03
-                case number = 0x13
+                case integer = 0x13
+                case number = 0x03
                 case shortStr = 0x04
                 case longStr = 0x14
             }
