@@ -14,7 +14,7 @@ extension LuaState: LuaVMType {
         self.pc += n
     }
 
-    func fetch() -> UInt32 {
+    func fetch() -> Instruction {
         self.proto.code[self.pc]
     }
 

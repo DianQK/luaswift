@@ -15,7 +15,7 @@ protocol LuaVMType: LuaStateType {
     /// 修改 PC 地址，用于跳转指令
     func addPC(n: Int)
     /// 取出当前指令，将 PC 指向下一条指令
-    func fetch() -> UInt32 // TODO:
+    func fetch() -> Instruction
     /// 将指定常量推入栈顶
     func getConst(idx: Int)
     /// 将指定常量或栈值推入栈顶

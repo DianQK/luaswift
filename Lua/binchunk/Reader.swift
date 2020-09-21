@@ -124,8 +124,8 @@ class Reader {
         return contents
     }
     
-    func readCode() -> [UInt32] {
-        self.readContents { $0.readUInt32() }
+    func readCode() -> [Instruction] {
+        self.readContents { Instruction(value: $0.readUInt32()) }
     }
     
     func readConstant() -> [BinaryChunk.Prototype.Constant] {

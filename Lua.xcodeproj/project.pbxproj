@@ -26,6 +26,10 @@
 		91867D08251475C100F09DB0 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D07251475C100F09DB0 /* Parser.swift */; };
 		91867D682518B8A900F09DB0 /* LuaVMType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D672518B8A900F09DB0 /* LuaVMType.swift */; };
 		91867D6C2518BA9100F09DB0 /* APIVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D6B2518BA9100F09DB0 /* APIVM.swift */; };
+		91867D6F2518BC5A00F09DB0 /* InstOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D6E2518BC5A00F09DB0 /* InstOperators.swift */; };
+		91867D722518BC6D00F09DB0 /* InstLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D712518BC6D00F09DB0 /* InstLoad.swift */; };
+		91867D752518BC7D00F09DB0 /* InstFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D742518BC7D00F09DB0 /* InstFor.swift */; };
+		91867D782518BC8D00F09DB0 /* InstMisc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D772518BC8D00F09DB0 /* InstMisc.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,6 +65,10 @@
 		91867D07251475C100F09DB0 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		91867D672518B8A900F09DB0 /* LuaVMType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaVMType.swift; sourceTree = "<group>"; };
 		91867D6B2518BA9100F09DB0 /* APIVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIVM.swift; sourceTree = "<group>"; };
+		91867D6E2518BC5A00F09DB0 /* InstOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstOperators.swift; sourceTree = "<group>"; };
+		91867D712518BC6D00F09DB0 /* InstLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstLoad.swift; sourceTree = "<group>"; };
+		91867D742518BC7D00F09DB0 /* InstFor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstFor.swift; sourceTree = "<group>"; };
+		91867D772518BC8D00F09DB0 /* InstMisc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstMisc.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +95,10 @@
 			isa = PBXGroup;
 			children = (
 				263E1995250FA554009E86B6 /* opcodes.swift */,
+				91867D6E2518BC5A00F09DB0 /* InstOperators.swift */,
+				91867D712518BC6D00F09DB0 /* InstLoad.swift */,
+				91867D742518BC7D00F09DB0 /* InstFor.swift */,
+				91867D772518BC8D00F09DB0 /* InstMisc.swift */,
 			);
 			path = vm;
 			sourceTree = "<group>";
@@ -220,7 +232,9 @@
 				91867CF325135D9700F09DB0 /* consts.swift in Sources */,
 				91867D6C2518BA9100F09DB0 /* APIVM.swift in Sources */,
 				263E1996250FA554009E86B6 /* opcodes.swift in Sources */,
+				91867D722518BC6D00F09DB0 /* InstLoad.swift in Sources */,
 				91867CE925135CAF00F09DB0 /* LuaState.swift in Sources */,
+				91867D782518BC8D00F09DB0 /* InstMisc.swift in Sources */,
 				26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */,
 				91867D08251475C100F09DB0 /* Parser.swift in Sources */,
 				91867CFD25137D7800F09DB0 /* APIPush.swift in Sources */,
@@ -229,10 +243,12 @@
 				91867CEC25135CD800F09DB0 /* LuaStack.swift in Sources */,
 				91867CF72513654400F09DB0 /* LuaStateType.swift in Sources */,
 				263E62C7251797FD00FF56F7 /* APICompare.swift in Sources */,
+				91867D6F2518BC5A00F09DB0 /* InstOperators.swift in Sources */,
 				91867D0025137EDB00F09DB0 /* APIAccess.swift in Sources */,
 				91867CFA2513676D00F09DB0 /* APIStack.swift in Sources */,
 				263E62C42517907400FF56F7 /* APIArith.swift in Sources */,
 				91867D682518B8A900F09DB0 /* LuaVMType.swift in Sources */,
+				91867D752518BC7D00F09DB0 /* InstFor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

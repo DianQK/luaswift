@@ -102,7 +102,7 @@ struct BinaryChunk {
         let numParams: Byte
         let isVararg: Byte
         let maxStackSize: Byte
-        let code: [UInt32]
+        let code: [Instruction]
         let constants: [Constant]
         let upvalues: [Upvalue]
         let protos: [Prototype]
@@ -136,10 +136,8 @@ extension BinaryChunk.Prototype {
     }
     
     func printCode() {
-        for (pc, c) in code.enumerated() {
+        for (pc, instruction) in code.enumerated() {
             let line = lineInfo.isEmpty ? "-" : "\(lineInfo[pc])"
-//            print("\t\(pc+1)\t[\(line)]\t0x\(String(format: "0x%08x", c))")
-            let instruction = Instruction(value: c)
             print("\t\(pc+1)\t[\(line)]\t\(instruction.opName) \t", terminator: "")
             instruction.printOperands()
         }
