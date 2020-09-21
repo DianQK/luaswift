@@ -74,4 +74,22 @@ extension Instruction {
         vm.replace(idx: a)
     }
 
+    // if ((RK(B) op RK(C)) ~= A) then pc++
+    private func _compare(vm: LuaVMType, op: CompareOp) {
+        let (a, b, c) = self.ABC
+
+        vm.getRK(rk: b)
+        vm.getRK(rk: c)
+
+        if vm.compare(idx1: -2, idx2: -1, op: op) != (a != 0) {
+            vm.addPC(n: 1)
+        }
+
+        vm.pop(n: 2)
+    }
+
+    func eq(vm: LuaVMType) { _compare(vm: vm, op: .eq) } // ==
+    func lt(vm: LuaVMType) { _compare(vm: vm, op: .lt) } // <
+    func le(vm: LuaVMType) { _compare(vm: vm, op: .le) } // <=
+
 }
