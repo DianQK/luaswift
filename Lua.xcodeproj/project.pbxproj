@@ -24,6 +24,8 @@
 		91867D0025137EDB00F09DB0 /* APIAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867CFF25137EDB00F09DB0 /* APIAccess.swift */; };
 		91867D042514735100F09DB0 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D032514735100F09DB0 /* Math.swift */; };
 		91867D08251475C100F09DB0 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D07251475C100F09DB0 /* Parser.swift */; };
+		91867D682518B8A900F09DB0 /* LuaVMType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D672518B8A900F09DB0 /* LuaVMType.swift */; };
+		91867D6C2518BA9100F09DB0 /* APIVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D6B2518BA9100F09DB0 /* APIVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,6 +59,8 @@
 		91867CFF25137EDB00F09DB0 /* APIAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIAccess.swift; sourceTree = "<group>"; };
 		91867D032514735100F09DB0 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		91867D07251475C100F09DB0 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		91867D672518B8A900F09DB0 /* LuaVMType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaVMType.swift; sourceTree = "<group>"; };
+		91867D6B2518BA9100F09DB0 /* APIVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +132,7 @@
 				263E62C32517907400FF56F7 /* APIArith.swift */,
 				263E62C6251797FD00FF56F7 /* APICompare.swift */,
 				263E62C925179C5700FF56F7 /* APIMisc.swift */,
+				91867D6B2518BA9100F09DB0 /* APIVM.swift */,
 			);
 			path = state;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 			children = (
 				91867CF225135D9700F09DB0 /* consts.swift */,
 				91867CF62513654400F09DB0 /* LuaStateType.swift */,
+				91867D672518B8A900F09DB0 /* LuaVMType.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -212,6 +218,7 @@
 				263E62CA25179C5700FF56F7 /* APIMisc.swift in Sources */,
 				91867D042514735100F09DB0 /* Math.swift in Sources */,
 				91867CF325135D9700F09DB0 /* consts.swift in Sources */,
+				91867D6C2518BA9100F09DB0 /* APIVM.swift in Sources */,
 				263E1996250FA554009E86B6 /* opcodes.swift in Sources */,
 				91867CE925135CAF00F09DB0 /* LuaState.swift in Sources */,
 				26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */,
@@ -225,6 +232,7 @@
 				91867D0025137EDB00F09DB0 /* APIAccess.swift in Sources */,
 				91867CFA2513676D00F09DB0 /* APIStack.swift in Sources */,
 				263E62C42517907400FF56F7 /* APIArith.swift in Sources */,
+				91867D682518B8A900F09DB0 /* LuaVMType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -77,6 +77,23 @@ struct BinaryChunk {
                     return "\"\(value)\""
                 }
             }
+
+            var luaValue: LuaValue {
+                switch self {
+                case .nil:
+                    return LuaNil()
+                case let .boolean(value):
+                    return value
+                case let .integer(value):
+                    return value
+                case let .number(value):
+                    return value
+                case let .shortStr(value):
+                    return value
+                case let .longStr(value):
+                    return value
+                }
+            }
         }
         
         let source: String

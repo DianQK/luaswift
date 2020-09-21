@@ -12,12 +12,13 @@ class LuaState: LuaStateType {
 
     let stack: LuaStack
 
-    init(stack: LuaStack) {
-        self.stack = stack
-    }
+    let proto: BinaryChunk.Prototype
+    var pc: Int
 
-    static func new() -> LuaState {
-        LuaState(stack: LuaStack(size: 20))
+    init(stackSize: Int, proto: BinaryChunk.Prototype) {
+        self.stack = LuaStack(size: stackSize)
+        self.proto = proto
+        self.pc = 0
     }
 
 }
