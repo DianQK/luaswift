@@ -156,9 +156,17 @@ extension BinaryChunk.Prototype {
         
         print("upvalues (\(upvalues.count)):")
         for (index, upval) in upvalues.enumerated() {
-            print("\t\(index)\t\(upvalueNames[index])\t\(upval.instack)\t\(upval.idx)")
+            print("\t\(index)\t\(upvalName(idx: index))\t\(upval.instack)\t\(upval.idx)")
         }
     }
+
+    private func upvalName(idx: Int) -> String {
+        if self.upvalueNames.isEmpty {
+            return "-"
+        }
+        return self.upvalName(idx: idx)
+    }
+
     
     
 }
