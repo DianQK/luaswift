@@ -64,7 +64,7 @@ struct LuaTable {
         return key
     }
 
-    func get(key: LuaValue) -> LuaValue {
+    func get(key: LuaValue) -> LuaValue { // TODO: 可以使用方法重载提升性能
         let key = _floatToInteger(key: key)
         if let idx = key as? Int64, idx >= 0 && idx <= self.arr.count {
             return self.arr[Int(idx) - 1]

@@ -50,6 +50,16 @@ protocol LuaStateType: class {
     /* Comparison and arithmetic functions */
     func arith(op: ArithOp)
     func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool
+    /* get functions (Lua -> stack) */
+    func newTable()
+    func createTable(nArr: Int, nRec: Int)
+    func getTable(idx: Int) -> LuaType
+    func getField(idx: Int, k: String) -> LuaType
+    func getI(idx: Int, i: Int64) -> LuaType
+    /* set functions (stack -> Lua) */
+    func setTable(idx: Int)
+    func setField(idx: Int, k: String)
+    func setI(idx: Int, i: Int64)
     /* miscellaneous functions */
     func len(idx: Int)
     func concat(n: Int)
