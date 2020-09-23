@@ -21,4 +21,8 @@ protocol LuaVMType: LuaStateType {
     /// 将指定常量或栈值推入栈顶
     func getRK(rk: Int)
 
+    func registerCount() -> Int
+    func loadVararg(n: Int)
+    func loadProto(idx: Int)
+
 }

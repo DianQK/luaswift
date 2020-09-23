@@ -10,15 +10,25 @@ import Foundation
 
 class LuaState: LuaStateType {
 
-    let stack: LuaStack
+    var stack: LuaStack
 
-    let proto: BinaryChunk.Prototype
-    var pc: Int
-
-    init(stackSize: Int, proto: BinaryChunk.Prototype) {
+    init(stackSize: Int = 20) {
         self.stack = LuaStack(size: stackSize)
-        self.proto = proto
-        self.pc = 0
+    }
+
+}
+
+extension LuaState {
+
+    func pushLuaStack(stack: LuaStack) {
+        stack.prev = self.stack
+        self.stack = stack
+    }
+
+    func popLuaStack() {
+        let stack = self.stack
+        self.stack = stack.prev!
+        stack.prev = nil
     }
 
 }

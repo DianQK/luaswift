@@ -13,6 +13,13 @@ class LuaStack {
     var slots: [LuaValue]
     var top: Int = 0
 
+    /* call info */
+    var closure: Closure?
+    var varargs: [LuaValue]?
+    var pc: Int = 0
+    /* linked list */
+    var prev: LuaStack?
+
     init(size: Int) {
 //        self.slots.reserveCapacity(size)
         self.slots = [LuaValue].init(repeating: LuaNil(), count: size)
@@ -46,8 +53,7 @@ class LuaStack {
             fatalError("stack underflow!")
         }
         self.top -= 1
-        let val = self.slots[self.top]
-        self.slots[self.top] = LuaNil()
+        let val = self.slots.removeLast()
         return val
     }
 
@@ -99,6 +105,25 @@ class LuaStack {
             (self.slots[from], self.slots[to]) = (self.slots[to], self.slots[from])
             from += 1
             to -= 1
+        }
+    }
+
+    func pop(n: Int) -> [LuaValue] {
+        let vals: [LuaValue] = self.slots.dropLast(n)
+        self.slots.removeLast(n)
+        return vals
+    }
+
+    func push(vals: [LuaValue], n: Int) {
+        let nVals = vals.count
+        let n = n < 0 ? nVals : n
+
+        for i in (0..<n) {
+            if i < nVals {
+                self.push(vals[i])
+            } else {
+                self.push(LuaNil())
+            }
         }
     }
 

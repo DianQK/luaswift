@@ -147,3 +147,11 @@ extension LuaTable: LuaValue {
     }
 
 }
+
+extension Closure: LuaValue {
+
+    var luaType: LuaType {
+        .function
+    }
+
+}

@@ -111,7 +111,7 @@ let opcodes: [Opcode] = [
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABLE", action: Instruction.setTable), // R(A)[RK(B)] := RK(C)
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "NEWTABLE", action: Instruction.newTable), // R(A) := {} (size = B,C)
 
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "SELF    ", action: Instruction.todo), // R(A+1) := R(B); R(A) := R(B)[RK(C)]
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "SELF    ", action: Instruction._self), // R(A+1) := R(B); R(A) := R(B)[RK(C)]
 
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "ADD     ", action: Instruction.add), // R(A) := RK(B) + RK(C)
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SUB     ", action: Instruction.sub), // R(A) := RK(B) - RK(C)
@@ -137,9 +137,9 @@ let opcodes: [Opcode] = [
     Opcode(testFlag: 1, setAFlag: 0, argBMode: .N, argCMode: .U, opMode: .IABC /* */, name: "TEST    ", action: Instruction.test), // if not (R(A) <=> C) then pc++
     Opcode(testFlag: 1, setAFlag: 1, argBMode: .R, argCMode: .U, opMode: .IABC /* */, name: "TESTSET ", action: Instruction.testSet), // if (R(B) <=> C) then R(A) := R(B) else pc++
 
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "CALL    ", action: Instruction.todo), // R(A), ... ,R(A+C-2) := R(A)(R(A+1), ... ,R(A+B-1))
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "TAILCALL", action: Instruction.todo), // return R(A)(R(A+1), ... ,R(A+B-1))
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "RETURN  ", action: Instruction.todo), // return R(A), ... ,R(A+B-2)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "CALL    ", action: Instruction.call), // R(A), ... ,R(A+C-2) := R(A)(R(A+1), ... ,R(A+B-1))
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "TAILCALL", action: Instruction.tailCall), // return R(A)(R(A+1), ... ,R(A+B-1))
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "RETURN  ", action: Instruction._return), // return R(A), ... ,R(A+B-2)
 
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "FORLOOP ", action: Instruction.forLoop), // R(A)+=R(A+2); if R(A) <?= R(A+1) then { pc+=sBx; R(A+3)=R(A) }
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "FORPREP ", action: Instruction.forPrep), // R(A)-=R(A+2); pc+=sBx
@@ -149,8 +149,9 @@ let opcodes: [Opcode] = [
 
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "SETLIST ", action: Instruction.setList), // R(A)[(C-1)*FPF+i] := R(A+i), 1 <= i <= B
 
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABx /* */, name: "CLOSURE ", action: Instruction.todo), // R(A) := closure(KPROTO[Bx])
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "VARARG  ", action: Instruction.todo), // R(A), R(A+1), ..., R(A+B-2) = vararg
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABx /* */, name: "CLOSURE ", action: Instruction.closure), // R(A) := closure(KPROTO[Bx])
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "VARARG  ", action: Instruction.vararg), // R(A), R(A+1), ..., R(A+B-2) = vararg
+
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IAx /*  */, name: "EXTRAARG", action: Instruction.todo), // extra (larger) argument for previous opcode
 ]
 

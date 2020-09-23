@@ -61,7 +61,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "$(SOURCE_ROOT)/luacode/ch07/test.luac"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "$(SOURCE_ROOT)/luacode/ch07/test_seq.luac"
@@ -70,6 +70,10 @@
          <CommandLineArgument
             argument = "$(SOURCE_ROOT)/luacode/ch07/big_list.luac"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "$(SOURCE_ROOT)/luacode/ch08/test.luac"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

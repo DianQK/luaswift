@@ -60,6 +60,9 @@ protocol LuaStateType: class {
     func setTable(idx: Int)
     func setField(idx: Int, k: String)
     func setI(idx: Int, i: Int64)
+    /* 'load' and 'call' functions (load and run Lua code) */
+    func load(chunk: Data, chunkName: String, mode: String) throws -> Int
+    func call(nArgs: Int, nResults: Int)
     /* miscellaneous functions */
     func len(idx: Int)
     func concat(n: Int)

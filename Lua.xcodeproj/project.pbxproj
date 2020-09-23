@@ -36,6 +36,9 @@
 		91867DF5251B3D5300F09DB0 /* APISet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DF4251B3D5300F09DB0 /* APISet.swift */; };
 		91867DF8251B3E7900F09DB0 /* InstTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DF7251B3E7900F09DB0 /* InstTable.swift */; };
 		91867DFB251B3F0300F09DB0 /* fpb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DFA251B3F0300F09DB0 /* fpb.swift */; };
+		91867DFF251B622700F09DB0 /* Closure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DFE251B622700F09DB0 /* Closure.swift */; };
+		91867E02251B644C00F09DB0 /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867E01251B644C00F09DB0 /* APICall.swift */; };
+		91867E05251B6A1300F09DB0 /* InstCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867E04251B6A1300F09DB0 /* InstCall.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -81,6 +84,9 @@
 		91867DF4251B3D5300F09DB0 /* APISet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISet.swift; sourceTree = "<group>"; };
 		91867DF7251B3E7900F09DB0 /* InstTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstTable.swift; sourceTree = "<group>"; };
 		91867DFA251B3F0300F09DB0 /* fpb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fpb.swift; sourceTree = "<group>"; };
+		91867DFE251B622700F09DB0 /* Closure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closure.swift; sourceTree = "<group>"; };
+		91867E01251B644C00F09DB0 /* APICall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
+		91867E04251B6A1300F09DB0 /* InstCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstCall.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,7 @@
 				91867D7A2518C81100F09DB0 /* Instruction.swift */,
 				91867DF7251B3E7900F09DB0 /* InstTable.swift */,
 				91867DFA251B3F0300F09DB0 /* fpb.swift */,
+				91867E04251B6A1300F09DB0 /* InstCall.swift */,
 			);
 			path = vm;
 			sourceTree = "<group>";
@@ -163,6 +170,8 @@
 				91867D7D2519F3BB00F09DB0 /* LuaTable.swift */,
 				91867DF1251B3BFD00F09DB0 /* APIGet.swift */,
 				91867DF4251B3D5300F09DB0 /* APISet.swift */,
+				91867DFE251B622700F09DB0 /* Closure.swift */,
+				91867E01251B644C00F09DB0 /* APICall.swift */,
 			);
 			path = state;
 			sourceTree = "<group>";
@@ -247,6 +256,7 @@
 				91867D7E2519F3BB00F09DB0 /* LuaTable.swift in Sources */,
 				26C10BD9250E087400A27886 /* Reader.swift in Sources */,
 				263E62CA25179C5700FF56F7 /* APIMisc.swift in Sources */,
+				91867E05251B6A1300F09DB0 /* InstCall.swift in Sources */,
 				91867D042514735100F09DB0 /* Math.swift in Sources */,
 				91867CF325135D9700F09DB0 /* consts.swift in Sources */,
 				91867D6C2518BA9100F09DB0 /* APIVM.swift in Sources */,
@@ -255,12 +265,14 @@
 				91867D722518BC6D00F09DB0 /* InstLoad.swift in Sources */,
 				91867CE925135CAF00F09DB0 /* LuaState.swift in Sources */,
 				91867D782518BC8D00F09DB0 /* InstMisc.swift in Sources */,
+				91867E02251B644C00F09DB0 /* APICall.swift in Sources */,
 				26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */,
 				91867D08251475C100F09DB0 /* Parser.swift in Sources */,
 				91867CFD25137D7800F09DB0 /* APIPush.swift in Sources */,
 				91867CEF25135CE600F09DB0 /* LuaValue.swift in Sources */,
 				91867DF2251B3BFD00F09DB0 /* APIGet.swift in Sources */,
 				26C10BD0250DD88D00A27886 /* main.swift in Sources */,
+				91867DFF251B622700F09DB0 /* Closure.swift in Sources */,
 				91867CEC25135CD800F09DB0 /* LuaStack.swift in Sources */,
 				91867CF72513654400F09DB0 /* LuaStateType.swift in Sources */,
 				263E62C7251797FD00FF56F7 /* APICompare.swift in Sources */,
