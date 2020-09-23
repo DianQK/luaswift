@@ -65,7 +65,7 @@ extension LuaState {
         while true {
             let inst = self.fetch()
             inst.execute(vm: self)
-//            print("[\(String(format: "%02d", pc+1))] \(inst.opName) ", terminator: "")
+//            print("[\(String(format: "%02d", pc))] \(inst.opName) ", terminator: "")
 //            self.printStack()
             if inst.opcode == .RETURN {
                 break
