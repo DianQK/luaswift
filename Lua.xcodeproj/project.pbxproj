@@ -34,6 +34,8 @@
 		91867D7E2519F3BB00F09DB0 /* LuaTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867D7D2519F3BB00F09DB0 /* LuaTable.swift */; };
 		91867DF2251B3BFD00F09DB0 /* APIGet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DF1251B3BFD00F09DB0 /* APIGet.swift */; };
 		91867DF5251B3D5300F09DB0 /* APISet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DF4251B3D5300F09DB0 /* APISet.swift */; };
+		91867DF8251B3E7900F09DB0 /* InstTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DF7251B3E7900F09DB0 /* InstTable.swift */; };
+		91867DFB251B3F0300F09DB0 /* fpb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DFA251B3F0300F09DB0 /* fpb.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -77,6 +79,8 @@
 		91867D7D2519F3BB00F09DB0 /* LuaTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuaTable.swift; sourceTree = "<group>"; };
 		91867DF1251B3BFD00F09DB0 /* APIGet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIGet.swift; sourceTree = "<group>"; };
 		91867DF4251B3D5300F09DB0 /* APISet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISet.swift; sourceTree = "<group>"; };
+		91867DF7251B3E7900F09DB0 /* InstTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstTable.swift; sourceTree = "<group>"; };
+		91867DFA251B3F0300F09DB0 /* fpb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fpb.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +112,8 @@
 				91867D742518BC7D00F09DB0 /* InstFor.swift */,
 				91867D772518BC8D00F09DB0 /* InstMisc.swift */,
 				91867D7A2518C81100F09DB0 /* Instruction.swift */,
+				91867DF7251B3E7900F09DB0 /* InstTable.swift */,
+				91867DFA251B3F0300F09DB0 /* fpb.swift */,
 			);
 			path = vm;
 			sourceTree = "<group>";
@@ -262,9 +268,11 @@
 				91867D0025137EDB00F09DB0 /* APIAccess.swift in Sources */,
 				91867CFA2513676D00F09DB0 /* APIStack.swift in Sources */,
 				91867DF5251B3D5300F09DB0 /* APISet.swift in Sources */,
+				91867DF8251B3E7900F09DB0 /* InstTable.swift in Sources */,
 				263E62C42517907400FF56F7 /* APIArith.swift in Sources */,
 				91867D682518B8A900F09DB0 /* LuaVMType.swift in Sources */,
 				91867D752518BC7D00F09DB0 /* InstFor.swift in Sources */,
+				91867DFB251B3F0300F09DB0 /* fpb.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

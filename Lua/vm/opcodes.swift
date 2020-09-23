@@ -102,11 +102,15 @@ let opcodes: [Opcode] = [
 
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "GETUPVAL", action: Instruction.todo), // R(A) := UpValue[B]
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .K, opMode: .IABC /* */, name: "GETTABUP", action: Instruction.todo), // R(A) := UpValue[B][RK(C)]
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "GETTABLE", action: Instruction.todo), // R(A) := R(B)[RK(C)]
+
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "GETTABLE", action: Instruction.getTable), // R(A) := R(B)[RK(C)]
+
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABUP", action: Instruction.todo), // UpValue[A][RK(B)] := RK(C)
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "SETUPVAL", action: Instruction.todo), // UpValue[B] := R(A)
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABLE", action: Instruction.todo), // R(A)[RK(B)] := RK(C)
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "NEWTABLE", action: Instruction.todo), // R(A) := {} (size = B,C)
+
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABLE", action: Instruction.setTable), // R(A)[RK(B)] := RK(C)
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "NEWTABLE", action: Instruction.newTable), // R(A) := {} (size = B,C)
+
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "SELF    ", action: Instruction.todo), // R(A+1) := R(B); R(A) := R(B)[RK(C)]
 
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "ADD     ", action: Instruction.add), // R(A) := RK(B) + RK(C)
@@ -142,7 +146,9 @@ let opcodes: [Opcode] = [
 
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .N, argCMode: .U, opMode: .IABC /* */, name: "TFORCALL", action: Instruction.todo), // R(A+3), ... ,R(A+2+C) := R(A)(R(A+1), R(A+2));
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "TFORLOOP", action: Instruction.todo), // if R(A+1) ~= nil then { R(A)=R(A+1); pc += sBx }
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "SETLIST ", action: Instruction.todo), // R(A)[(C-1)*FPF+i] := R(A+i), 1 <= i <= B
+
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "SETLIST ", action: Instruction.setList), // R(A)[(C-1)*FPF+i] := R(A+i), 1 <= i <= B
+
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABx /* */, name: "CLOSURE ", action: Instruction.todo), // R(A) := closure(KPROTO[Bx])
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "VARARG  ", action: Instruction.todo), // R(A), R(A+1), ..., R(A+B-2) = vararg
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IAx /*  */, name: "EXTRAARG", action: Instruction.todo), // extra (larger) argument for previous opcode
