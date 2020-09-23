@@ -32,7 +32,7 @@ extension Instruction {
     private static func _pushFuncAndArgs(a: Int, b: Int, vm: LuaVMType) -> Int {
         if b >= 1 { // b-1 = args
             _ = vm.checkStack(n: b)
-            for i in (a..<b) {
+            for i in (a..<(a+b)) {
                 vm.pushValue(idx: i)
             }
             return b - 1
