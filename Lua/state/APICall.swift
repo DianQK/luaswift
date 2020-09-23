@@ -43,7 +43,9 @@ extension LuaState {
         newStack.push(vals: Array(funcAndArgs[1..<funcAndArgs.endIndex]), n: nParams)
         newStack.top = nRegs
         if nArgs > nParams && isVararg {
-            newStack.varargs = Array(funcAndArgs[(nParams + 1)..<funcAndArgs.endIndex])
+            
+            newStack.varargs = Array(funcAndArgs[(nParams + 1)...(nArgs)])
+            
         }
 
         // run closure
