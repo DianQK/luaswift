@@ -139,3 +139,11 @@ extension String: LuaValue {
     }
 
 }
+
+extension LuaTable: LuaValue {
+
+    var luaType: LuaType {
+        .table
+    }
+
+}

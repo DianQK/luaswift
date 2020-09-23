@@ -16,6 +16,8 @@ extension LuaState {
         let val = self.stack.get(idx: idx)
         if let s = val as? String {
             self.stack.push(Int64(s.count))
+        } else if let t = val as? LuaTable {
+            self.stack.push(Int64(t.len()))
         } else {
             fatalError("length error!")
         }
