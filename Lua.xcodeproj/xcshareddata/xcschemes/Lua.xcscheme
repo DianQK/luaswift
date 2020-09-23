@@ -53,10 +53,22 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "$(SOURCE_ROOT)/luacode/ch06/sum_i.luac"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "$(SOURCE_ROOT)/luacode/ch06/sum_f.luac"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "$(SOURCE_ROOT)/luacode/ch07/test.luac"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "$(SOURCE_ROOT)/luacode/ch07/test_seq.luac"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "$(SOURCE_ROOT)/luacode/ch07/big_list.luac"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>

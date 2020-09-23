@@ -28,7 +28,7 @@ extension Instruction {
     }
 
     static func todo(i: Instruction, vm: LuaVMType) {
-        fatalError("todo")
+        fatalError("todo: \(i.opName)!")
     }
 
 }
