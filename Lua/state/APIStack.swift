@@ -24,7 +24,9 @@ extension LuaState {
     }
 
     func pop(n: Int) {
-        self.setTop(idx: -n - 1)
+        for _ in (0..<n) {
+            _ = self.stack.pop()
+        }
     }
 
     func copy(fromIdx: Int, toIdx: Int) {

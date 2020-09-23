@@ -53,7 +53,8 @@ class LuaStack {
             fatalError("stack underflow!")
         }
         self.top -= 1
-        let val = self.slots.removeLast()
+        let val = self.slots[self.top]
+        self.slots[self.top] = LuaNil()
         return val
     }
 
@@ -109,8 +110,10 @@ class LuaStack {
     }
 
     func pop(n: Int) -> [LuaValue] {
-        let vals: [LuaValue] = self.slots.dropLast(n)
-        self.slots.removeLast(n)
+        var vals: [LuaValue] = []
+        for i in (0..<n) {
+            vals.insert(self.pop(), at: 0)
+        }
         return vals
     }
 
