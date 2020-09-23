@@ -34,6 +34,7 @@ extension LuaState {
         if var tbl = t as? LuaTable {
             // TODO: 不确定能否设置成功
             tbl.put(key: k, val: v)
+            return
         }
 
         fatalError("not a table!")
