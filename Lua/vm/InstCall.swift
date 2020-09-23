@@ -23,10 +23,10 @@ extension Instruction {
         var (a, b, c) = i.ABC
         a += 1
 
-        // println(":::"+ vm.StackToString())
-//        let nArgs = _pushFuncAndArgs(a, b, vm)
-//        vm.Call(nArgs, c-1)
-//        _popResults(a, c, vm)
+//         println(":::"+ vm.StackToString())
+        let nArgs = _pushFuncAndArgs(a: a, b: b, vm: vm)
+        vm.call(nArgs: nArgs, nResults: c - 1)
+        _popResults(a: a, c: c, vm: vm)
     }
 
     private static func _pushFuncAndArgs(a: Int, b: Int, vm: LuaVMType) -> Int {
