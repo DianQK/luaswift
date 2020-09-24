@@ -25,4 +25,6 @@ protocol LuaVMType: LuaStateType {
     func loadVararg(n: Int)
     func loadProto(idx: Int)
 
+    func closeUpvalues(a: Int)
+
 }

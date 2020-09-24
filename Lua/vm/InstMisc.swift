@@ -23,7 +23,7 @@ extension Instruction {
         let (a, sBx) = i.AsBx
         vm.addPC(n: sBx)
         if a != 0 {
-            fatalError("todo: jmp!")
+            vm.closeUpvalues(a: a)
         }
     }
 

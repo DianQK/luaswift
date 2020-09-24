@@ -53,9 +53,36 @@ extension LuaState: LuaVMType {
     }
 
     func loadProto(idx: Int) {
-        let proto = self.stack.closure!.proto!.protos[idx]
-        let closure = Closure(proto: proto)
+        let subProto = self.stack.closure!.proto!.protos[idx]
+        var closure = Closure(proto: subProto)
+
+        for (i, uvInfo) in subProto.upvalues.enumerated() {
+            let uvIdx = Int(uvInfo.idx)
+            if uvInfo.instack == 1 {
+//                if stack.openuvs == nil {
+//                    stack.openuvs = [:]
+//                }
+                if let openuv = stack.openuvs[uvIdx] {
+                    closure.upvals[i] = openuv
+                } else {
+                    closure.upvals[i] = Upvalue(val: stack.slots[uvIdx])
+                    stack.openuvs[uvIdx] = closure.upvals[i]
+                }
+            }
+        }
+
         self.stack.push(closure)
+    }
+
+    func closeUpvalues(a: Int) {
+        for (i, openuv) in self.stack.openuvs.enumerated() {
+            if i >= a - 1 {
+                // FIXME: 修复以下空缺功能
+//                let val = openuv.value // 引用改复制一个值
+//                openuv.value = val // 复制的值重新设置
+                self.stack.openuvs.removeValue(forKey: i)
+            }
+        }
     }
 
 }

@@ -100,13 +100,13 @@ let opcodes: [Opcode] = [
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "LOADBOOL", action: Instruction.loadBool), // R(A) := (bool)B; if (C) pc++
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "LOADNIL ", action: Instruction.loadNil), // R(A), R(A+1), ..., R(A+B) := nil
 
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "GETUPVAL", action: Instruction.todo), // R(A) := UpValue[B]
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "GETUPVAL", action: Instruction.getUpval), // R(A) := UpValue[B]
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .K, opMode: .IABC /* */, name: "GETTABUP", action: Instruction.getTabUp), // R(A) := UpValue[B][RK(C)]
 
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "GETTABLE", action: Instruction.getTable), // R(A) := R(B)[RK(C)]
 
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABUP", action: Instruction.todo), // UpValue[A][RK(B)] := RK(C)
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "SETUPVAL", action: Instruction.todo), // UpValue[B] := R(A)
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABUP", action: Instruction.setTabUp), // UpValue[A][RK(B)] := RK(C)
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "SETUPVAL", action: Instruction.setUpval), // UpValue[B] := R(A)
 
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .K, argCMode: .K, opMode: .IABC /* */, name: "SETTABLE", action: Instruction.setTable), // R(A)[RK(B)] := RK(C)
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "NEWTABLE", action: Instruction.newTable), // R(A) := {} (size = B,C)

@@ -15,7 +15,7 @@ extension LuaState {
     }
 
     func type(idx: Int) -> LuaType {
-        guard self.stack.isVaild(idx: idx) else {
+        guard self.stack.isValid(idx: idx) else {
             return .none
         }
         return self.stack.get(idx: idx).luaType

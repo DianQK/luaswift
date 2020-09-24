@@ -13,7 +13,11 @@ extension LuaState {
     func load(chunk: Data, chunkName: String, mode: String) throws -> Int {
         let reader = Reader(data: data)
         let binaryChunk = try reader.undump()
-        let c = Closure(proto: binaryChunk.mainFunc)
+        var c = Closure(proto: binaryChunk.mainFunc) // FIXME: Closure 可能需要 class
+        if !binaryChunk.mainFunc.upvalues.isEmpty {
+            let env = self.registry.get(key: LUA_RIDX_GLOBALS)
+            c.upvals[0] = Upvalue(val: env) // FIXME: Upvalue 可能需要 class
+        }
         self.stack.push(c)
         return 0
     }

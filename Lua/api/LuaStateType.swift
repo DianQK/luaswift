@@ -8,6 +8,10 @@
 
 import Foundation
 
+func LuaUpvalueIndex(i: Int) -> Int {
+    return LUA_REGISTRYINDEX - i
+}
+
 protocol LuaStateType: class {
 
     func getTop() -> Int
@@ -51,6 +55,7 @@ protocol LuaStateType: class {
     func pushString(_ s: String)
     func pushSwiftFunction(f: @escaping SwiftFunction)
     func pushGlobalTable()
+    func pushSwiftClosure(f: @escaping SwiftFunction, n: Int)
     /* Comparison and arithmetic functions */
     func arith(op: ArithOp)
     func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool

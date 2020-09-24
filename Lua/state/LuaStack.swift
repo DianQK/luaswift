@@ -22,6 +22,8 @@ class LuaStack {
 
     weak var state: LuaState?
 
+    var openuvs: [Int: Upvalue] = [:]
+
     init(size: Int, state: LuaState? = nil) {
         self.slots = [LuaValue].init(repeating: LuaNil(), count: size)
         self.top = 0
@@ -76,7 +78,15 @@ class LuaStack {
     /// 判断索引是否有效
     /// - Parameter idx: 要判断的索引
     /// - Returns: 是否有效的结果
-    func isVaild(idx: Int) -> Bool {
+    func isValid(idx: Int) -> Bool {
+        if idx < LUA_REGISTRYINDEX { /* upvalues */
+            let uvIdx = LUA_REGISTRYINDEX - idx - 1
+            if let c = self.closure {
+                return uvIdx < c.upvals.count
+            } else {
+                return false
+            }
+        }
         if idx == LUA_REGISTRYINDEX {
             return true
         }
@@ -88,6 +98,15 @@ class LuaStack {
     /// - Parameter idx: 索引
     /// - Returns: 返回的值，索引无效返回 nil
     func get(idx: Int) -> LuaValue {
+        if idx < LUA_REGISTRYINDEX { /* upvalues */
+            let uvIdx = LUA_REGISTRYINDEX - idx - 1
+            if let c = self.closure, c.upvals.count > uvIdx {
+                return c.upvals[uvIdx].val
+            } else {
+                return LuaNil()
+            }
+        }
+
         if idx == LUA_REGISTRYINDEX {
             return self.state!.registry
         }
@@ -103,6 +122,14 @@ class LuaStack {
     ///   - idx: 待写入索引
     ///   - val: 待写入值
     func set(idx: Int, val: LuaValue) {
+        if idx < LUA_REGISTRYINDEX { /* upvalues */
+            let uvIdx = LUA_REGISTRYINDEX - idx - 1
+            if var c = self.closure, uvIdx < c.upvals.count {
+                c.upvals[uvIdx].val = val // FIXME: 可能被拷贝影响
+            }
+            return
+        }
+
         if idx == LUA_REGISTRYINDEX {
             if let val = val as? LuaTable {
                 self.state!.registry = val
