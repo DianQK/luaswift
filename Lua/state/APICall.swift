@@ -97,8 +97,8 @@ extension LuaState {
     func runLuaClosure() {
         while true {
             let inst = self.fetch()
-            inst.execute(vm: self)
 //            print("[\(String(format: "%02d", pc))] \(inst.opName) ", terminator: "")
+            inst.execute(vm: self)
 //            self.printStack()
             if inst.opcode == .RETURN {
                 break

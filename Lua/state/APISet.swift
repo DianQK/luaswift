@@ -31,21 +31,19 @@ extension LuaState {
 
     // t[k]=v
     private func _setTable(t: inout LuaValue, k: LuaValue, v: LuaValue, idx: Int) {
-        if var tbl = t as? LuaTable {
+        if let tbl = t as? LuaTable {
             tbl.put(key: k, val: v) // TODO: 产生了额外的拷贝
             self.stack.set(idx: idx, val: tbl)
             return
         }
-
         fatalError("not a table!")
     }
 
     func setGlobal(name: String) {
         let t = self.registry.get(key: LUA_RIDX_GLOBALS)
         let v = self.stack.pop()
-        if var tbl = t as? LuaTable {
-            tbl.put(key: name, val: v) // FIXME: 产生了额外的拷贝，全局变量是共享的，可能在各种场景下凉凉
-            self.registry.put(key: LUA_RIDX_GLOBALS, val: tbl)
+        if let tbl = t as? LuaTable {
+            tbl.put(key: name, val: v)
             return
         }
         fatalError("not a table!")

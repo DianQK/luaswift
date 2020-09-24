@@ -124,8 +124,8 @@ class LuaStack {
     func set(idx: Int, val: LuaValue) {
         if idx < LUA_REGISTRYINDEX { /* upvalues */
             let uvIdx = LUA_REGISTRYINDEX - idx - 1
-            if var c = self.closure, uvIdx < c.upvals.count {
-                c.upvals[uvIdx].val = val // FIXME: 可能被拷贝影响
+            if let c = self.closure, uvIdx < c.upvals.count {
+                c.upvals[uvIdx].val = val
             }
             return
         }

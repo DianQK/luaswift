@@ -46,10 +46,15 @@ struct LuaMapKey: Hashable {
 
 }
 
-struct LuaTable {
+class LuaTable {
 
     var arr: [LuaValue]
     var map: [LuaMapKey: LuaValue] // TODO: 需要创建一个专门的 struct 处理
+
+    init(arr: [LuaValue], map: [LuaMapKey: LuaValue]) {
+        self.arr = arr
+        self.map = map
+    }
 
     static func new(nArr: Int, nRec: Int) -> LuaTable {
         let arr: [LuaValue] = [LuaValue].init(repeating: LuaNil(), count: nArr)
@@ -73,7 +78,7 @@ struct LuaTable {
         }
     }
 
-    mutating func put(key: LuaValue, val: LuaValue) {
+    func put(key: LuaValue, val: LuaValue) {
         if key.isNil {
             fatalError("table index is nil!")
         }
@@ -108,13 +113,13 @@ struct LuaTable {
         }
     }
 
-    private mutating func _shrinkArray() {
+    private func _shrinkArray() {
         while let last = self.arr.last, last.isNil {
             self.arr.removeLast()
         }
     }
 
-    private mutating func _expandArray() {
+    private func _expandArray() {
         var idx = Int64(self.arr.count + 1)
         while let val = self.map[LuaMapKey(value: idx)] {
             self.map.removeValue(forKey: LuaMapKey(value: idx))

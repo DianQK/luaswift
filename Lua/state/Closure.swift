@@ -10,8 +10,12 @@ import Foundation
 
 typealias SwiftFunction = (LuaState) -> Int
 
-struct Upvalue { // FIXME: 可能需要 class 进行引用
+class Upvalue {
     var val: LuaValue
+
+    init(val: LuaValue) {
+        self.val = val
+    }
 }
 
 struct Closure {
