@@ -54,11 +54,12 @@ extension LuaState: LuaVMType {
 
     func loadProto(idx: Int) {
         let subProto = self.stack.closure!.proto!.protos[idx]
-        var closure = Closure(proto: subProto)
+        let closure = Closure(proto: subProto)
+        self.stack.push(closure)
 
         for (i, uvInfo) in subProto.upvalues.enumerated() {
             let uvIdx = Int(uvInfo.idx)
-            if uvInfo.instack == 1 {
+            if uvInfo.instack == 1 { // 捕获当前函数中的局部变量
 //                if stack.openuvs == nil {
 //                    stack.openuvs = [:]
 //                }
@@ -68,10 +69,11 @@ extension LuaState: LuaVMType {
                     closure.upvals[i] = Upvalue(val: stack.slots[uvIdx])
                     stack.openuvs[uvIdx] = closure.upvals[i]
                 }
+            } else { // 捕获更外围的函数中的局部变量
+                closure.upvals[i] = stack.closure!.upvals[uvIdx]
             }
         }
 
-        self.stack.push(closure)
     }
 
     func closeUpvalues(a: Int) {
