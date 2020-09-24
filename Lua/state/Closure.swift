@@ -18,7 +18,7 @@ class Upvalue {
     }
 }
 
-struct Closure {
+class Closure {
 
     var proto: BinaryChunk.Prototype?
     var swiftFunc: SwiftFunction?
