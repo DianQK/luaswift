@@ -23,7 +23,6 @@ extension LuaState {
         if let c = val as? Closure {
             switch c {
             case let .prototype(proto):
-                print("call \(proto.source)<\(proto.lineDefined),\(proto.lastLineDefined)>")
                 self.callLuaClosure(nArgs: nArgs, nResults: nResults, proto: proto, closure: c)
             case let .swiftFunc(swiftFunc):
                 self.callSwiftClosure(nArgs: nArgs, nResults: nResults, swiftFunc: swiftFunc, closure: c)

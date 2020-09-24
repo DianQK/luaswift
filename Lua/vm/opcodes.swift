@@ -101,7 +101,7 @@ let opcodes: [Opcode] = [
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "LOADNIL ", action: Instruction.loadNil), // R(A), R(A+1), ..., R(A+B) := nil
 
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .N, opMode: .IABC /* */, name: "GETUPVAL", action: Instruction.todo), // R(A) := UpValue[B]
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .K, opMode: .IABC /* */, name: "GETTABUP", action: Instruction.todo), // R(A) := UpValue[B][RK(C)]
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .U, argCMode: .K, opMode: .IABC /* */, name: "GETTABUP", action: Instruction.getTabUp), // R(A) := UpValue[B][RK(C)]
 
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .K, opMode: .IABC /* */, name: "GETTABLE", action: Instruction.getTable), // R(A) := R(B)[RK(C)]
 

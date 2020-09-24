@@ -73,6 +73,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "$(SOURCE_ROOT)/luacode/ch08/test.luac"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "$(SOURCE_ROOT)/luacode/ch02/hello_world.luac"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

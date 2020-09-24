@@ -44,11 +44,10 @@ extension LuaState {
         let t = self.registry.get(key: LUA_RIDX_GLOBALS)
         let v = self.stack.pop()
         if var tbl = t as? LuaTable {
-            tbl.put(key: name, val: v) // TODO: 产生了额外的拷贝
+            tbl.put(key: name, val: v) // FIXME: 产生了额外的拷贝，全局变量是共享的，可能在各种场景下凉凉
             self.registry.put(key: LUA_RIDX_GLOBALS, val: tbl)
             return
         }
-
         fatalError("not a table!")
     }
 

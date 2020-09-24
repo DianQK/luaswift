@@ -39,6 +39,7 @@
 		91867DFF251B622700F09DB0 /* Closure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867DFE251B622700F09DB0 /* Closure.swift */; };
 		91867E02251B644C00F09DB0 /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867E01251B644C00F09DB0 /* APICall.swift */; };
 		91867E05251B6A1300F09DB0 /* InstCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867E04251B6A1300F09DB0 /* InstCall.swift */; };
+		91867E12251C8A1500F09DB0 /* InstUpvalue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867E11251C8A1500F09DB0 /* InstUpvalue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -87,6 +88,7 @@
 		91867DFE251B622700F09DB0 /* Closure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Closure.swift; sourceTree = "<group>"; };
 		91867E01251B644C00F09DB0 /* APICall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
 		91867E04251B6A1300F09DB0 /* InstCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstCall.swift; sourceTree = "<group>"; };
+		91867E11251C8A1500F09DB0 /* InstUpvalue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstUpvalue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				91867DF7251B3E7900F09DB0 /* InstTable.swift */,
 				91867DFA251B3F0300F09DB0 /* fpb.swift */,
 				91867E04251B6A1300F09DB0 /* InstCall.swift */,
+				91867E11251C8A1500F09DB0 /* InstUpvalue.swift */,
 			);
 			path = vm;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				91867DF2251B3BFD00F09DB0 /* APIGet.swift in Sources */,
 				26C10BD0250DD88D00A27886 /* main.swift in Sources */,
 				91867DFF251B622700F09DB0 /* Closure.swift in Sources */,
+				91867E12251C8A1500F09DB0 /* InstUpvalue.swift in Sources */,
 				91867CEC25135CD800F09DB0 /* LuaStack.swift in Sources */,
 				91867CF72513654400F09DB0 /* LuaStateType.swift in Sources */,
 				263E62C7251797FD00FF56F7 /* APICompare.swift in Sources */,
