@@ -54,7 +54,7 @@ extension LuaState: LuaVMType {
 
     func loadProto(idx: Int) {
         let proto = self.stack.closure!.proto!.protos[idx]
-        let closure = Closure.prototype(proto: proto)
+        let closure = Closure(proto: proto)
         self.stack.push(closure)
     }
 

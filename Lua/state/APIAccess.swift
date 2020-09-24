@@ -97,8 +97,8 @@ extension LuaState {
 
     func toSwiftFunction(idx: Int) -> SwiftFunction? {
         let val = self.stack.get(idx: idx)
-        if case .swiftFunc(let f) = val as? Closure {
-            return f
+        if let c = val as? Closure {
+            return c.swiftFunc
         } else {
             return nil
         }
@@ -118,8 +118,8 @@ extension LuaState {
 
     func isSwiftFunction(idx: Int) -> Bool {
         let val = self.stack.get(idx: idx)
-        if case .swiftFunc = val as? Closure {
-            return true
+        if let c = val as? Closure {
+            return c.swiftFunc != nil
         } else {
             return false
         }

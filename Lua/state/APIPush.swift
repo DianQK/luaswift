@@ -31,7 +31,7 @@ extension LuaState {
     }
 
     func pushSwiftFunction(f: @escaping SwiftFunction) {
-        self.stack.push(Closure.swiftFunc(swiftFunc: f))
+        self.stack.push(Closure(swiftFunc: f))
     }
 
     func pushGlobalTable() {

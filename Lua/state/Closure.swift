@@ -10,18 +10,17 @@ import Foundation
 
 typealias SwiftFunction = (LuaState) -> Int
 
-enum Closure {
+struct Closure {
 
-    case prototype(proto: BinaryChunk.Prototype)
-    case swiftFunc(swiftFunc: SwiftFunction)
+    var proto: BinaryChunk.Prototype?
+    var swiftFunc: SwiftFunction?
 
-    var proto: BinaryChunk.Prototype? {
-        switch self {
-        case let .prototype(proto):
-            return proto
-        default:
-            return nil
-        }
+    init(proto: BinaryChunk.Prototype) {
+        self.proto = proto
+    }
+
+    init(swiftFunc: @escaping SwiftFunction) {
+        self.swiftFunc = swiftFunc
     }
 
 }

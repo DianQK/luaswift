@@ -13,7 +13,7 @@ extension LuaState {
     func load(chunk: Data, chunkName: String, mode: String) throws -> Int {
         let reader = Reader(data: data)
         let binaryChunk = try reader.undump()
-        let c = Closure.prototype(proto: binaryChunk.mainFunc)
+        let c = Closure(proto: binaryChunk.mainFunc)
         self.stack.push(c)
         return 0
     }
@@ -21,11 +21,12 @@ extension LuaState {
     func call(nArgs: Int, nResults: Int) {
         let val = self.stack.get(idx: -(nArgs + 1))
         if let c = val as? Closure {
-            switch c {
-            case let .prototype(proto):
+            if let proto = c.proto {
                 self.callLuaClosure(nArgs: nArgs, nResults: nResults, proto: proto, closure: c)
-            case let .swiftFunc(swiftFunc):
+            } else if let swiftFunc = c.swiftFunc {
                 self.callSwiftClosure(nArgs: nArgs, nResults: nResults, swiftFunc: swiftFunc, closure: c)
+            } else {
+                fatalError("closure has not func")
             }
         } else {
             fatalError("not function!")
