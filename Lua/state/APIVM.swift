@@ -19,13 +19,13 @@ extension LuaState: LuaVMType {
     }
 
     func fetch() -> Instruction {
-        let i = self.stack.closure!.proto.code[self.stack.pc]
+        let i = self.stack.closure!.proto!.code[self.stack.pc]
         self.stack.pc += 1
         return i
     }
 
     func getConst(idx: Int) {
-        let c = self.stack.closure!.proto.constants[idx]
+        let c = self.stack.closure!.proto!.constants[idx]
         self.stack.push(c.luaValue)
     }
 
@@ -39,7 +39,7 @@ extension LuaState: LuaVMType {
     }
 
     func registerCount() -> Int {
-        return Int(self.stack.closure!.proto.maxStackSize)
+        return Int(self.stack.closure!.proto!.maxStackSize)
     }
 
     func loadVararg(n: Int) {
@@ -53,8 +53,8 @@ extension LuaState: LuaVMType {
     }
 
     func loadProto(idx: Int) {
-        let proto = self.stack.closure!.proto.protos[idx]
-        let closure = Closure(proto: proto)
+        let proto = self.stack.closure!.proto!.protos[idx]
+        let closure = Closure.prototype(proto: proto)
         self.stack.push(closure)
     }
 

@@ -8,6 +8,20 @@
 
 import Foundation
 
-struct Closure {
-    let proto: BinaryChunk.Prototype
+typealias SwiftFunction = (LuaState) -> Int
+
+enum Closure {
+
+    case prototype(proto: BinaryChunk.Prototype)
+    case swiftFunc(swiftFunc: SwiftFunction)
+
+    var proto: BinaryChunk.Prototype? {
+        switch self {
+        case let .prototype(proto):
+            return proto
+        default:
+            return nil
+        }
+    }
+
 }

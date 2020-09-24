@@ -20,10 +20,12 @@ class LuaStack {
     /* linked list */
     var prev: LuaStack?
 
-    init(size: Int) {
-//        self.slots.reserveCapacity(size)
+    weak var state: LuaState?
+
+    init(size: Int, state: LuaState? = nil) {
         self.slots = [LuaValue].init(repeating: LuaNil(), count: size)
         self.top = 0
+        self.state = state
     }
 
     /// 检查栈空间是否还可以容纳至少 n 个值，否则进行扩容
@@ -111,7 +113,7 @@ class LuaStack {
 
     func pop(n: Int) -> [LuaValue] {
         var vals: [LuaValue] = []
-        for i in (0..<n) {
+        for _ in (0..<n) {
             vals.insert(self.pop(), at: 0)
         }
         return vals

@@ -95,6 +95,15 @@ extension LuaState {
         }
     }
 
+    func toSwiftFunction(idx: Int) -> SwiftFunction? {
+        let val = self.stack.get(idx: idx)
+        if case .swiftFunc(let f) = val as? Closure {
+            return f
+        } else {
+            return nil
+        }
+    }
+
     func isTable(idx: Int) -> Bool {
         self.type(idx: idx) == .table
     }
@@ -105,6 +114,15 @@ extension LuaState {
 
     func isFunction(idx: Int) -> Bool {
         self.type(idx: idx) == .function
+    }
+
+    func isSwiftFunction(idx: Int) -> Bool {
+        let val = self.stack.get(idx: idx)
+        if case .swiftFunc = val as? Closure {
+            return true
+        } else {
+            return false
+        }
     }
 
 }

@@ -30,4 +30,8 @@ extension LuaState {
         self.stack.push(s)
     }
 
+    func pushSwiftFunction(f: @escaping SwiftFunction) {
+        self.stack.push(Closure.swiftFunc(swiftFunc: f))
+    }
+
 }

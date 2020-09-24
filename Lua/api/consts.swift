@@ -8,6 +8,11 @@
 
 import Foundation
 
+let LUA_MINSTACK = 20
+let LUAI_MAXSTACK = 1000000
+let LUA_REGISTRYINDEX = -LUAI_MAXSTACK - 1000
+let LUA_RIDX_GLOBALS: Int64 = 2
+
 /* basic types */
 enum LuaType: Int {
 

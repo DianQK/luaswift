@@ -34,6 +34,7 @@ protocol LuaStateType: class {
     func isTable(idx: Int) -> Bool
     func isThread(idx: Int) -> Bool
     func isFunction(idx: Int) -> Bool
+    func isSwiftFunction(idx: Int) -> Bool
     func toBoolean(idx: Int) -> Bool
     func toInteger(idx: Int) -> Int64
     func toIntegerX(idx: Int) -> (Int64, Bool)
@@ -41,12 +42,14 @@ protocol LuaStateType: class {
     func toNumberX(idx: Int) -> (Double, Bool)
     func toString(idx: Int) -> String
     func toStringX(idx: Int) -> (String, Bool)
+    func toSwiftFunction(idx: Int) -> SwiftFunction?
     /* push functions (Go -> stack) */
     func pushNil()
     func pushBoolean(_ b: Bool)
     func pushInteger(_ n: Int64)
     func pushNumber(_ n: Double)
     func pushString(_ s: String)
+    func pushSwiftFunction(f: @escaping SwiftFunction)
     /* Comparison and arithmetic functions */
     func arith(op: ArithOp)
     func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool

@@ -12,8 +12,9 @@ class LuaState: LuaStateType {
 
     var stack: LuaStack
 
-    init(stackSize: Int = 20) {
+    init(stackSize: Int = LUA_MINSTACK) {
         self.stack = LuaStack(size: stackSize)
+        self.stack.state = self
     }
 
 }
