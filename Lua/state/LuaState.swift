@@ -10,10 +10,13 @@ import Foundation
 
 class LuaState: LuaStateType {
 
+    var registry: LuaTable
     var stack: LuaStack
 
-    init(stackSize: Int = LUA_MINSTACK) {
-        self.stack = LuaStack(size: stackSize)
+    init() {
+        self.registry = LuaTable.new(nArr: 0, nRec: 0)
+        self.registry.put(key: LUA_RIDX_GLOBALS, val: LuaTable.new(nArr: 0, nRec: 0))
+        self.stack = LuaStack(size: LUA_MINSTACK)
         self.stack.state = self
     }
 

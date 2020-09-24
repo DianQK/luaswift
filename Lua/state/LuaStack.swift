@@ -64,6 +64,9 @@ class LuaStack {
     /// - Parameter idx: 被转换的索引
     /// - Returns: 转换后的索引
     func absIndex(idx: Int) -> Int {
+        if idx <= LUA_REGISTRYINDEX {
+            return idx
+        }
         if idx >= 0 {
             return idx
         }
@@ -74,6 +77,9 @@ class LuaStack {
     /// - Parameter idx: 要判断的索引
     /// - Returns: 是否有效的结果
     func isVaild(idx: Int) -> Bool {
+        if idx == LUA_REGISTRYINDEX {
+            return true
+        }
         let absIdx = self.absIndex(idx: idx)
         return absIdx > 0 && absIdx <= self.top
     }
@@ -82,6 +88,9 @@ class LuaStack {
     /// - Parameter idx: 索引
     /// - Returns: 返回的值，索引无效返回 nil
     func get(idx: Int) -> LuaValue {
+        if idx == LUA_REGISTRYINDEX {
+            return self.state!.registry
+        }
         let absIdx = self.absIndex(idx: idx)
         guard absIdx > 0 && absIdx <= self.top else {
             return LuaNil()
@@ -94,6 +103,12 @@ class LuaStack {
     ///   - idx: 待写入索引
     ///   - val: 待写入值
     func set(idx: Int, val: LuaValue) {
+        if idx == LUA_REGISTRYINDEX {
+            if let val = val as? LuaTable {
+                self.state!.registry = val
+            }
+            return
+        }
         let absIdx = self.absIndex(idx: idx)
         guard absIdx > 0 && absIdx <= self.top else {
             fatalError("invalid index!")
