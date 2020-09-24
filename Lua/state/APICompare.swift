@@ -54,6 +54,12 @@ extension LuaState {
             } else {
                 return false
             }
+        } else if let x = a as? LuaTable {
+            if let y = b as? LuaTable {
+                return x === y
+            } else {
+                return false
+            }
         }
         let aPointer = unsafeBitCast(a, to: Int.self)
         let bPointer = unsafeBitCast(b, to: Int.self)
