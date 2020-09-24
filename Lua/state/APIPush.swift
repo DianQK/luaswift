@@ -34,4 +34,10 @@ extension LuaState {
         self.stack.push(Closure.swiftFunc(swiftFunc: f))
     }
 
+    func pushGlobalTable() {
+        let global = self.registry.get(key: LUA_RIDX_GLOBALS)
+        // FIXME: Global 多个 stack 读写出现拷贝读的内容不一样？
+        self.stack.push(global)
+    }
+
 }

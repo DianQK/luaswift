@@ -46,4 +46,9 @@ extension LuaState {
         fatalError("not a table!") // todo
     }
 
+    func getGlobal(name: String) -> LuaType {
+        let t = self.registry.get(key: LUA_RIDX_GLOBALS)
+        return self._getTable(t: t, k: name)
+    }
+
 }

@@ -40,4 +40,21 @@ extension LuaState {
         fatalError("not a table!")
     }
 
+    func setGlobal(name: String) {
+        let t = self.registry.get(key: LUA_RIDX_GLOBALS)
+        let v = self.stack.pop()
+        if var tbl = t as? LuaTable {
+            tbl.put(key: name, val: v) // TODO: 产生了额外的拷贝
+            self.registry.put(key: LUA_RIDX_GLOBALS, val: tbl)
+            return
+        }
+
+        fatalError("not a table!")
+    }
+
+    func register(name: String, f: @escaping SwiftFunction) {
+        self.pushSwiftFunction(f: f)
+        self.setGlobal(name: name)
+    }
+
 }

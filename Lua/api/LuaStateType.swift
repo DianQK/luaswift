@@ -50,6 +50,7 @@ protocol LuaStateType: class {
     func pushNumber(_ n: Double)
     func pushString(_ s: String)
     func pushSwiftFunction(f: @escaping SwiftFunction)
+    func pushGlobalTable()
     /* Comparison and arithmetic functions */
     func arith(op: ArithOp)
     func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool
@@ -59,10 +60,13 @@ protocol LuaStateType: class {
     func getTable(idx: Int) -> LuaType
     func getField(idx: Int, k: String) -> LuaType
     func getI(idx: Int, i: Int64) -> LuaType
+    func getGlobal(name: String) -> LuaType
     /* set functions (stack -> Lua) */
     func setTable(idx: Int)
     func setField(idx: Int, k: String)
     func setI(idx: Int, i: Int64)
+    func setGlobal(name: String)
+    func register(name: String, f: @escaping SwiftFunction)
     /* 'load' and 'call' functions (load and run Lua code) */
     func load(chunk: Data, chunkName: String, mode: String) throws -> Int
     func call(nArgs: Int, nResults: Int)
