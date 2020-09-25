@@ -11,7 +11,7 @@ import Foundation
 extension LuaState {
 
     func pushNil() {
-        self.stack.push(LuaNil())
+        self.stack.push(LuaNil)
     }
 
     func pushBoolean(_ b: Bool) {

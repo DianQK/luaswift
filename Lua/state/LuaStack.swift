@@ -25,7 +25,7 @@ class LuaStack {
     var openuvs: [Int: Upvalue] = [:]
 
     init(size: Int, state: LuaState? = nil) {
-        self.slots = [LuaValue].init(repeating: LuaNil(), count: size)
+        self.slots = [LuaValue].init(repeating: LuaNil, count: size)
         self.top = 0
         self.state = state
     }
@@ -37,7 +37,7 @@ class LuaStack {
             return
         }
         let free = self.slots.count - self.top
-        self.slots.append(contentsOf: [LuaValue].init(repeating: LuaNil(), count: n - free))
+        self.slots.append(contentsOf: [LuaValue].init(repeating: LuaNil, count: n - free))
     }
 
     /// 将值推入栈顶
@@ -58,7 +58,7 @@ class LuaStack {
         }
         self.top -= 1
         let val = self.slots[self.top]
-        self.slots[self.top] = LuaNil()
+        self.slots[self.top] = LuaNil
         return val
     }
 
@@ -103,7 +103,7 @@ class LuaStack {
             if let c = self.closure, c.upvals.count > uvIdx {
                 return c.upvals[uvIdx].val
             } else {
-                return LuaNil()
+                return LuaNil
             }
         }
 
@@ -112,7 +112,7 @@ class LuaStack {
         }
         let absIdx = self.absIndex(idx: idx)
         guard absIdx > 0 && absIdx <= self.top else {
-            return LuaNil()
+            return LuaNil
         }
         return self.slots[absIdx - 1]
     }
@@ -169,7 +169,7 @@ class LuaStack {
             if i < nVals {
                 self.push(vals[i])
             } else {
-                self.push(LuaNil())
+                self.push(LuaNil)
             }
         }
     }

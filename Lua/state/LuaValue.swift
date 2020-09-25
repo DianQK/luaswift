@@ -69,7 +69,7 @@ extension LuaNumberValue {
 
 }
 
-struct LuaNil: LuaValue {
+struct _LuaNil: LuaValue {
 
     var luaType: LuaType {
         .nil
@@ -78,6 +78,8 @@ struct LuaNil: LuaValue {
     var isNil: Bool { true }
 
 }
+
+let LuaNil: LuaValue = _LuaNil()
 
 extension Bool: LuaValue {
 

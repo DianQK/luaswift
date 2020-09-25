@@ -105,7 +105,7 @@ extension LuaState {
                 }
             }
         }
-        return LuaNil()
+        return LuaNil
     }
     
 }

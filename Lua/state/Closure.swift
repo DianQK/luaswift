@@ -28,14 +28,14 @@ class Closure {
         self.proto = proto
         let nUpvals = proto.upvalues.count
         if nUpvals > 0 {
-            self.upvals = [Upvalue].init(repeating: Upvalue(val: LuaNil()), count: nUpvals)
+            self.upvals = [Upvalue].init(repeating: Upvalue(val: LuaNil), count: nUpvals)
         }
     }
 
     init(swiftFunc: @escaping SwiftFunction, nUpvals: Int) {
         self.swiftFunc = swiftFunc
         if nUpvals > 0 {
-            self.upvals = [Upvalue].init(repeating: Upvalue(val: LuaNil()), count: nUpvals)
+            self.upvals = [Upvalue].init(repeating: Upvalue(val: LuaNil), count: nUpvals)
         }
     }
 

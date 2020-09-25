@@ -57,7 +57,7 @@ class LuaTable {
     }
 
     static func new(nArr: Int, nRec: Int) -> LuaTable {
-        let arr: [LuaValue] = [LuaValue].init(repeating: LuaNil(), count: nArr)
+        let arr: [LuaValue] = [LuaValue].init(repeating: LuaNil, count: nArr)
         let map = [LuaMapKey: LuaValue].init(minimumCapacity: nRec)
         return LuaTable(arr: arr, map: map)
     }
@@ -74,7 +74,7 @@ class LuaTable {
         if let idx = key as? Int64, idx >= 0 && idx <= self.arr.count {
             return self.arr[Int(idx) - 1]
         } else {
-            return self.map[LuaMapKey(value: key)] ?? LuaNil()
+            return self.map[LuaMapKey(value: key)] ?? LuaNil
         }
     }
 

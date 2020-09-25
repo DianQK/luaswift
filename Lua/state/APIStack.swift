@@ -80,7 +80,7 @@ extension LuaState {
             }
         } else if n < 0 {
             for _ in (n..<0) {
-                self.stack.push(LuaNil())
+                self.stack.push(LuaNil)
             }
         }
     }
