@@ -100,7 +100,6 @@ extension LuaState {
 //            print("[\(String(format: "%02d", pc))] \(inst.opName) ", terminator: "")
             inst.execute(vm: self)
 //            self.printStack()
-            benchmark(name: "op \(inst.opName)")
             if inst.opcode == .RETURN {
                 break
             }

@@ -24,14 +24,9 @@ func luaPrint(ls: LuaState) -> Int {
 }
 
 let fileUrl = URL(fileURLWithPath: CommandLine.arguments[1])
-
-benchmark(name: "start")
 let data = try Data(contentsOf: fileUrl)
-benchmark(name: "read data")
 
 let ls = LuaState()
 ls.register(name: "print", f: luaPrint)
 _ = try ls.load(chunk: data, chunkName: fileUrl.absoluteString, mode: "b")
-benchmark(name: "load chunk")
 ls.call(nArgs: 0, nResults: 0)
-printBenchmarkResult()
