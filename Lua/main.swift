@@ -9,17 +9,17 @@
 import Foundation
 
 func luaPrint(ls: LuaState) -> Int {
-    let nArgs = ls.getTop()
-    for i in (1...nArgs) {
-        if ls.isBoolean(idx: i) {
-            print(ls.toBoolean(idx: i), terminator: "")
-        } else if ls.isString(idx: i) {
-            print(ls.toString(idx: i), terminator: "")
-        } else {
-            print(ls.typeName(ls.type(idx: i)), terminator: "")
-        }
-    }
-    print("")
+//    let nArgs = ls.getTop()
+//    for i in (1...nArgs) {
+//        if ls.isBoolean(idx: i) {
+//            print(ls.toBoolean(idx: i), terminator: "")
+//        } else if ls.isString(idx: i) {
+//            print(ls.toString(idx: i), terminator: "")
+//        } else {
+//            print(ls.typeName(ls.type(idx: i)), terminator: "")
+//        }
+//    }
+//    print("")
     return 0
 }
 
@@ -29,4 +29,8 @@ let data = try Data(contentsOf: fileUrl)
 let ls = LuaState()
 ls.register(name: "print", f: luaPrint)
 _ = try ls.load(chunk: data, chunkName: fileUrl.absoluteString, mode: "b")
+let start = DispatchTime.now()
 ls.call(nArgs: 0, nResults: 0)
+let end = DispatchTime.now()
+let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+print(nanoTime)

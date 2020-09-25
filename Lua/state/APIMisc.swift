@@ -14,10 +14,10 @@ extension LuaState {
     // http://www.lua.org/manual/5.3/manual.html#lua_len
     func len(idx: Int) {
         let val = self.stack.get(idx: idx)
-        if let s = val as? String {
-            self.stack.push(Int64(s.count))
-        } else if let t = val as? LuaTable {
-            self.stack.push(Int64(t.len()))
+        if val.luaType == .string {
+            self.stack.push(Int64(val.asString.count))
+        } else if val.luaType == .table {
+            self.stack.push(Int64(val.asTable.len()))
         } else {
             fatalError("length error!")
         }

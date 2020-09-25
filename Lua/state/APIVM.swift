@@ -77,7 +77,7 @@ extension LuaState: LuaVMType {
     }
 
     func closeUpvalues(a: Int) {
-        for (i, openuv) in self.stack.openuvs.enumerated() {
+        for (i, _) in self.stack.openuvs.enumerated() {
             if i >= a - 1 {
                 // FIXME: 修复以下空缺功能
 //                let val = openuv.value // 引用改复制一个值

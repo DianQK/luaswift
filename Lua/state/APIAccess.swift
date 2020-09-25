@@ -50,7 +50,7 @@ extension LuaState {
 
     func isInteger(idx: Int) -> Bool {
         let val = self.stack.get(idx: idx)
-        return val is Int64
+        return val.isInteger
     }
 
     func toBoolean(idx: Int) -> Bool {
@@ -97,8 +97,8 @@ extension LuaState {
 
     func toSwiftFunction(idx: Int) -> SwiftFunction? {
         let val = self.stack.get(idx: idx)
-        if let c = val as? Closure {
-            return c.swiftFunc
+        if val.luaType == .function {
+            return val.asClosure.swiftFunc
         } else {
             return nil
         }
@@ -118,8 +118,8 @@ extension LuaState {
 
     func isSwiftFunction(idx: Int) -> Bool {
         let val = self.stack.get(idx: idx)
-        if let c = val as? Closure {
-            return c.swiftFunc != nil
+        if val.luaType == .function {
+            return val.asClosure.swiftFunc != nil
         } else {
             return false
         }

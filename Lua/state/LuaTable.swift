@@ -33,15 +33,19 @@ struct LuaMapKey: Hashable {
     }
 
     static func == (lhs: LuaMapKey, rhs: LuaMapKey) -> Bool {
-        if let lhs = lhs.value as? String, let rhs = rhs.value as? String {
-            return lhs == rhs
-        } else if let lhs = lhs.value as? Int64, let rhs = rhs.value as? Int64 {
-            return lhs == rhs
-        } else if let lhs = lhs.value as? Double, let rhs = rhs.value as? Double {
-            return lhs == rhs
+        switch (lhs.value.luaType, rhs.value.luaType) {
+        case (.string, .string):
+            return lhs.value.asString == rhs.value.asString
+        case (.number, .number):
+            switch (lhs.value.isInteger, rhs.value.isInteger) {
+            case (true, true):
+                return lhs.value.asInteger == rhs.value.asInteger
+            default: // TODO: 应当考虑 Double 场景
+                return false
+            }
+        default: // TODO: 这里的判断可能有遗漏
+            return false
         }
-        // TODO: 这里的判断可能有遗漏
-        return false
     }
 
 }
@@ -63,46 +67,51 @@ class LuaTable {
     }
 
     private func _floatToInteger(key: LuaValue) -> LuaValue {
-        if let key = key as? Double {
-            return Int64(key)
+        if key.isFloat {
+            return Int64(key.asFloat)
         }
         return key
     }
 
     func get(key: LuaValue) -> LuaValue { // TODO: 可以使用方法重载提升性能
         let key = _floatToInteger(key: key)
-        if let idx = key as? Int64, idx >= 0 && idx <= self.arr.count {
-            return self.arr[Int(idx) - 1]
-        } else {
-            return self.map[LuaMapKey(value: key)] ?? LuaNil
+        if key.isInteger {
+            let idx = key.asInteger
+            if idx >= 0 && idx <= self.arr.count {
+                return self.arr[Int(idx) - 1]
+            }
         }
+        return self.map[LuaMapKey(value: key)] ?? LuaNil
     }
 
     func put(key: LuaValue, val: LuaValue) {
         if key.isNil {
             fatalError("table index is nil!")
         }
-        if let f = key as? Double, f.isNaN {
+        if key.isFloat && key.asFloat.isNaN {
             fatalError("table index is NaN!")
         }
         let key = _floatToInteger(key: key)
 
-        if let idx = key as? Int64, idx >= 1 {
-            let arrLen = Int64(self.arr.count)
-            if idx <= arrLen {
-                self.arr[Int(idx - 1)] = val
-                if idx == arrLen && val.isNil {
-                    self._shrinkArray()
+        if key.isInteger {
+            let idx = key.asInteger
+            if idx >= 1 {
+                let arrLen = Int64(self.arr.count)
+                if idx <= arrLen {
+                    self.arr[Int(idx - 1)] = val
+                    if idx == arrLen && val.isNil {
+                        self._shrinkArray()
+                    }
+                    return
                 }
-                return
-            }
-            if idx == arrLen + 1 {
-                self.map.removeValue(forKey: LuaMapKey(value: key))
-                if !val.isNil {
-                    self.arr.append(val)
-                    self._expandArray()
+                if idx == arrLen + 1 {
+                    self.map.removeValue(forKey: LuaMapKey(value: key))
+                    if !val.isNil {
+                        self.arr.append(val)
+                        self._expandArray()
+                    }
+                    return
                 }
-                return
             }
         }
 

@@ -37,8 +37,8 @@ extension LuaState {
 
     // push(t[k])
     private func _getTable(t: LuaValue, k: LuaValue) -> LuaType {
-        if let tbl = t as? LuaTable {
-            let v = tbl.get(key: k)
+        if t.luaType == .table {
+            let v = t.asTable.get(key: k)
             self.stack.push(v)
             return v.luaType
         }

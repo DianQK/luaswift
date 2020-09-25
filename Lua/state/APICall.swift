@@ -13,10 +13,10 @@ extension LuaState {
     func load(chunk: Data, chunkName: String, mode: String) throws -> Int {
         let reader = Reader(data: data)
         let binaryChunk = try reader.undump()
-        var c = Closure(proto: binaryChunk.mainFunc) // FIXME: Closure 可能需要 class
+        let c = Closure(proto: binaryChunk.mainFunc)
         if !binaryChunk.mainFunc.upvalues.isEmpty {
             let env = self.registry.get(key: LUA_RIDX_GLOBALS)
-            c.upvals[0] = Upvalue(val: env) // FIXME: Upvalue 可能需要 class
+            c.upvals[0] = Upvalue(val: env)
         }
         self.stack.push(c)
         return 0
@@ -24,7 +24,8 @@ extension LuaState {
 
     func call(nArgs: Int, nResults: Int) {
         let val = self.stack.get(idx: -(nArgs + 1))
-        if let c = val as? Closure {
+        if val.luaType == .function {
+            let c = val.asClosure
             if let proto = c.proto {
                 self.callLuaClosure(nArgs: nArgs, nResults: nResults, proto: proto, closure: c)
             } else if let swiftFunc = c.swiftFunc {

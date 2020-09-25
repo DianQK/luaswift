@@ -13,9 +13,7 @@ protocol LuaValue {
     var luaType: LuaType { get }
 
     var toStringX: (value: String, ok: Bool) { get }
-
     var toFloat: (value: Double, ok: Bool) { get }
-
     var toInteger: (value: Int64, ok: Bool) { get }
     
     var isNil: Bool { get }
@@ -25,6 +23,7 @@ protocol LuaValue {
     var asBoolean: Bool { get }
     var asFloat: Double { get }
     var asTable: LuaTable { get }
+    var asClosure: Closure { get }
 
     var isFloat: Bool { get } // TODO: 也应当考虑使用 switch case
     var isInteger: Bool { get }
@@ -47,7 +46,7 @@ extension LuaValue {
         case .nil:
             return false
         case .boolean:
-            return self as! Bool
+            return self.asBoolean
         default:
             return true
         }
@@ -72,6 +71,7 @@ extension LuaValue {
     var asBoolean: Bool { fatalError("can not as boolean") }
     var asFloat: Double { fatalError("can not as float") }
     var asTable: LuaTable { fatalError("can not as table") }
+    var asClosure: Closure { fatalError("can not as closure") }
 
     var isFloat: Bool { false }
     var isInteger: Bool { false }
@@ -196,5 +196,7 @@ extension Closure: LuaValue {
     var luaType: LuaType {
         _function
     }
+
+    var asClosure: Closure { self }
 
 }

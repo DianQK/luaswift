@@ -31,8 +31,8 @@ extension LuaState {
 
     // t[k]=v
     private func _setTable(t: LuaValue, k: LuaValue, v: LuaValue, idx: Int) {
-        if let tbl = t as? LuaTable {
-            tbl.put(key: k, val: v)
+        if t.luaType == .table {
+            t.asTable.put(key: k, val: v)
             return
         }
         fatalError("not a table!")
@@ -41,8 +41,8 @@ extension LuaState {
     func setGlobal(name: String) {
         let t = self.registry.get(key: LUA_RIDX_GLOBALS)
         let v = self.stack.pop()
-        if let tbl = t as? LuaTable {
-            tbl.put(key: name, val: v)
+        if t.luaType == .table {
+            t.asTable.put(key: name, val: v)
             return
         }
         fatalError("not a table!")

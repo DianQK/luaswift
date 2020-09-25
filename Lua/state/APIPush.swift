@@ -41,7 +41,7 @@ extension LuaState {
     }
 
     func pushSwiftClosure(f: @escaping SwiftFunction, n: Int) {
-        var closure = Closure(swiftFunc: f, nUpvals: n)
+        let closure = Closure(swiftFunc: f, nUpvals: n)
         if n > 0 {
             for i in (1...n).reversed() {
                 let val = self.stack.pop()

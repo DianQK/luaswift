@@ -131,8 +131,8 @@ class LuaStack {
         }
 
         if idx == LUA_REGISTRYINDEX {
-            if let val = val as? LuaTable {
-                self.state!.registry = val
+            if val.luaType == .table {
+                self.state!.registry = val.asTable
             }
             return
         }
