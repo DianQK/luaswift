@@ -20,7 +20,25 @@ protocol LuaValue {
     
     var isNil: Bool { get }
 
+    var asString: String { get }
+    var asInteger: Int64 { get }
+    var asBoolean: Bool { get }
+    var asFloat: Double { get }
+    var asTable: LuaTable { get }
+
+    var isFloat: Bool { get } // TODO: 也应当考虑使用 switch case
+    var isInteger: Bool { get }
+
 }
+
+let _none = LuaType.none
+let _nil = LuaType.nil
+let _boolean = LuaType.boolean
+let _lightuserdata = LuaType.lightuserdata
+let _number = LuaType.number
+let _string = LuaType.string
+let  _table = LuaType.table
+let _function = LuaType.function
 
 extension LuaValue {
 
@@ -49,6 +67,15 @@ extension LuaValue {
     
     var isNil: Bool { false }
 
+    var asString: String { fatalError("can not as string") }
+    var asInteger: Int64 { fatalError("can not as integer") }
+    var asBoolean: Bool { fatalError("can not as boolean") }
+    var asFloat: Double { fatalError("can not as float") }
+    var asTable: LuaTable { fatalError("can not as table") }
+
+    var isFloat: Bool { false }
+    var isInteger: Bool { false }
+
 }
 
 protocol LuaNumberValue: LuaValue {
@@ -60,7 +87,7 @@ protocol LuaNumberValue: LuaValue {
 extension LuaNumberValue {
 
     var luaType: LuaType {
-        .number
+        _number
     }
 
     var toStringX: (value: String, ok: Bool) {
@@ -72,7 +99,7 @@ extension LuaNumberValue {
 struct _LuaNil: LuaValue {
 
     var luaType: LuaType {
-        .nil
+        _nil
     }
     
     var isNil: Bool { true }
@@ -84,8 +111,10 @@ let LuaNil: LuaValue = _LuaNil()
 extension Bool: LuaValue {
 
     var luaType: LuaType {
-        .boolean
+        _boolean
     }
+
+    var asBoolean: Bool { self }
 
 }
 
@@ -99,6 +128,10 @@ extension Int64: LuaNumberValue {
         return (self, true)
     }
 
+    var asInteger: Int64 { self }
+
+    var isInteger: Bool { true }
+
 }
 
 extension Double: LuaNumberValue {
@@ -111,13 +144,17 @@ extension Double: LuaNumberValue {
         return Math.floatToInteger(self)
     }
 
+    var isFloat: Bool { true }
+
+    var asFloat: Double { self }
+
 }
 
 
 extension String: LuaValue {
 
     var luaType: LuaType {
-        .string
+        _string
     }
 
     var toStringX: (value: String, ok: Bool) {
@@ -140,20 +177,24 @@ extension String: LuaValue {
         }
     }
 
+    var asString: String { self }
+
 }
 
 extension LuaTable: LuaValue {
 
     var luaType: LuaType {
-        .table
+        _table
     }
+
+    var asTable: LuaTable { self }
 
 }
 
 extension Closure: LuaValue {
 
     var luaType: LuaType {
-        .function
+        _function
     }
 
 }

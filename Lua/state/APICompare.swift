@@ -24,88 +24,72 @@ extension LuaState {
     }
     
     private func _eq(a: LuaValue, b: LuaValue) -> Bool {
-        if a.isNil {
-            return b.isNil
-        } else if let x = a as? Bool {
-            if let y = b as? Bool {
-                return x == y
-            } else {
-                return false
+        switch (a.luaType, b.luaType) {
+        case (.nil, .nil):
+            return true
+        case (.boolean, .boolean):
+            return a.asBoolean == b.asBoolean
+        case (.string, .string):
+            return a.asString == b.asString
+        case (.number, .number):
+            switch (a.isInteger, b.isInteger) {
+            case (true, false):
+                return Double(a.asInteger) == b.asFloat
+            case (true, true):
+                return a.asInteger == b.asInteger
+            case (false, false):
+                return a.asFloat == b.asFloat
+            case (false, true):
+                return a.asFloat == Double(b.asInteger)
             }
-        } else if let x = a as? String {
-            if let y = b as? String {
-                return x == y
-            } else {
-                return false
-            }
-        } else if let x = a as? Int64 {
-            if let y = b as? Int64 {
-                return x == y
-            } else if let y = b as? Double {
-                return Double(x) == y
-            } else {
-                return false
-            }
-        } else if let x = a as? Double {
-            if let y = b as? Double {
-                return x == y
-            } else if let y = b as? Int64 {
-                return x == Double(y)
-            } else {
-                return false
-            }
-        } else if let x = a as? LuaTable {
-            if let y = b as? LuaTable {
-                return x === y
-            } else {
-                return false
-            }
+        case (.table, .table):
+            return a.asTable === a.asTable
+        default:
+            // FIXME: 其他类型判断不当
+            let aPointer = unsafeBitCast(a, to: Int.self)
+            let bPointer = unsafeBitCast(b, to: Int.self)
+            return aPointer == bPointer
         }
-        let aPointer = unsafeBitCast(a, to: Int.self)
-        let bPointer = unsafeBitCast(b, to: Int.self)
-        return aPointer == bPointer
     }
     
     private func _lt(a: LuaValue, b: LuaValue) -> Bool {
-        if let x = a as? String {
-            if let y = b as? String {
-                return x < y
+        switch (a.luaType, b.luaType) {
+        case (.string, .string):
+            return a.asString < b.asString
+        case (.number, .number):
+            switch (a.isInteger, b.isInteger) {
+            case (true, false):
+                return Double(a.asInteger) < b.asFloat
+            case (true, true):
+                return a.asInteger < b.asInteger
+            case (false, false):
+                return a.asFloat < b.asFloat
+            case (false, true):
+                return a.asFloat < Double(b.asInteger)
             }
-        } else if let x = a as? Int64 {
-            if let y = b as? Int64 {
-                return x < y
-            } else if let y = b as? Double {
-                return Double(x) < y
-            }
-        } else if let x = a as? Double {
-            if let y = b as? Double {
-                return x < y
-            } else if let y = b as? Int64 {
-                return x < Double(y)
-            }
+        default:
+            fatalError("comparison error!")
         }
-        fatalError("comparison error!")
     }
     
     private func _le(a: LuaValue, b: LuaValue) -> Bool {
-        if let x = a as? String {
-            if let y = b as? String {
-                return x <= y
+        switch (a.luaType, b.luaType) {
+        case (.string, .string):
+            return a.asString <= b.asString
+        case (.number, .number):
+            switch (a.isInteger, b.isInteger) {
+            case (true, false):
+                return Double(a.asInteger) <= b.asFloat
+            case (true, true):
+                return a.asInteger <= b.asInteger
+            case (false, false):
+                return a.asFloat <= b.asFloat
+            case (false, true):
+                return a.asFloat <= Double(b.asInteger)
             }
-        } else if let x = a as? Int64 {
-            if let y = b as? Int64 {
-                return x <= y
-            } else if let y = b as? Double {
-                return Double(x) <= y
-            }
-        } else if let x = a as? Double {
-            if let y = b as? Double {
-                return x <= y
-            } else if let y = b as? Int64 {
-                return x <= Double(y)
-            }
+        default:
+            fatalError("comparison error!")
         }
-        fatalError("comparison error!")
     }
     
 }
