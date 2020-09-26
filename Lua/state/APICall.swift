@@ -23,8 +23,22 @@ extension LuaState {
     }
 
     func call(nArgs: Int, nResults: Int) {
-        let val = self.stack.get(idx: -(nArgs + 1))
-        if val.luaType == .function {
+        var nArgs = nArgs
+        var val = self.stack.get(idx: -(nArgs + 1))
+        var isClosure = val.luaType == .function
+        
+        if !isClosure {
+            let mf = getMetafield(val: val, fieldName: "__cal", ls: self)
+            if mf.luaType == .function {
+                val = mf
+                isClosure = true
+                self.stack.push(val)
+                self.insert(idx: -(nArgs + 2))
+                nArgs += 1
+            }
+        }
+        
+        if isClosure {
             let c = val.asClosure
             if let proto = c.proto {
                 self.callLuaClosure(nArgs: nArgs, nResults: nResults, proto: proto, closure: c)
