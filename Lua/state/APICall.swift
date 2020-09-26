@@ -11,7 +11,7 @@ import Foundation
 extension LuaState {
 
     func load(chunk: Data, chunkName: String, mode: String) throws -> Int {
-        let reader = Reader(data: data)
+        let reader = Reader(data: chunk)
         let binaryChunk = try reader.undump()
         let c = Closure(proto: binaryChunk.mainFunc)
         if !binaryChunk.mainFunc.upvalues.isEmpty {
