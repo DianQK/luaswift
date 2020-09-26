@@ -23,11 +23,28 @@ func luaPrint(ls: LuaState) -> Int {
     return 0
 }
 
-let fileUrl = URL(fileURLWithPath: CommandLine.arguments[1])
-let data = try Data(contentsOf: fileUrl)
+func luaGetMetatable(ls: LuaState) -> Int {
+    if !ls.getMetatable(idx: 1) {
+        ls.pushNil()
+    }
+    return 1
+}
 
-//let ls = LuaState()
-//ls.register(name: "print", f: luaPrint)
-//_ = try ls.load(chunk: data, chunkName: fileUrl.absoluteString, mode: "b")
-//ls.call(nArgs: 0, nResults: 0)
+func luaSetMetatable(ls: LuaState) -> Int {
+    ls.setMetatable(idx: 1)
+    return 1
+}
 
+func main() throws {
+    let fileUrl = URL(fileURLWithPath: CommandLine.arguments[1])
+    let data = try Data(contentsOf: fileUrl)
+
+    let ls = LuaState()
+    ls.register(name: "print", f: luaPrint)
+    ls.register(name: "getmetatable", f: luaGetMetatable(ls:))
+    ls.register(name: "setmetatable", f: luaSetMetatable(ls:))
+    _ = try ls.load(chunk: data, chunkName: fileUrl.absoluteString, mode: "b")
+    ls.call(nArgs: 0, nResults: 0)
+}
+
+try main()

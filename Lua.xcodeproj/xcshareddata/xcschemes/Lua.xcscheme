@@ -89,10 +89,18 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "$(SOURCE_ROOT)/luacode/ch10/fibonacci.luac"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "$(SOURCE_ROOT)/luacode/ch10/test_env.luac"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "$(SOURCE_ROOT)/luacode/ch11/vector2.luac"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "$(SOURCE_ROOT)/luacode/ch11/complex.luac"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
