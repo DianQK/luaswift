@@ -14,28 +14,50 @@ extension LuaState {
         let t = self.stack.get(idx: idx)
         let v = self.stack.pop()
         let k = self.stack.pop()
-        self._setTable(t: t, k: k, v: v, idx: idx)
+        self._setTable(t: t, k: k, v: v, raw: false)
     }
 
     func setField(idx: Int, k: String) {
         let t = self.stack.get(idx: idx)
         let v = self.stack.pop()
-        self._setTable(t: t, k: k, v: v, idx: idx)
+        self._setTable(t: t, k: k, v: v, raw: false)
     }
 
     func setI(idx: Int, i: Int64) {
         let t = self.stack.get(idx: idx)
         let v = self.stack.pop()
-        self._setTable(t: t, k: i, v: v, idx: idx)
+        self._setTable(t: t, k: i, v: v, raw: false)
     }
 
     // t[k]=v
-    private func _setTable(t: LuaValue, k: LuaValue, v: LuaValue, idx: Int) {
+    private func _setTable(t: LuaValue, k: LuaValue, v: LuaValue, raw: Bool) {
         if t.luaType == .table {
-            t.asTable.put(key: k, val: v)
+            let tbl = t.asTable
+            if raw || tbl.get(key: k).luaType != .nil || !tbl.hasMetafield(fieldName: "__newindex") {
+                tbl.put(key: k, val: v)
+            }
             return
         }
-        fatalError("not a table!")
+        
+        if !raw {
+            let mf = getMetafield(val: t, fieldName: "__newindex", ls: self)
+            switch mf.luaType {
+            case .table:
+                self._setTable(t: mf.asTable, k: k, v: v, raw: false)
+                return
+            case .function:
+                self.stack.push(mf)
+                self.stack.push(t)
+                self.stack.push(k)
+                self.stack.push(v)
+                self.call(nArgs: 3, nResults: 0)
+                return
+            default:
+                break
+            }
+        }
+        
+        fatalError("index error!")
     }
 
     func setGlobal(name: String) {

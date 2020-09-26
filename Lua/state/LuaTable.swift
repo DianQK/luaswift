@@ -142,5 +142,12 @@ class LuaTable {
     func len() -> Int {
         self.arr.count
     }
+    
+    func hasMetafield(fieldName: String) -> Bool {
+        guard let metatable = self.metatable else {
+            return false
+        }
+        return metatable.get(key: fieldName).luaType != .nil
+    }
 
 }

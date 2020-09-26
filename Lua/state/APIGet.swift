@@ -22,33 +22,54 @@ extension LuaState {
     func getTable(idx: Int) -> LuaType {
         let t = self.stack.get(idx: idx)
         let k = self.stack.pop()
-        return self._getTable(t: t, k: k)
+        return self._getTable(t: t, k: k, raw: false)
     }
 
     func getField(idx: Int, k: String) -> LuaType {
         let t = self.stack.get(idx: idx)
-        return self._getTable(t: t, k: k)
+        return self._getTable(t: t, k: k, raw: false)
     }
 
     func getI(idx: Int, i: Int64) -> LuaType {
         let t = self.stack.get(idx: idx)
-        return self._getTable(t: t, k: i)
+        return self._getTable(t: t, k: i, raw: false)
     }
 
     // push(t[k])
-    private func _getTable(t: LuaValue, k: LuaValue) -> LuaType {
+    private func _getTable(t: LuaValue, k: LuaValue, raw: Bool) -> LuaType {
         if t.luaType == .table {
-            let v = t.asTable.get(key: k)
-            self.stack.push(v)
-            return v.luaType
+            let tbl = t.asTable
+            let v = tbl.get(key: k)
+            if raw || v.luaType != .nil || !tbl.hasMetafield(fieldName: "__index") {
+                self.stack.push(v)
+                return v.luaType
+            }
+        }
+        
+        if !raw {
+            let mf = getMetafield(val: t, fieldName: "__index", ls: self)
+            switch mf.luaType {
+            case .table:
+                let x = mf.asTable
+                return self._getTable(t: x, k: k, raw: false)
+            case .function:
+                self.stack.push(mf)
+                self.stack.push(t)
+                self.stack.push(k)
+                self.call(nArgs: 2, nResults: 1)
+                let v = self.stack.get(idx: -1)
+                return v.luaType
+            default:
+                break
+            }
         }
 
-        fatalError("not a table!") // todo
+        fatalError("index error!")
     }
 
     func getGlobal(name: String) -> LuaType {
         let t = self.registry.get(key: LUA_RIDX_GLOBALS)
-        return self._getTable(t: t, k: name)
+        return self._getTable(t: t, k: name, raw: false)
     }
 
 }
