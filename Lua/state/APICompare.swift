@@ -10,12 +10,22 @@ import Foundation
 
 extension LuaState {
     
+    func rawEqual(idx1: Int, idx2: Int) -> Bool {
+        if !self.stack.isValid(idx: idx1) || !self.stack.isValid(idx: idx2) {
+            return false
+        }
+
+        let a = self.stack.get(idx: idx1)
+        let b = self.stack.get(idx: idx2)
+        return _eq(a: a, b: b, ls: nil)
+    }
+    
     func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool {
         let a = self.stack.get(idx: idx1)
         let b = self.stack.get(idx: idx2)
         switch op {
         case .eq:
-            return _eq(a: a, b: b)
+            return _eq(a: a, b: b, ls: self)
         case .lt:
             return _lt(a: a, b: b)
         case .le:
@@ -23,7 +33,7 @@ extension LuaState {
         }
     }
     
-    private func _eq(a: LuaValue, b: LuaValue) -> Bool {
+    private func _eq(a: LuaValue, b: LuaValue, ls: LuaState?) -> Bool {
         switch (a.luaType, b.luaType) {
         case (.nil, .nil):
             return true
@@ -45,8 +55,8 @@ extension LuaState {
         case (.table, .table):
             let x = a.asTable
             let y = b.asTable
-            if x !== y {
-                let (result, ok) = callMetamethod(a: x, b: y, mmName: "__eq", ls: self)
+            if let ls = ls, x !== y {
+                let (result, ok) = callMetamethod(a: x, b: y, mmName: "__eq", ls: ls)
                 if ok {
                     return result.toBoolean
                 }

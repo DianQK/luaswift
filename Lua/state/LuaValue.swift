@@ -201,13 +201,13 @@ extension Closure: LuaValue {
 
 }
 
-func setMetatable(val: LuaValue, mt: LuaTable, ls: LuaState) {
+func setMetatable(val: LuaValue, mt: LuaTable?, ls: LuaState) {
     if val.luaType == .table {
         val.asTable.metatable = mt
         return
     }
     let key = String(format: "_MT%d", val.luaType.rawValue)
-    ls.registry.put(key: key, val: mt)
+    ls.registry.put(key: key, val: mt ?? LuaNil)
 }
 
 func getMetatable(val: LuaValue, ls: LuaState) -> LuaTable? {

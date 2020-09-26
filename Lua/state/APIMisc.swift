@@ -33,6 +33,18 @@ extension LuaState {
         fatalError("length error!")
     }
     
+    func rawLen(idx: Int) -> UInt {
+        let val = self.stack.get(idx: idx)
+        switch val.luaType {
+        case .string:
+            return UInt(val.asString.count)
+        case .table:
+            return UInt(val.asTable.len())
+        default:
+            return 0
+        }
+    }
+    
     // [-n, +1, e]
     // http://www.lua.org/manual/5.3/manual.html#lua_concat
     func concat(n: Int) {

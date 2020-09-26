@@ -16,6 +16,13 @@ extension LuaState {
         let k = self.stack.pop()
         self._setTable(t: t, k: k, v: v, raw: false)
     }
+    
+    func rawSet(idx: Int) {
+        let t = self.stack.get(idx: idx)
+        let v = self.stack.pop()
+        let k = self.stack.pop()
+        self._setTable(t: t, k: k, v: v, raw: true)
+    }
 
     func setField(idx: Int, k: String) {
         let t = self.stack.get(idx: idx)
@@ -27,6 +34,12 @@ extension LuaState {
         let t = self.stack.get(idx: idx)
         let v = self.stack.pop()
         self._setTable(t: t, k: i, v: v, raw: false)
+    }
+    
+    func rawSetI(idx: Int, i: Int64) {
+        let t = self.stack.get(idx: idx)
+        let v = self.stack.pop()
+        self._setTable(t: t, k: i, v: v, raw: true)
     }
 
     // t[k]=v
@@ -73,6 +86,20 @@ extension LuaState {
     func register(name: String, f: @escaping SwiftFunction) {
         self.pushSwiftFunction(f: f)
         self.setGlobal(name: name)
+    }
+    
+    func setMetatable(idx: Int) {
+        let val = self.stack.get(idx: idx)
+        let mtVal = self.stack.pop()
+        
+        switch mtVal.luaType {
+        case .nil:
+            Lua.setMetatable(val: val, mt: nil, ls: self)
+        case .table:
+            Lua.setMetatable(val: val, mt: mtVal.asTable, ls: self)
+        default:
+            fatalError("table expected!") // TODO: 
+        }
     }
 
 }

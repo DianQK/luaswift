@@ -24,6 +24,12 @@ extension LuaState {
         let k = self.stack.pop()
         return self._getTable(t: t, k: k, raw: false)
     }
+    
+    func rawGet(idx: Int) -> LuaType {
+        let t = self.stack.get(idx: idx)
+        let k = self.stack.pop()
+        return self._getTable(t: t, k: k, raw: true)
+    }
 
     func getField(idx: Int, k: String) -> LuaType {
         let t = self.stack.get(idx: idx)
@@ -33,6 +39,11 @@ extension LuaState {
     func getI(idx: Int, i: Int64) -> LuaType {
         let t = self.stack.get(idx: idx)
         return self._getTable(t: t, k: i, raw: false)
+    }
+    
+    func rawGetI(idx: Int, i: Int64) -> LuaType {
+        let t = self.stack.get(idx: idx)
+        return self._getTable(t: t, k: i, raw: true)
     }
 
     // push(t[k])
@@ -70,6 +81,16 @@ extension LuaState {
     func getGlobal(name: String) -> LuaType {
         let t = self.registry.get(key: LUA_RIDX_GLOBALS)
         return self._getTable(t: t, k: name, raw: false)
+    }
+    
+    func getMetatable(idx: Int) -> Bool {
+        let val = self.stack.get(idx: idx)
+        if let mt = Lua.getMetatable(val: val, ls: self) {
+            self.stack.push(mt)
+            return true
+        } else {
+            return false
+        }
     }
 
 }

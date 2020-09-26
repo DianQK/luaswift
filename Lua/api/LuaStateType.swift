@@ -47,6 +47,7 @@ protocol LuaStateType: class {
     func toString(idx: Int) -> String
     func toStringX(idx: Int) -> (String, Bool)
     func toSwiftFunction(idx: Int) -> SwiftFunction?
+    func rawLen(idx: Int) -> UInt
     /* push functions (Go -> stack) */
     func pushNil()
     func pushBoolean(_ b: Bool)
@@ -59,6 +60,7 @@ protocol LuaStateType: class {
     /* Comparison and arithmetic functions */
     func arith(op: ArithOp)
     func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool
+    func rawEqual(idx1: Int, idx2: Int) -> Bool
     /* get functions (Lua -> stack) */
     func newTable()
     func createTable(nArr: Int, nRec: Int)
@@ -66,11 +68,17 @@ protocol LuaStateType: class {
     func getField(idx: Int, k: String) -> LuaType
     func getI(idx: Int, i: Int64) -> LuaType
     func getGlobal(name: String) -> LuaType
+    func rawGet(idx: Int) -> LuaType
+    func rawGetI(idx: Int, i: Int64) -> LuaType
+    func getMetatable(idx: Int) -> Bool
     /* set functions (stack -> Lua) */
     func setTable(idx: Int)
     func setField(idx: Int, k: String)
     func setI(idx: Int, i: Int64)
     func setGlobal(name: String)
+    func rawSet(idx: Int)
+    func rawSetI(idx: Int, i: Int64)
+    func setMetatable(idx: Int)
     func register(name: String, f: @escaping SwiftFunction)
     /* 'load' and 'call' functions (load and run Lua code) */
     func load(chunk: Data, chunkName: String, mode: String) throws -> Int
