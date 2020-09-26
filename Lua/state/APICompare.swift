@@ -43,7 +43,15 @@ extension LuaState {
                 return a.asFloat == Double(b.asInteger)
             }
         case (.table, .table):
-            return a.asTable === a.asTable
+            let x = a.asTable
+            let y = b.asTable
+            if x !== y {
+                let (result, ok) = callMetamethod(a: x, b: y, mmName: "__eq", ls: self)
+                if ok {
+                    return result.toBoolean
+                }
+            }
+            return x === y
         default:
             // FIXME: 其他类型判断不当
             let aPointer = unsafeBitCast(a, to: Int.self)
@@ -68,6 +76,10 @@ extension LuaState {
                 return a.asFloat < Double(b.asInteger)
             }
         default:
+            let (result, ok) = callMetamethod(a: a, b: b, mmName: "__lt", ls: self)
+            if ok {
+                return result.toBoolean
+            }
             fatalError("comparison error!")
         }
     }
@@ -88,6 +100,18 @@ extension LuaState {
                 return a.asFloat <= Double(b.asInteger)
             }
         default:
+            do {
+                let (result, ok) = callMetamethod(a: a, b: b, mmName: "__le", ls: self)
+                if ok {
+                    return result.toBoolean
+                }
+            }
+            do {
+                let (result, ok) = callMetamethod(a: b, b: a, mmName: "__lt", ls: self)
+                if ok {
+                    return result.toBoolean
+                }
+            }
             fatalError("comparison error!")
         }
     }

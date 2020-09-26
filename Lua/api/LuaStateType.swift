@@ -78,4 +78,5 @@ protocol LuaStateType: class {
     /* miscellaneous functions */
     func len(idx: Int)
     func concat(n: Int)
+
 }
