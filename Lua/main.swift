@@ -24,7 +24,7 @@ func luaPrint(ls: LuaState) -> Int {
 }
 
 func luaGetMetatable(ls: LuaState) -> Int {
-    if !ls.getMetatable(idx: 1) {
+    if !ls.getMetatable(idx: 1) { // TODO: 专为测试代码适配，读 index 1 了
         ls.pushNil()
     }
     return 1
