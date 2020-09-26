@@ -28,7 +28,7 @@ extension LuaState {
         var isClosure = val.luaType == .function
         
         if !isClosure {
-            let mf = getMetafield(val: val, fieldName: "__cal", ls: self)
+            let mf = getMetafield(val: val, fieldName: "__call", ls: self)
             if mf.luaType == .function {
                 val = mf
                 isClosure = true
