@@ -51,6 +51,8 @@ struct LuaMapKey: Hashable {
 }
 
 class LuaTable {
+    
+    var metatable: LuaTable?
 
     var arr: [LuaValue]
     var map: [LuaMapKey: LuaValue] // TODO: 需要创建一个专门的 struct 处理

@@ -96,7 +96,7 @@ extension LuaNumberValue {
 
 }
 
-struct _LuaNil: LuaValue {
+private struct _LuaNil: LuaValue {
 
     var luaType: LuaType {
         _nil
@@ -199,4 +199,51 @@ extension Closure: LuaValue {
 
     var asClosure: Closure { self }
 
+}
+
+func setMetatable(val: LuaValue, mt: LuaTable, ls: LuaState) {
+    if val.luaType == .table {
+        val.asTable.metatable = mt
+        return
+    }
+    let key = String(format: "_MT%d", val.luaType.rawValue)
+    ls.registry.put(key: key, val: mt)
+}
+
+func getMetatable(val: LuaValue, ls: LuaState) -> LuaTable? {
+    if val.luaType == .table {
+        return val.asTable.metatable
+    }
+        
+    let key = String(format: "_MT%d", val.luaType.rawValue)
+    let mt = ls.registry.get(key: key)
+    if mt.luaType == .table {
+        return mt.asTable
+    }
+    
+    return nil
+}
+
+func getMetafield(val: LuaValue, fieldName: String, ls: LuaState) -> LuaValue {
+    if let mt = getMetatable(val: val, ls: ls) {
+        return mt.get(key: fieldName)
+    }
+    return LuaNil
+}
+
+func callMetamethod(a: LuaValue, b: LuaValue, mmName: String, ls: LuaState) -> (LuaValue, Bool) {
+    var mm = getMetafield(val: a, fieldName: mmName, ls: ls)
+    if mm.luaType == .nil {
+        mm = getMetafield(val: b, fieldName: mmName, ls: ls)
+        if mm.luaType == .nil {
+            return (LuaNil, false)
+        }
+    }
+
+    ls.stack.check(n: 4)
+    ls.stack.push(mm)
+    ls.stack.push(a)
+    ls.stack.push(b)
+    ls.call(nArgs: 2, nResults: 1)
+    return (ls.stack.pop(), true)
 }

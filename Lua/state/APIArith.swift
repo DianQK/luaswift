@@ -33,30 +33,32 @@ let funm: FArithOpFunc = { (a, _) in -a }
 let bnot: IArithOpFunc = { (a, _) in ~a }
 
 struct Operator {
+    let metamethod: String
     let integerFunc: IArithOpFunc?
     let floatFunc: FArithOpFunc?
     
-    init(_ integerFunc: IArithOpFunc?, _ floatFunc: FArithOpFunc?) {
+    init(_ metamethod: String, _ integerFunc: IArithOpFunc?, _ floatFunc: FArithOpFunc?) {
+        self.metamethod = metamethod
         self.integerFunc = integerFunc
         self.floatFunc = floatFunc
     }
 }
 
 let operators: [Operator] = [
-    Operator(iadd, fadd),
-    Operator(isub, fsub),
-    Operator(imul, fmul),
-    Operator(imod, fmod),
-    Operator(nil, pow),
-    Operator(nil, div),
-    Operator(iidiv, fidiv),
-    Operator(band, nil),
-    Operator(bor, nil),
-    Operator(bxor, nil),
-    Operator(shl, nil),
-    Operator(shr, nil),
-    Operator(iunm, funm),
-    Operator(bnot, nil)
+    Operator("__add", iadd, fadd),
+    Operator("__sub", isub, fsub),
+    Operator("__mul", imul, fmul),
+    Operator("__mod", imod, fmod),
+    Operator("__pow", nil, pow),
+    Operator("__div", nil, div),
+    Operator("__idiv", iidiv, fidiv),
+    Operator("__band", band, nil),
+    Operator("__bor", bor, nil),
+    Operator("__bxor", bxor, nil),
+    Operator("__shl", shl, nil),
+    Operator("__shr", shr, nil),
+    Operator("__unm", iunm, funm),
+    Operator("__bnot", bnot, nil)
 ]
 
 
@@ -74,12 +76,23 @@ extension LuaState {
         } else {
             a = b
         }
+        
+        let _operator = operators[op.rawValue]
 
-        let result = _arith(a: a, b: b, op: operators[op.rawValue])
-        if result.isNil {
-            fatalError("arithmetic error!")
+        let result = _arith(a: a, b: b, op: _operator)
+        if result.luaType != .nil {
+            self.stack.push(result)
+            return
         }
-        self.stack.push(result)
+        
+        let mm = _operator.metamethod
+        let (_result, ok) = callMetamethod(a: a, b: b, mmName: mm, ls: self)
+        if ok {
+            self.stack.push(_result)
+            return
+        }
+        
+        fatalError("arithmetic error!")
     }
     
     private func _arith(a: LuaValue, b: LuaValue, op: Operator) -> LuaValue {
