@@ -16,11 +16,21 @@ extension LuaState {
         let val = self.stack.get(idx: idx)
         if val.luaType == .string {
             self.stack.push(Int64(val.asString.count))
-        } else if val.luaType == .table {
-            self.stack.push(Int64(val.asTable.len()))
-        } else {
-            fatalError("length error!")
+            return
         }
+        
+        let (result, ok) = callMetamethod(a: val, b: val, mmName: "__len", ls: self)
+        if ok {
+            self.stack.push(result)
+            return
+        }
+        
+        if val.luaType == .table {
+            self.stack.push(Int64(val.asTable.len()))
+            return
+        }
+
+        fatalError("length error!")
     }
     
     // [-n, +1, e]
@@ -36,9 +46,18 @@ extension LuaState {
                     _ = self.stack.pop()
                     _ = self.stack.pop()
                     self.stack.push(s1 + s2)
-                } else {
-                    fatalError("caoncatenation error!")
+                    continue
                 }
+                
+                let b = self.stack.pop()
+                let a = self.stack.pop()
+                let (result, ok) = callMetamethod(a: a, b: b, mmName: "__concat", ls: self)
+                if ok {
+                    self.stack.push(result)
+                    continue
+                }
+                
+                fatalError("caoncatenation error!")
             }
         }
         // n == 1, do nothing
