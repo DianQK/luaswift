@@ -12,18 +12,31 @@ func LuaUpvalueIndex(i: Int) -> Int {
     return LUA_REGISTRYINDEX - i
 }
 
-struct LuaInternalError: Error {
+struct LuaInternalError: LocalizedError {
 
     let err: LuaValue
 
+    var errorDescription: String? {
+        switch err.luaType {
+        case .string:
+            return err.asString
+        default:
+            return "\(err)"
+        }
+    }
+
 }
 
-struct LuaSwiftError: Error {
+struct LuaSwiftError: LocalizedError {
 
     let message: String
 
     init(_ message: String) {
         self.message = message
+    }
+
+    var errorDescription: String? {
+        message
     }
 
 }
