@@ -45,6 +45,31 @@ func luaNext(ls: LuaState) -> Int {
     }
 }
 
+func luaPairs(ls: LuaState) -> Int {
+    ls.pushSwiftFunction(f: luaNext) // will return generator
+    // ✨调用新的方法时，创建了新的 LuaStack，此时 stack 还是干净的，所以这个 push idx 1 是把栈底的第一个参数拷贝到栈顶一份
+    ls.pushValue(idx: 1) // state,
+    ls.pushNil()
+    return 3
+}
+
+func _LuaIPairsAux(ls: LuaState) -> Int {
+    let i = ls.toInteger(idx: 2) + 1
+    ls.pushInteger(i)
+    if ls.getI(idx: 1, i: i) == .nil {
+        return 1
+    } else {
+        return 2
+    }
+}
+
+func luaIPairs(ls: LuaState) -> Int {
+    ls.pushSwiftFunction(f: _LuaIPairsAux(ls:)) /* iteration function */
+    ls.pushValue(idx: 1)               /* state */
+    ls.pushInteger(0)             /* initial value */
+    return 3
+}
+
 func main() throws {
     let fileUrl = URL(fileURLWithPath: CommandLine.arguments[1])
     let data = try Data(contentsOf: fileUrl)
@@ -53,6 +78,9 @@ func main() throws {
     ls.register(name: "print", f: luaPrint)
     ls.register(name: "getmetatable", f: luaGetMetatable(ls:))
     ls.register(name: "setmetatable", f: luaSetMetatable(ls:))
+    ls.register(name: "next", f: luaNext(ls:))
+    ls.register(name: "pairs", f: luaPairs(ls:))
+    ls.register(name: "ipairs", f: luaIPairs(ls:))
     _ = try ls.load(chunk: data, chunkName: fileUrl.absoluteString, mode: "b")
     ls.call(nArgs: 0, nResults: 0)
 }
