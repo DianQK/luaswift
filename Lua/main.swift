@@ -12,11 +12,11 @@ func luaPrint(ls: LuaState) throws -> Int {
     let nArgs = ls.getTop()
     for i in (1...nArgs) {
         if ls.isBoolean(idx: i) {
-            print(ls.toBoolean(idx: i), terminator: "")
+            print(ls.toBoolean(idx: i), terminator: " ")
         } else if ls.isString(idx: i) {
-            print(try ls.toString(idx: i), terminator: "")
+            print(try ls.toString(idx: i), terminator: " ")
         } else {
-            print(ls.typeName(ls.type(idx: i)), terminator: "")
+            print(ls.typeName(ls.type(idx: i)), terminator: " ")
         }
     }
     print("")
