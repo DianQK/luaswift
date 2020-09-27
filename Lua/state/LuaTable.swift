@@ -163,9 +163,9 @@ class LuaTable {
         }
 
         let nextKey = key.isNil ? self.firstKey : self.keys[LuaMapKey(value: key)]
-        if nextKey == nil && !key.isNil { // TODO: 补充 key != self.lastKey 的判断
-            fatalError("invalid key to 'next'")
-        }
+//        if nextKey == nil && !key.isNil { // TODO: 补充 key != self.lastKey 的判断
+//            fatalError("invalid key to 'next'")
+//        }
 
         return nextKey ?? LuaNil
     }
