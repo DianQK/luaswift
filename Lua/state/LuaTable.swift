@@ -57,6 +57,11 @@ class LuaTable {
     var arr: [LuaValue]
     var map: [LuaMapKey: LuaValue] // TODO: 需要创建一个专门的 struct 处理
 
+    private var keys: [LuaMapKey: LuaValue] = [:] // TODO: [key: nextKey]，寻找更合适建立 next 方案，借助 Swift 本身的迭代器能力
+    private var changed = false
+    private var lastKey = LuaNil
+    private var firstKey = LuaNil
+
     init(arr: [LuaValue], map: [LuaMapKey: LuaValue]) {
         self.arr = arr
         self.map = map
@@ -93,6 +98,7 @@ class LuaTable {
         if key.isFloat && key.asFloat.isNaN {
             fatalError("table index is NaN!")
         }
+        self.changed = true
         let key = _floatToInteger(key: key)
 
         if key.isInteger {
@@ -148,6 +154,45 @@ class LuaTable {
             return false
         }
         return metatable.get(key: fieldName).luaType != .nil
+    }
+
+    func nextKey(_ key: LuaValue) -> LuaValue {
+        if self.keys.isEmpty || (key.isNil && self.changed) {
+            self.initKeys()
+            self.changed = false
+        }
+
+        let nextKey = key.isNil ? self.firstKey : self.keys[LuaMapKey(value: key)]
+        if nextKey == nil && !key.isNil { // TODO: 补充 key != self.lastKey 的判断
+            fatalError("invalid key to 'next'")
+        }
+
+        return nextKey ?? LuaNil
+    }
+
+    private func initKeys() {
+        self.keys = [:]
+        self.firstKey = LuaNil
+        var key: LuaValue = LuaNil
+        for (i, v) in self.arr.enumerated() where v.luaType != .nil {
+            let nextKey = Int64(i + 1)
+            if self.firstKey.isNil {
+                self.firstKey = nextKey
+            } else {
+                self.keys[LuaMapKey(value: key)] = nextKey
+            }
+            key = nextKey
+        }
+        for (k, v) in self.map where v.luaType != .nil {
+            let nextKey = k.value
+            if self.firstKey.isNil {
+                self.firstKey = nextKey
+            } else {
+                self.keys[LuaMapKey(value: key)] = nextKey
+            }
+            key = nextKey
+        }
+        self.lastKey = key
     }
 
 }

@@ -74,5 +74,21 @@ extension LuaState {
         }
         // n == 1, do nothing
     }
+
+    func next(idx: Int) -> Bool {
+        let val = self.stack.get(idx: idx)
+        if val.luaType == .table {
+            let t = val.asTable
+            let key = self.stack.pop()
+            let nextKey = t.nextKey(key)
+            if nextKey.luaType != .nil {
+                self.stack.push(nextKey)
+                self.stack.push(t.get(key: nextKey))
+                return true
+            }
+            return false
+        }
+        fatalError("table expected!")
+    }
     
 }

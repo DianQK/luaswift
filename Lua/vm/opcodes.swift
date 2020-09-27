@@ -144,8 +144,8 @@ let opcodes: [Opcode] = [
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "FORLOOP ", action: Instruction.forLoop), // R(A)+=R(A+2); if R(A) <?= R(A+1) then { pc+=sBx; R(A+3)=R(A) }
     Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "FORPREP ", action: Instruction.forPrep), // R(A)-=R(A+2); pc+=sBx
 
-    Opcode(testFlag: 0, setAFlag: 0, argBMode: .N, argCMode: .U, opMode: .IABC /* */, name: "TFORCALL", action: Instruction.todo), // R(A+3), ... ,R(A+2+C) := R(A)(R(A+1), R(A+2));
-    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "TFORLOOP", action: Instruction.todo), // if R(A+1) ~= nil then { R(A)=R(A+1); pc += sBx }
+    Opcode(testFlag: 0, setAFlag: 0, argBMode: .N, argCMode: .U, opMode: .IABC /* */, name: "TFORCALL", action: Instruction.tForCall), // R(A+3), ... ,R(A+2+C) := R(A)(R(A+1), R(A+2));
+    Opcode(testFlag: 0, setAFlag: 1, argBMode: .R, argCMode: .N, opMode: .IAsBx /**/, name: "TFORLOOP", action: Instruction.tForLoop), // if R(A+1) ~= nil then { R(A)=R(A+1); pc += sBx }
 
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IABC /* */, name: "SETLIST ", action: Instruction.setList), // R(A)[(C-1)*FPF+i] := R(A+i), 1 <= i <= B
 
@@ -154,4 +154,3 @@ let opcodes: [Opcode] = [
 
     Opcode(testFlag: 0, setAFlag: 0, argBMode: .U, argCMode: .U, opMode: .IAx /*  */, name: "EXTRAARG", action: Instruction.todo), // extra (larger) argument for previous opcode
 ]
-

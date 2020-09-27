@@ -121,4 +121,13 @@ extension Instruction {
         vm.replace(idx: a)
     }
 
+    static func tForCall(i: Instruction, vm: LuaVMType) {
+        var (a, _, c) = i.ABC
+        a += 1
+
+        _ = _pushFuncAndArgs(a: a, b: 3, vm: vm)
+        vm.call(nArgs: 2, nResults: c)
+        _popResults(a: a + 3, c: c + 1, vm: vm)
+    }
+
 }

@@ -87,4 +87,6 @@ protocol LuaStateType: class {
     func len(idx: Int)
     func concat(n: Int)
 
+    func next(idx: Int) -> Bool
+
 }

@@ -35,6 +35,16 @@ func luaSetMetatable(ls: LuaState) -> Int {
     return 1
 }
 
+func luaNext(ls: LuaState) -> Int {
+    ls.setTop(idx: 2) // 简化版
+    if ls.next(idx: 1) {
+        return 2
+    } else {
+        ls.pushNil()
+        return 1
+    }
+}
+
 func main() throws {
     let fileUrl = URL(fileURLWithPath: CommandLine.arguments[1])
     let data = try Data(contentsOf: fileUrl)

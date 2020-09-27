@@ -58,4 +58,14 @@ extension Instruction {
         }
     }
 
+    static func tForLoop(i: Instruction, vm: LuaVMType) {
+        var (a, sBx) = i.AsBx
+        a += 1
+
+        if !vm.isNil(idx: a + 1) {
+            vm.copy(fromIdx: a + 1, toIdx: a)
+            vm.addPC(n: sBx)
+        }
+    }
+
 }
