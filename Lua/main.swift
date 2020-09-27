@@ -70,6 +70,18 @@ func luaIPairs(ls: LuaState) throws -> Int {
     return 3
 }
 
+func luaError(ls: LuaState) throws -> Int {
+    try ls.error()
+}
+
+func luaPCall(ls: LuaState) throws -> Int {
+    let nArgs = ls.getTop() - 1
+    let status = try ls.pCall(nArgs: nArgs, nResults: -1, msgh: 0)
+    try ls.pushBoolean(status == .ok)
+    ls.insert(idx: 1)
+    return ls.getTop()
+}
+
 func main() throws {
     let fileUrl = URL(fileURLWithPath: CommandLine.arguments[1])
     let data = try Data(contentsOf: fileUrl)
@@ -81,6 +93,8 @@ func main() throws {
     try ls.register(name: "next", f: luaNext(ls:))
     try ls.register(name: "pairs", f: luaPairs(ls:))
     try ls.register(name: "ipairs", f: luaIPairs(ls:))
+    try ls.register(name: "error", f: luaError(ls:))
+    try ls.register(name: "pcall", f: luaPCall(ls:))
     _ = try ls.load(chunk: data, chunkName: fileUrl.absoluteString, mode: "b")
     try ls.call(nArgs: 0, nResults: 0)
 }

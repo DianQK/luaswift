@@ -121,7 +121,7 @@ extension LuaState {
         }
     }
 
-    func pCall(nArgs: Int, nResults: Int, msgh: Int) throws -> Int {
+    func pCall(nArgs: Int, nResults: Int, msgh: Int) throws -> LuaThreadStatus {
         let caller = self.stack
         var status = LuaThreadStatus.errrun
         do {
@@ -136,7 +136,7 @@ extension LuaState {
             }
             try self.stack.push(error.localizedDescription) // TODO: 完善 error 信息
         }
-        return status.rawValue
+        return status
     }
 
 }

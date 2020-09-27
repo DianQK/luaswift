@@ -106,6 +106,6 @@ protocol LuaStateType: class {
     func next(idx: Int) throws -> Bool
 
     func error() throws -> Int
-    func pCall(nArgs: Int, nResults: Int, msgh: Int) throws -> Int
+    func pCall(nArgs: Int, nResults: Int, msgh: Int) throws -> LuaThreadStatus
 
 }

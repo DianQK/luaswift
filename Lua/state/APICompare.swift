@@ -62,9 +62,10 @@ extension LuaState {
                 }
             }
             return x === y
-        case (.nil, _), (_, .nil):
-            return false
         default:
+            if a.luaType != b.luaType {
+                return false
+            }
             // FIXME: 其他类型判断不当
             let aPointer = unsafeBitCast(a, to: Int.self)
             let bPointer = unsafeBitCast(b, to: Int.self)
