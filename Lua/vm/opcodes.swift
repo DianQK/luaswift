@@ -89,7 +89,7 @@ struct Opcode {
     let opMode: OpMode
     let name: String
 
-    let action: (_ i: Instruction, _ vm: LuaVMType) -> ()
+    let action: (_ i: Instruction, _ vm: LuaVMType) throws -> ()
 }
 
 let opcodes: [Opcode] = [

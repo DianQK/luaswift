@@ -11,27 +11,27 @@ import Foundation
 extension Instruction {
 
     // R(A)-=R(A+2); pc+=sBx
-    static func forPrep(i: Instruction, vm: LuaVMType) {
+    static func forPrep(i: Instruction, vm: LuaVMType) throws {
         var (a, sBx) = i.AsBx
         a += 1
 
         if vm.type(idx: a) == .string {
-            vm.pushNumber(vm.toNumber(idx: a))
-            vm.replace(idx: a)
+            try vm.pushNumber(vm.toNumber(idx: a))
+            try vm.replace(idx: a)
         }
         if vm.type(idx: a + 1) == .string {
-            vm.pushNumber(vm.toNumber(idx: a + 1))
-            vm.replace(idx: a + 1)
+            try vm.pushNumber(vm.toNumber(idx: a + 1))
+            try vm.replace(idx: a + 1)
         }
         if vm.type(idx: a + 2) == .string {
-            vm.pushNumber(vm.toNumber(idx: a + 2))
-            vm.replace(idx: a + 1)
+            try vm.pushNumber(vm.toNumber(idx: a + 2))
+            try vm.replace(idx: a + 1)
         }
 
-        vm.pushValue(idx: a)
-        vm.pushValue(idx: a + 2)
-        vm.arith(op: .sub)
-        vm.replace(idx: a)
+        try vm.pushValue(idx: a)
+        try vm.pushValue(idx: a + 2)
+        try vm.arith(op: .sub)
+        try vm.replace(idx: a)
         vm.addPC(n: sBx)
     }
 
@@ -39,31 +39,41 @@ extension Instruction {
     // if R(A) <?= R(A+1) then {
     //   pc+=sBx; R(A+3)=R(A)
     // }
-    static func forLoop(i: Instruction, vm: LuaVMType) {
+    static func forLoop(i: Instruction, vm: LuaVMType) throws {
         var (a, sBx) = i.AsBx
         a += 1
 
         // R(A)+=R(A+2);
-        vm.pushValue(idx: a + 2)
-        vm.pushValue(idx: a)
-        vm.arith(op: .add)
-        vm.replace(idx: a)
+        try vm.pushValue(idx: a + 2)
+        try vm.pushValue(idx: a)
+        try vm.arith(op: .add)
+        try vm.replace(idx: a)
 
         let isPositiveStep = vm.toNumber(idx: a + 2) >= 0
-        if (isPositiveStep && vm.compare(idx1: a, idx2: a + 1, op: .le))
-            || (!isPositiveStep && vm.compare(idx1: a + 1, idx2: a, op: .le)) {
+
+        func jump() throws {
             // pc+=sBx; R(A+3)=R(A)
             vm.addPC(n: sBx)
-            vm.copy(fromIdx: a, toIdx: a + 3)
+            try vm.copy(fromIdx: a, toIdx: a + 3)
+        }
+
+        if isPositiveStep {
+            if try vm.compare(idx1: a, idx2: a + 1, op: .le) {
+                try jump()
+            }
+        } else {
+            if try vm.compare(idx1: a + 1, idx2: a, op: .le) {
+                try jump()
+            }
         }
     }
 
-    static func tForLoop(i: Instruction, vm: LuaVMType) {
+    static func tForLoop(i: Instruction, vm: LuaVMType) throws {
         var (a, sBx) = i.AsBx
         a += 1
 
         if !vm.isNil(idx: a + 1) {
-            vm.copy(fromIdx: a + 1, toIdx: a)
+            try vm.copy(fromIdx: a + 1, toIdx: a)
             vm.addPC(n: sBx)
         }
     }

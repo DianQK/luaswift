@@ -201,13 +201,13 @@ extension Closure: LuaValue {
 
 }
 
-func setMetatable(val: LuaValue, mt: LuaTable?, ls: LuaState) {
+func setMetatable(val: LuaValue, mt: LuaTable?, ls: LuaState) throws {
     if val.luaType == .table {
         val.asTable.metatable = mt
         return
     }
     let key = String(format: "_MT%d", val.luaType.rawValue)
-    ls.registry.put(key: key, val: mt ?? LuaNil)
+    try ls.registry.put(key: key, val: mt ?? LuaNil)
 }
 
 func getMetatable(val: LuaValue, ls: LuaState) -> LuaTable? {
@@ -231,7 +231,7 @@ func getMetafield(val: LuaValue, fieldName: String, ls: LuaState) -> LuaValue {
     return LuaNil
 }
 
-func callMetamethod(a: LuaValue, b: LuaValue, mmName: String, ls: LuaState) -> (LuaValue, Bool) {
+func callMetamethod(a: LuaValue, b: LuaValue, mmName: String, ls: LuaState) throws -> (LuaValue, Bool) {
     var mm = getMetafield(val: a, fieldName: mmName, ls: ls)
     if mm.luaType == .nil {
         mm = getMetafield(val: b, fieldName: mmName, ls: ls)
@@ -241,9 +241,9 @@ func callMetamethod(a: LuaValue, b: LuaValue, mmName: String, ls: LuaState) -> (
     }
 
     ls.stack.check(n: 4)
-    ls.stack.push(mm)
-    ls.stack.push(a)
-    ls.stack.push(b)
-    ls.call(nArgs: 2, nResults: 1)
-    return (ls.stack.pop(), true)
+    try ls.stack.push(mm)
+    try ls.stack.push(a)
+    try ls.stack.push(b)
+    try ls.call(nArgs: 2, nResults: 1)
+    return (try ls.stack.pop(), true)
 }

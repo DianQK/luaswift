@@ -10,30 +10,30 @@ import Foundation
 
 extension LuaState {
     
-    func rawEqual(idx1: Int, idx2: Int) -> Bool {
+    func rawEqual(idx1: Int, idx2: Int) throws -> Bool {
         if !self.stack.isValid(idx: idx1) || !self.stack.isValid(idx: idx2) {
             return false
         }
 
         let a = self.stack.get(idx: idx1)
         let b = self.stack.get(idx: idx2)
-        return _eq(a: a, b: b, ls: nil)
+        return try _eq(a: a, b: b, ls: nil)
     }
     
-    func compare(idx1: Int, idx2: Int, op: CompareOp) -> Bool {
+    func compare(idx1: Int, idx2: Int, op: CompareOp) throws -> Bool {
         let a = self.stack.get(idx: idx1)
         let b = self.stack.get(idx: idx2)
         switch op {
         case .eq:
-            return _eq(a: a, b: b, ls: self)
+            return try _eq(a: a, b: b, ls: self)
         case .lt:
-            return _lt(a: a, b: b)
+            return try _lt(a: a, b: b)
         case .le:
-            return _le(a: a, b: b)
+            return try _le(a: a, b: b)
         }
     }
     
-    private func _eq(a: LuaValue, b: LuaValue, ls: LuaState?) -> Bool {
+    private func _eq(a: LuaValue, b: LuaValue, ls: LuaState?) throws -> Bool {
         switch (a.luaType, b.luaType) {
         case (.nil, .nil):
             return true
@@ -56,7 +56,7 @@ extension LuaState {
             let x = a.asTable
             let y = b.asTable
             if let ls = ls, x !== y {
-                let (result, ok) = callMetamethod(a: x, b: y, mmName: "__eq", ls: ls)
+                let (result, ok) = try callMetamethod(a: x, b: y, mmName: "__eq", ls: ls)
                 if ok {
                     return result.toBoolean
                 }
@@ -72,7 +72,7 @@ extension LuaState {
         }
     }
     
-    private func _lt(a: LuaValue, b: LuaValue) -> Bool {
+    private func _lt(a: LuaValue, b: LuaValue) throws -> Bool {
         switch (a.luaType, b.luaType) {
         case (.string, .string):
             return a.asString < b.asString
@@ -88,15 +88,15 @@ extension LuaState {
                 return a.asFloat < Double(b.asInteger)
             }
         default:
-            let (result, ok) = callMetamethod(a: a, b: b, mmName: "__lt", ls: self)
+            let (result, ok) = try callMetamethod(a: a, b: b, mmName: "__lt", ls: self)
             if ok {
                 return result.toBoolean
             }
-            fatalError("comparison error!")
+            throw LuaSwiftError("comparison error!")
         }
     }
     
-    private func _le(a: LuaValue, b: LuaValue) -> Bool {
+    private func _le(a: LuaValue, b: LuaValue) throws -> Bool {
         switch (a.luaType, b.luaType) {
         case (.string, .string):
             return a.asString <= b.asString
@@ -113,18 +113,18 @@ extension LuaState {
             }
         default:
             do {
-                let (result, ok) = callMetamethod(a: a, b: b, mmName: "__le", ls: self)
+                let (result, ok) = try callMetamethod(a: a, b: b, mmName: "__le", ls: self)
                 if ok {
                     return result.toBoolean
                 }
             }
             do {
-                let (result, ok) = callMetamethod(a: b, b: a, mmName: "__lt", ls: self)
+                let (result, ok) = try callMetamethod(a: b, b: a, mmName: "__lt", ls: self)
                 if ok {
                     return result.toBoolean
                 }
             }
-            fatalError("comparison error!")
+            throw LuaSwiftError("comparison error!")
         }
     }
     

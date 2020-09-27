@@ -42,9 +42,9 @@ class LuaStack {
 
     /// 将值推入栈顶
     /// - Parameter val: 推入的值
-    func push(_ val: LuaValue) {
+    func push(_ val: LuaValue) throws {
         guard self.top < self.slots.count else {
-            fatalError("stack overflow!")
+            throw LuaSwiftError("stack overflow!")
         }
         self.slots[self.top] = val
         self.top += 1
@@ -52,9 +52,9 @@ class LuaStack {
 
     /// 从栈顶弹出一个值
     /// - Returns: 弹出的值
-    func pop() -> LuaValue {
+    func pop() throws -> LuaValue {
         guard self.top >= 1 else {
-            fatalError("stack underflow!")
+            throw LuaSwiftError("stack underflow!")
         }
         self.top -= 1
         let val = self.slots[self.top]
@@ -121,7 +121,7 @@ class LuaStack {
     /// - Parameters:
     ///   - idx: 待写入索引
     ///   - val: 待写入值
-    func set(idx: Int, val: LuaValue) {
+    func set(idx: Int, val: LuaValue) throws {
         if idx < LUA_REGISTRYINDEX { /* upvalues */
             let uvIdx = LUA_REGISTRYINDEX - idx - 1
             if let c = self.closure, uvIdx < c.upvals.count {
@@ -138,7 +138,7 @@ class LuaStack {
         }
         let absIdx = self.absIndex(idx: idx)
         guard absIdx > 0 && absIdx <= self.top else {
-            fatalError("invalid index!")
+            throw LuaSwiftError("invalid index!")
         }
         self.slots[absIdx - 1] = val
     }
@@ -153,23 +153,23 @@ class LuaStack {
         }
     }
 
-    func pop(n: Int) -> [LuaValue] {
+    func pop(n: Int) throws -> [LuaValue] {
         var vals: [LuaValue] = []
         for _ in (0..<n) {
-            vals.insert(self.pop(), at: 0)
+            vals.insert(try self.pop(), at: 0)
         }
         return vals
     }
 
-    func push(vals: [LuaValue], n: Int) {
+    func push(vals: [LuaValue], n: Int) throws {
         let nVals = vals.count
         let n = n < 0 ? nVals : n
 
         for i in (0..<n) {
             if i < nVals {
-                self.push(vals[i])
+                try self.push(vals[i])
             } else {
-                self.push(LuaNil)
+                try self.push(LuaNil)
             }
         }
     }

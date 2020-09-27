@@ -10,49 +10,49 @@ import Foundation
 
 extension LuaState {
 
-    func newTable() {
-        self.createTable(nArr: 0, nRec: 0)
+    func newTable() throws {
+        try self.createTable(nArr: 0, nRec: 0)
     }
 
-    func createTable(nArr: Int, nRec: Int) {
+    func createTable(nArr: Int, nRec: Int) throws {
         let t = LuaTable.new(nArr: nArr, nRec: nRec)
-        self.stack.push(t)
+        try self.stack.push(t)
     }
 
-    func getTable(idx: Int) -> LuaType {
+    func getTable(idx: Int) throws -> LuaType {
         let t = self.stack.get(idx: idx)
-        let k = self.stack.pop()
-        return self._getTable(t: t, k: k, raw: false)
+        let k = try self.stack.pop()
+        return try self._getTable(t: t, k: k, raw: false)
     }
     
-    func rawGet(idx: Int) -> LuaType {
+    func rawGet(idx: Int) throws -> LuaType {
         let t = self.stack.get(idx: idx)
-        let k = self.stack.pop()
-        return self._getTable(t: t, k: k, raw: true)
+        let k = try self.stack.pop()
+        return try self._getTable(t: t, k: k, raw: true)
     }
 
-    func getField(idx: Int, k: String) -> LuaType {
+    func getField(idx: Int, k: String) throws -> LuaType {
         let t = self.stack.get(idx: idx)
-        return self._getTable(t: t, k: k, raw: false)
+        return try self._getTable(t: t, k: k, raw: false)
     }
 
-    func getI(idx: Int, i: Int64) -> LuaType {
+    func getI(idx: Int, i: Int64) throws -> LuaType {
         let t = self.stack.get(idx: idx)
-        return self._getTable(t: t, k: i, raw: false)
+        return try self._getTable(t: t, k: i, raw: false)
     }
     
-    func rawGetI(idx: Int, i: Int64) -> LuaType {
+    func rawGetI(idx: Int, i: Int64) throws -> LuaType {
         let t = self.stack.get(idx: idx)
-        return self._getTable(t: t, k: i, raw: true)
+        return try self._getTable(t: t, k: i, raw: true)
     }
 
     // push(t[k])
-    private func _getTable(t: LuaValue, k: LuaValue, raw: Bool) -> LuaType {
+    private func _getTable(t: LuaValue, k: LuaValue, raw: Bool) throws -> LuaType {
         if t.luaType == .table {
             let tbl = t.asTable
             let v = tbl.get(key: k)
             if raw || v.luaType != .nil || !tbl.hasMetafield(fieldName: "__index") {
-                self.stack.push(v)
+                try self.stack.push(v)
                 return v.luaType
             }
         }
@@ -62,12 +62,12 @@ extension LuaState {
             switch mf.luaType {
             case .table:
                 let x = mf.asTable
-                return self._getTable(t: x, k: k, raw: false)
+                return try self._getTable(t: x, k: k, raw: false)
             case .function:
-                self.stack.push(mf)
-                self.stack.push(t)
-                self.stack.push(k)
-                self.call(nArgs: 2, nResults: 1)
+                try self.stack.push(mf)
+                try self.stack.push(t)
+                try self.stack.push(k)
+                try self.call(nArgs: 2, nResults: 1)
                 let v = self.stack.get(idx: -1)
                 return v.luaType
             default:
@@ -75,18 +75,18 @@ extension LuaState {
             }
         }
 
-        fatalError("index error!")
+        throw LuaSwiftError("index error!")
     }
 
-    func getGlobal(name: String) -> LuaType {
+    func getGlobal(name: String) throws -> LuaType {
         let t = self.registry.get(key: LUA_RIDX_GLOBALS)
-        return self._getTable(t: t, k: name, raw: false)
+        return try self._getTable(t: t, k: name, raw: false)
     }
     
-    func getMetatable(idx: Int) -> Bool {
+    func getMetatable(idx: Int) throws -> Bool {
         let val = self.stack.get(idx: idx)
         if let mt = Lua.getMetatable(val: val, ls: self) {
-            self.stack.push(mt)
+            try self.stack.push(mt)
             return true
         } else {
             return false

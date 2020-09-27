@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias SwiftFunction = (LuaState) -> Int
+typealias SwiftFunction = (LuaState) throws -> Int
 
 class Upvalue {
     var val: LuaValue

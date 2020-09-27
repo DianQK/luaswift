@@ -91,12 +91,12 @@ class LuaTable {
         return self.map[LuaMapKey(value: key)] ?? LuaNil
     }
 
-    func put(key: LuaValue, val: LuaValue) {
+    func put(key: LuaValue, val: LuaValue) throws {
         if key.isNil {
-            fatalError("table index is nil!")
+            throw LuaSwiftError("table index is nil!")
         }
         if key.isFloat && key.asFloat.isNaN {
-            fatalError("table index is NaN!")
+            throw LuaSwiftError("table index is NaN!")
         }
         self.changed = true
         let key = _floatToInteger(key: key)

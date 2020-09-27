@@ -78,17 +78,17 @@ extension LuaState {
         return val.toInteger
     }
 
-    func toString(idx: Int) -> String {
-        let (s, _) = self.toStringX(idx: idx)
+    func toString(idx: Int) throws -> String {
+        let (s, _) = try self.toStringX(idx: idx)
         return s
     }
 
-    func toStringX(idx: Int) -> (String, Bool) {
+    func toStringX(idx: Int) throws -> (String, Bool) {
         let val = self.stack.get(idx: idx)
         switch val.luaType {
         case .number:
             let (s, _) = val.toStringX
-            self.stack.set(idx: idx, val: s)
+            try self.stack.set(idx: idx, val: s)
             return (s, true)
         default:
             return val.toStringX

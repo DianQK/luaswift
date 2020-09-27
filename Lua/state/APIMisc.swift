@@ -12,25 +12,25 @@ extension LuaState {
     
     // [-0, +1, e]
     // http://www.lua.org/manual/5.3/manual.html#lua_len
-    func len(idx: Int) {
+    func len(idx: Int) throws {
         let val = self.stack.get(idx: idx)
         if val.luaType == .string {
-            self.stack.push(Int64(val.asString.count))
+            try self.stack.push(Int64(val.asString.count))
             return
         }
         
-        let (result, ok) = callMetamethod(a: val, b: val, mmName: "__len", ls: self)
+        let (result, ok) = try callMetamethod(a: val, b: val, mmName: "__len", ls: self)
         if ok {
-            self.stack.push(result)
+            try self.stack.push(result)
             return
         }
         
         if val.luaType == .table {
-            self.stack.push(Int64(val.asTable.len()))
+            try self.stack.push(Int64(val.asTable.len()))
             return
         }
 
-        fatalError("length error!")
+        throw LuaSwiftError("length error!")
     }
     
     func rawLen(idx: Int) -> UInt {
@@ -47,48 +47,53 @@ extension LuaState {
     
     // [-n, +1, e]
     // http://www.lua.org/manual/5.3/manual.html#lua_concat
-    func concat(n: Int) {
+    func concat(n: Int) throws {
         if n == 0 {
-            self.stack.push("")
+            try self.stack.push("")
         } else if n >= 2 {
             for _ in (1..<n) {
                 if self.isString(idx: -1) && self.isString(idx: -2) {
-                    let s2 = self.toString(idx: -1)
-                    let s1 = self.toString(idx: -2)
-                    _ = self.stack.pop()
-                    _ = self.stack.pop()
-                    self.stack.push(s1 + s2)
+                    let s2 = try self.toString(idx: -1)
+                    let s1 = try self.toString(idx: -2)
+                    _ = try self.stack.pop()
+                    _ = try self.stack.pop()
+                    try self.stack.push(s1 + s2)
                     continue
                 }
                 
-                let b = self.stack.pop()
-                let a = self.stack.pop()
-                let (result, ok) = callMetamethod(a: a, b: b, mmName: "__concat", ls: self)
+                let b = try self.stack.pop()
+                let a = try self.stack.pop()
+                let (result, ok) = try callMetamethod(a: a, b: b, mmName: "__concat", ls: self)
                 if ok {
-                    self.stack.push(result)
+                    try self.stack.push(result)
                     continue
                 }
                 
-                fatalError("caoncatenation error!")
+                throw LuaSwiftError("caoncatenation error!")
             }
         }
         // n == 1, do nothing
     }
 
-    func next(idx: Int) -> Bool {
+    func next(idx: Int) throws -> Bool {
         let val = self.stack.get(idx: idx)
         if val.luaType == .table {
             let t = val.asTable
-            let key = self.stack.pop()
+            let key = try self.stack.pop()
             let nextKey = t.nextKey(key)
             if nextKey.luaType != .nil {
-                self.stack.push(nextKey)
-                self.stack.push(t.get(key: nextKey))
+                try self.stack.push(nextKey)
+                try self.stack.push(t.get(key: nextKey))
                 return true
             }
             return false
         }
-        fatalError("table expected!")
+        throw LuaSwiftError("table expected!")
+    }
+
+    func error() throws -> Int {
+        let err = try self.stack.pop()
+        throw LuaInternalError(err: err)
     }
     
 }

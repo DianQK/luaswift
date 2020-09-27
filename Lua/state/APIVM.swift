@@ -24,17 +24,17 @@ extension LuaState: LuaVMType {
         return i
     }
 
-    func getConst(idx: Int) {
+    func getConst(idx: Int) throws {
         let c = self.stack.closure!.proto!.constants[idx]
-        self.stack.push(c.luaValue)
+        try self.stack.push(c.luaValue)
     }
 
-    func getRK(rk: Int) {
+    func getRK(rk: Int) throws {
         if rk > 0xFF { // constant
-            self.getConst(idx: rk & 0xFF)
+            try self.getConst(idx: rk & 0xFF)
         } else { // register
             // Lua 虚拟机指令操作数里携带的寄存器索引是从 0 开始的，而 Lua API 里的栈索引是从1开始的，所以当需要把寄存器索引当成栈索引使用时，要对寄存器索引加 1。
-            self.pushValue(idx: rk + 1)
+            try self.pushValue(idx: rk + 1)
         }
     }
 
@@ -42,20 +42,20 @@ extension LuaState: LuaVMType {
         return Int(self.stack.closure!.proto!.maxStackSize)
     }
 
-    func loadVararg(n: Int) {
+    func loadVararg(n: Int) throws {
         var n = n
         if n < 0 {
             n = self.stack.varargs!.count
         }
 
         self.stack.check(n: n)
-        self.stack.push(vals: self.stack.varargs!, n: n)
+        try self.stack.push(vals: self.stack.varargs!, n: n)
     }
 
-    func loadProto(idx: Int) {
+    func loadProto(idx: Int) throws {
         let subProto = self.stack.closure!.proto!.protos[idx]
         let closure = Closure(proto: subProto)
-        self.stack.push(closure)
+        try self.stack.push(closure)
 
         for (i, uvInfo) in subProto.upvalues.enumerated() {
             let uvIdx = Int(uvInfo.idx)

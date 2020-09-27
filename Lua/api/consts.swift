@@ -75,3 +75,15 @@ enum CompareOp: Int {
     case lt        // <
     case le        // <=
 }
+
+/* thread status */
+enum LuaThreadStatus: Int {
+    case ok = 0
+    case yield
+    case errrun
+    case errsyntax
+    case errmem
+    case errgcmm
+    case errerr
+    case errfile
+}

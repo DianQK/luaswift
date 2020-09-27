@@ -67,12 +67,12 @@ extension LuaState {
 
     // [-(2|1), +1, e]
     // http://www.lua.org/manual/5.3/manual.html#lua_arith
-    func arith(op: ArithOp) {
+    func arith(op: ArithOp) throws {
         let a: LuaValue
         let b: LuaValue
-        b = self.stack.pop()
+        b = try self.stack.pop()
         if op != .unm && op != .bnot {
-            a = self.stack.pop()
+            a = try self.stack.pop()
         } else {
             a = b
         }
@@ -81,18 +81,18 @@ extension LuaState {
 
         let result = _arith(a: a, b: b, op: _operator)
         if result.luaType != .nil {
-            self.stack.push(result)
+            try self.stack.push(result)
             return
         }
         
         let mm = _operator.metamethod
-        let (_result, ok) = callMetamethod(a: a, b: b, mmName: mm, ls: self)
+        let (_result, ok) = try callMetamethod(a: a, b: b, mmName: mm, ls: self)
         if ok {
-            self.stack.push(_result)
+            try self.stack.push(_result)
             return
         }
         
-        fatalError("arithmetic error!")
+        throw LuaSwiftError("arithmetic error!")
     }
     
     private func _arith(a: LuaValue, b: LuaValue, op: Operator) -> LuaValue {

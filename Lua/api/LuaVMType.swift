@@ -17,13 +17,13 @@ protocol LuaVMType: LuaStateType {
     /// 取出当前指令，将 PC 指向下一条指令
     func fetch() -> Instruction
     /// 将指定常量推入栈顶
-    func getConst(idx: Int)
+    func getConst(idx: Int) throws
     /// 将指定常量或栈值推入栈顶
-    func getRK(rk: Int)
+    func getRK(rk: Int) throws
 
     func registerCount() -> Int
-    func loadVararg(n: Int)
-    func loadProto(idx: Int)
+    func loadVararg(n: Int) throws
+    func loadProto(idx: Int) throws
 
     func closeUpvalues(a: Int)
 

@@ -10,45 +10,45 @@ import Foundation
 
 extension LuaState {
 
-    func pushNil() {
-        self.stack.push(LuaNil)
+    func pushNil() throws {
+        try self.stack.push(LuaNil)
     }
 
-    func pushBoolean(_ b: Bool) {
-        self.stack.push(b)
+    func pushBoolean(_ b: Bool) throws {
+        try self.stack.push(b)
     }
 
-    func pushInteger(_ n: Int64) {
-        self.stack.push(n)
+    func pushInteger(_ n: Int64) throws {
+        try self.stack.push(n)
     }
 
-    func pushNumber(_ n: Double) {
-        self.stack.push(n)
+    func pushNumber(_ n: Double) throws {
+        try self.stack.push(n)
     }
 
-    func pushString(_ s: String) {
-        self.stack.push(s)
+    func pushString(_ s: String) throws {
+        try self.stack.push(s)
     }
 
-    func pushSwiftFunction(f: @escaping SwiftFunction) {
-        self.stack.push(Closure(swiftFunc: f, nUpvals: 0))
+    func pushSwiftFunction(f: @escaping SwiftFunction) throws {
+        try self.stack.push(Closure(swiftFunc: f, nUpvals: 0))
     }
 
-    func pushGlobalTable() {
+    func pushGlobalTable() throws {
         let global = self.registry.get(key: LUA_RIDX_GLOBALS)
         // FIXME: Global 多个 stack 读写出现拷贝读的内容不一样？
-        self.stack.push(global)
+        try self.stack.push(global)
     }
 
-    func pushSwiftClosure(f: @escaping SwiftFunction, n: Int) {
+    func pushSwiftClosure(f: @escaping SwiftFunction, n: Int) throws {
         let closure = Closure(swiftFunc: f, nUpvals: n)
         if n > 0 {
             for i in (1...n).reversed() {
-                let val = self.stack.pop()
+                let val = try self.stack.pop()
                 closure.upvals[i - 1] = Upvalue(val: val)
             }
         }
-        self.stack.push(closure)
+        try self.stack.push(closure)
     }
 
 }

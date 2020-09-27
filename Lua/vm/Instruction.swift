@@ -77,9 +77,9 @@ struct Instruction {
         opcodes[self.opcode.rawValue].argCMode
     }
 
-    func execute(vm: LuaVMType) {
+    func execute(vm: LuaVMType) throws {
         let action = opcodes[self.opcode.rawValue].action
-        action(self, vm)
+        try action(self, vm)
     }
 
     func printOperands() {

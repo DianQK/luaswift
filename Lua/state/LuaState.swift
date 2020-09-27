@@ -13,9 +13,9 @@ class LuaState: LuaStateType {
     var registry: LuaTable
     var stack: LuaStack
 
-    init() {
+    init() throws {
         self.registry = LuaTable.new(nArr: 0, nRec: 0)
-        self.registry.put(key: LUA_RIDX_GLOBALS, val: LuaTable.new(nArr: 0, nRec: 0))
+        try self.registry.put(key: LUA_RIDX_GLOBALS, val: LuaTable.new(nArr: 0, nRec: 0))
         self.stack = LuaStack(size: LUA_MINSTACK)
         self.stack.state = self
     }
@@ -39,7 +39,7 @@ extension LuaState {
 
 extension LuaState {
 
-    func printStack() {
+    func printStack() throws {
         let top = self.getTop()
         for i in (1...top) {
             let t = self.type(idx: i)
@@ -53,7 +53,7 @@ extension LuaState {
                     print("[\(self.toNumber(idx: i))]", terminator: "")
                 }
             case .string:
-                print("[\"\(self.toString(idx: i))\"]", terminator: "")
+                print("[\"\(try self.toString(idx: i))\"]", terminator: "")
             default:
                 print("[\(self.typeName(t))]", terminator: "")
             }

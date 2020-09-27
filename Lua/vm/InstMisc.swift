@@ -11,11 +11,11 @@ import Foundation
 extension Instruction {
 
     // R(A) := R(B)
-    static func move(i: Instruction, vm: LuaVMType) {
+    static func move(i: Instruction, vm: LuaVMType) throws {
         var (a, b, _) = i.ABC
         a += 1
         b += 1
-        vm.copy(fromIdx: b, toIdx: a)
+        try vm.copy(fromIdx: b, toIdx: a)
     }
 
     // pc+=sBx; if (A) close all upvalues >= R(A - 1)

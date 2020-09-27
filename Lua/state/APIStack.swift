@@ -23,34 +23,34 @@ extension LuaState {
         return true // never fails
     }
 
-    func pop(n: Int) {
+    func pop(n: Int) throws {
         for _ in (0..<n) {
-            _ = self.stack.pop()
+            _ = try self.stack.pop()
         }
     }
 
-    func copy(fromIdx: Int, toIdx: Int) {
+    func copy(fromIdx: Int, toIdx: Int) throws {
         let val = self.stack.get(idx: fromIdx)
-        self.stack.set(idx: toIdx, val: val)
+        try self.stack.set(idx: toIdx, val: val)
     }
 
-    func pushValue(idx: Int) {
+    func pushValue(idx: Int) throws {
         let val = self.stack.get(idx: idx)
-        self.stack.push(val)
+        try self.stack.push(val)
     }
 
-    func replace(idx: Int) {
-        let val = self.stack.pop()
-        self.stack.set(idx: idx, val: val)
+    func replace(idx: Int) throws {
+        let val = try self.stack.pop()
+        try self.stack.set(idx: idx, val: val)
     }
 
     func insert(idx: Int) {
         self.rotate(idx: idx, n: 1)
     }
 
-    func remove(idx: Int) {
+    func remove(idx: Int) throws {
         self.rotate(idx: idx, n: -1)
-        self.pop(n: 1)
+        try self.pop(n: 1)
     }
 
     func rotate(idx: Int, n: Int) {
@@ -67,20 +67,20 @@ extension LuaState {
         self.stack.reverse(from: p, to: t)
     }
 
-    func setTop(idx: Int) {
+    func setTop(idx: Int) throws {
         let newTop = self.stack.absIndex(idx: idx)
         guard newTop >= 0 else {
-            fatalError("stack underflow!")
+            throw LuaSwiftError("stack underflow!")
         }
 
         let n = self.stack.top - newTop
         if n > 0 {
             for _ in 0..<n {
-                _ = self.stack.pop()
+                _ = try self.stack.pop()
             }
         } else if n < 0 {
             for _ in (n..<0) {
-                self.stack.push(LuaNil)
+                try self.stack.push(LuaNil)
             }
         }
     }
