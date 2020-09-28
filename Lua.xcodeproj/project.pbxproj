@@ -40,6 +40,8 @@
 		91867E02251B644C00F09DB0 /* APICall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867E01251B644C00F09DB0 /* APICall.swift */; };
 		91867E05251B6A1300F09DB0 /* InstCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867E04251B6A1300F09DB0 /* InstCall.swift */; };
 		91867E12251C8A1500F09DB0 /* InstUpvalue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91867E11251C8A1500F09DB0 /* InstUpvalue.swift */; };
+		91B2AA962521CE2E00C8CF97 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B2AA952521CE2E00C8CF97 /* Lexer.swift */; };
+		91B2AA9A2521CF4F00C8CF97 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B2AA992521CF4F00C8CF97 /* Token.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -89,6 +91,8 @@
 		91867E01251B644C00F09DB0 /* APICall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
 		91867E04251B6A1300F09DB0 /* InstCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstCall.swift; sourceTree = "<group>"; };
 		91867E11251C8A1500F09DB0 /* InstUpvalue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstUpvalue.swift; sourceTree = "<group>"; };
+		91B2AA952521CE2E00C8CF97 /* Lexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
+		91B2AA992521CF4F00C8CF97 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,7 @@
 		26C10BCE250DD88D00A27886 /* Lua */ = {
 			isa = PBXGroup;
 			children = (
+				91B2AA932521CE1700C8CF97 /* compiler */,
 				91867D022514733A00F09DB0 /* number */,
 				91867CF125135D8200F09DB0 /* api */,
 				91867CE725135C9C00F09DB0 /* state */,
@@ -196,6 +201,23 @@
 				91867D07251475C100F09DB0 /* Parser.swift */,
 			);
 			path = number;
+			sourceTree = "<group>";
+		};
+		91B2AA932521CE1700C8CF97 /* compiler */ = {
+			isa = PBXGroup;
+			children = (
+				91B2AA942521CE1F00C8CF97 /* lexer */,
+			);
+			path = compiler;
+			sourceTree = "<group>";
+		};
+		91B2AA942521CE1F00C8CF97 /* lexer */ = {
+			isa = PBXGroup;
+			children = (
+				91B2AA952521CE2E00C8CF97 /* Lexer.swift */,
+				91B2AA992521CF4F00C8CF97 /* Token.swift */,
+			);
+			path = lexer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91867D7E2519F3BB00F09DB0 /* LuaTable.swift in Sources */,
+				91B2AA9A2521CF4F00C8CF97 /* Token.swift in Sources */,
 				26C10BD9250E087400A27886 /* Reader.swift in Sources */,
 				263E62CA25179C5700FF56F7 /* APIMisc.swift in Sources */,
 				91867E05251B6A1300F09DB0 /* InstCall.swift in Sources */,
@@ -272,6 +295,7 @@
 				26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */,
 				91867D08251475C100F09DB0 /* Parser.swift in Sources */,
 				91867CFD25137D7800F09DB0 /* APIPush.swift in Sources */,
+				91B2AA962521CE2E00C8CF97 /* Lexer.swift in Sources */,
 				91867CEF25135CE600F09DB0 /* LuaValue.swift in Sources */,
 				91867DF2251B3BFD00F09DB0 /* APIGet.swift in Sources */,
 				26C10BD0250DD88D00A27886 /* main.swift in Sources */,
