@@ -23,7 +23,7 @@ enum RawTokenKind {
     case rightSquareBracket                    // ]
     case leftBrace                   // { leftCurly
     case rightBrace                   // } rightCurly
-    case equal                    // =
+    case assign                    // =
     case minusOperator                     // - (sub or unm)
     case unaryMinusOperator                    // unary minus
     case subOperator                   // minus
@@ -80,7 +80,7 @@ enum RawTokenKind {
             return .other
         case .comma, .dot, .colon, .label, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket:
             return .separator
-        case .equal, .minusOperator, .unaryMinusOperator, .subOperator, .waveOperator, .bnotOperator, .bxorOperator, .addOperator, .mulOperator, .divOperator, .idivOperator, .powOperator, .modOperator, .bandOperator, .borOperator, .shrOperator, .shlOperator, .concatOperator, .ltOperator, .leOperator, .gtOperator, .geOperator, .eqOperator, .neOperator, .lenOperator, .andOperator, .orOperator, .notOperator:
+        case .assign, .minusOperator, .unaryMinusOperator, .subOperator, .waveOperator, .bnotOperator, .bxorOperator, .addOperator, .mulOperator, .divOperator, .idivOperator, .powOperator, .modOperator, .bandOperator, .borOperator, .shrOperator, .shlOperator, .concatOperator, .ltOperator, .leOperator, .gtOperator, .geOperator, .eqOperator, .neOperator, .lenOperator, .andOperator, .orOperator, .notOperator:
             return .operator
         case .breakKeyword, .doKeyword, .elseKeyword, .elseifKeyword, .endKeyword, .falseKeyword, .forKeyword, .functionKeyword, .gotoKeyword, .ifKeyword, .inKeyword, .localKeyword, .nilKeyword, .repeatKeyword, .returnKeyword, .thenKeyword, .trueKeyword, .untilKeyword, .whileKeyword:
             return .keyword
@@ -92,6 +92,31 @@ enum RawTokenKind {
             return .string
         }
     }
+    
+    static let keywords: [String: RawTokenKind] = [
+        "and":      .andOperator,
+        "break":    .breakKeyword,
+        "do":       .doKeyword,
+        "else":     .elseKeyword,
+        "elseif":   .elseifKeyword,
+        "end":      .endKeyword,
+        "false":    .falseKeyword,
+        "for":      .forKeyword,
+        "function": .functionKeyword,
+        "goto":     .gotoKeyword,
+        "if":       .ifKeyword,
+        "in":       .inKeyword,
+        "local":    .localKeyword,
+        "nil":      .nilKeyword,
+        "not":      .notOperator,
+        "or":       .orOperator,
+        "repeat":   .repeatKeyword,
+        "return":   .returnKeyword,
+        "then":     .thenKeyword,
+        "true":     .trueKeyword,
+        "until":    .untilKeyword,
+        "while":    .whileKeyword
+    ]
 }
 
 enum TokenCategory: String {
