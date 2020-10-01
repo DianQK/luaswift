@@ -306,5 +306,24 @@ class Lexer {
     func scanNumber() throws -> String {
         return try self.scan(regex: .number)
     }
+    
+    func lookAhead() throws -> RawTokenKind {
+        if let nextTokenInfo = self.nextTokenInfo {
+            return nextTokenInfo.kind
+        }
+        let currentLine = self.line
+        let tokenInfo = try self.nextToken()
+        self.line = currentLine
+        self.nextTokenInfo = tokenInfo
+        return tokenInfo.kind
+    }
+    
+    func nextToken(of kind: RawTokenKind) throws -> (line: Int, token: String) {
+        let tokenInfo = try self.nextToken()
+        if tokenInfo.kind != kind {
+            throw LexerError(message: "syntax error near \(tokenInfo.token)")
+        }
+        return (line, tokenInfo.token)
+    }
 
 }
