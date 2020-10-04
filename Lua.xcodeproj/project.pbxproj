@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26315A042529C47B00B9870B /* ParseBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26315A032529C47B00B9870B /* ParseBlock.swift */; };
 		263E1996250FA554009E86B6 /* opcodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263E1995250FA554009E86B6 /* opcodes.swift */; };
 		263E62C42517907400FF56F7 /* APIArith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263E62C32517907400FF56F7 /* APIArith.swift */; };
 		263E62C7251797FD00FF56F7 /* APICompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263E62C6251797FD00FF56F7 /* APICompare.swift */; };
@@ -60,6 +61,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		26315A032529C47B00B9870B /* ParseBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseBlock.swift; sourceTree = "<group>"; };
 		263E1995250FA554009E86B6 /* opcodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = opcodes.swift; sourceTree = "<group>"; };
 		263E62C32517907400FF56F7 /* APIArith.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIArith.swift; sourceTree = "<group>"; };
 		263E62C6251797FD00FF56F7 /* APICompare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICompare.swift; sourceTree = "<group>"; };
@@ -148,6 +150,14 @@
 			path = ast;
 			sourceTree = "<group>";
 		};
+		26904AD82529BD0100FE55C3 /* parser */ = {
+			isa = PBXGroup;
+			children = (
+				26315A032529C47B00B9870B /* ParseBlock.swift */,
+			);
+			path = parser;
+			sourceTree = "<group>";
+		};
 		26C10BC3250DD88D00A27886 = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +232,7 @@
 		91B2AA932521CE1700C8CF97 /* compiler */ = {
 			isa = PBXGroup;
 			children = (
+				26904AD82529BD0100FE55C3 /* parser */,
 				26904ACD252805BF00FE55C3 /* ast */,
 				91B2AA942521CE1F00C8CF97 /* lexer */,
 			);
@@ -311,6 +322,7 @@
 				91867D782518BC8D00F09DB0 /* InstMisc.swift in Sources */,
 				91867E02251B644C00F09DB0 /* APICall.swift in Sources */,
 				26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */,
+				26315A042529C47B00B9870B /* ParseBlock.swift in Sources */,
 				91867D08251475C100F09DB0 /* Parser.swift in Sources */,
 				91867CFD25137D7800F09DB0 /* APIPush.swift in Sources */,
 				91B2AA962521CE2E00C8CF97 /* Lexer.swift in Sources */,

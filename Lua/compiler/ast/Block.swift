@@ -10,8 +10,8 @@ import Foundation
 
 struct Block {
     
-    let lastLine: Int
     let stats: [Stat]
     let retExps: [Exp]
-    
+    let lastLine: Int
+
 }
