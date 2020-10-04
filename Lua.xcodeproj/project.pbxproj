@@ -11,6 +11,9 @@
 		263E62C42517907400FF56F7 /* APIArith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263E62C32517907400FF56F7 /* APIArith.swift */; };
 		263E62C7251797FD00FF56F7 /* APICompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263E62C6251797FD00FF56F7 /* APICompare.swift */; };
 		263E62CA25179C5700FF56F7 /* APIMisc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263E62C925179C5700FF56F7 /* APIMisc.swift */; };
+		26904ACF252805DD00FE55C3 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26904ACE252805DD00FE55C3 /* Block.swift */; };
+		26904AD32528065A00FE55C3 /* Stat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26904AD22528065A00FE55C3 /* Stat.swift */; };
+		26904AD62529BA1200FE55C3 /* Exp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26904AD52529BA1200FE55C3 /* Exp.swift */; };
 		26C10BD0250DD88D00A27886 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BCF250DD88D00A27886 /* main.swift */; };
 		26C10BD7250E04DC00A27886 /* BinaryChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BD6250E04DC00A27886 /* BinaryChunk.swift */; };
 		26C10BD9250E087400A27886 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C10BD8250E087400A27886 /* Reader.swift */; };
@@ -61,6 +64,9 @@
 		263E62C32517907400FF56F7 /* APIArith.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIArith.swift; sourceTree = "<group>"; };
 		263E62C6251797FD00FF56F7 /* APICompare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICompare.swift; sourceTree = "<group>"; };
 		263E62C925179C5700FF56F7 /* APIMisc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIMisc.swift; sourceTree = "<group>"; };
+		26904ACE252805DD00FE55C3 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		26904AD22528065A00FE55C3 /* Stat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stat.swift; sourceTree = "<group>"; };
+		26904AD52529BA1200FE55C3 /* Exp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exp.swift; sourceTree = "<group>"; };
 		26C10BCC250DD88D00A27886 /* Lua */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Lua; sourceTree = BUILT_PRODUCTS_DIR; };
 		26C10BCF250DD88D00A27886 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		26C10BD6250E04DC00A27886 /* BinaryChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryChunk.swift; sourceTree = "<group>"; };
@@ -130,6 +136,16 @@
 				91867E11251C8A1500F09DB0 /* InstUpvalue.swift */,
 			);
 			path = vm;
+			sourceTree = "<group>";
+		};
+		26904ACD252805BF00FE55C3 /* ast */ = {
+			isa = PBXGroup;
+			children = (
+				26904ACE252805DD00FE55C3 /* Block.swift */,
+				26904AD22528065A00FE55C3 /* Stat.swift */,
+				26904AD52529BA1200FE55C3 /* Exp.swift */,
+			);
+			path = ast;
 			sourceTree = "<group>";
 		};
 		26C10BC3250DD88D00A27886 = {
@@ -206,6 +222,7 @@
 		91B2AA932521CE1700C8CF97 /* compiler */ = {
 			isa = PBXGroup;
 			children = (
+				26904ACD252805BF00FE55C3 /* ast */,
 				91B2AA942521CE1F00C8CF97 /* lexer */,
 			);
 			path = compiler;
@@ -287,6 +304,7 @@
 				91867CF325135D9700F09DB0 /* consts.swift in Sources */,
 				91867D6C2518BA9100F09DB0 /* APIVM.swift in Sources */,
 				263E1996250FA554009E86B6 /* opcodes.swift in Sources */,
+				26904AD32528065A00FE55C3 /* Stat.swift in Sources */,
 				91867D7B2518C81100F09DB0 /* Instruction.swift in Sources */,
 				91867D722518BC6D00F09DB0 /* InstLoad.swift in Sources */,
 				91867CE925135CAF00F09DB0 /* LuaState.swift in Sources */,
@@ -310,7 +328,9 @@
 				91867DF5251B3D5300F09DB0 /* APISet.swift in Sources */,
 				91867DF8251B3E7900F09DB0 /* InstTable.swift in Sources */,
 				263E62C42517907400FF56F7 /* APIArith.swift in Sources */,
+				26904AD62529BA1200FE55C3 /* Exp.swift in Sources */,
 				91867D682518B8A900F09DB0 /* LuaVMType.swift in Sources */,
+				26904ACF252805DD00FE55C3 /* Block.swift in Sources */,
 				91867D752518BC7D00F09DB0 /* InstFor.swift in Sources */,
 				91867DFB251B3F0300F09DB0 /* fpb.swift in Sources */,
 			);
